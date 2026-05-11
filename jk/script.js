@@ -1473,6 +1473,7 @@
         }
         alert('感谢您的反馈！您的意见对我们非常重要，我们会认真考虑并加以改进。');
         form.reset();
+        toggleFeedbackSection();
     }
 
     exportExcelFromCalcBtn.addEventListener('click', exportSimsToExcel);
