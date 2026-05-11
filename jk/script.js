@@ -1455,7 +1455,6 @@
     }
 
     document.getElementById('feedbackToggleBtn').addEventListener('click', toggleFeedbackSection);
-    document.getElementById('feedbackSubmitBtn').addEventListener('click', submitFeedback);
 
     function submitFeedback() {
         var form = document.getElementById('feedbackForm');
@@ -1476,6 +1475,8 @@
         form.reset();
         toggleFeedbackSection();
     }
+
+    document.getElementById('feedbackSubmitBtn').addEventListener('click', submitFeedback);
 
     exportExcelFromCalcBtn.addEventListener('click', exportSimsToExcel);
 
