@@ -484,14 +484,11 @@
 
     function renderImageGallery(images) {
         var html = '<div class="image-gallery">';
-        images.forEach(function(img, idx) {
+        images.forEach(function(img) {
             html +=
-                '<div class="lazy-img-container" style="display:inline-block; margin:5px;">' +
-                '<div class="img-skeleton" style="width:100%;max-width:320px;height:220px;border-radius:20px;"></div>' +
-                '<img data-src="' + img.src + '" alt="' + img.alt + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'flex\';" onload="this.classList.add(\'loaded\');this.previousElementSibling.style.display=\'none\';">' +
+                '<img src="' + img.src + '" alt="' + img.alt + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'flex\';">' +
                 '<div class="img-fallback" style="display:none;width:100%;max-width:320px;height:220px;background:#e8f0dd;border-radius:20px;align-items:center;justify-content:center;color:#7a9a60;font-size:0.9rem;text-align:center;padding:20px;">' +
                   '🖼 ' + img.alt + '<br><small>（图片待添加）</small>' +
-                '</div>' +
                 '</div>';
         });
         html += '</div>';
