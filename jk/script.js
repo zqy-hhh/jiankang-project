@@ -1555,96 +1555,33 @@
     }
     typewriterTick();
 
-    // 轮播图数据列表
+    // 轮播图数据列表（精简为4张）
     var carouselImages = [
         { src: 'photos/1.jpg', caption: '🌿 康养旅游 · 自然疗愈之旅' },
-        { src: 'photos/2.jpg', caption: '📚 文化体验 · 历史名城探秘' },
         { src: 'photos/5.jpg', caption: '🌱 生态养生 · 森林氧吧漫步' },
         { src: 'photos/8.jpg', caption: '🛋 休闲度假 · 温泉SPA享乐' },
-        { src: 'photos/11.jpg', caption: '🏥 健康管理 · 中医理疗养生' },
-        { src: 'photos/3.jpg', caption: '🏞 银发旅游 · 品质生活新方式' },
-        { src: 'photos/6.jpg', caption: '🌊 滨海康养 · 海天一色' },
-        { src: 'photos/9.jpg', caption: '♨ 温泉疗养 · 身心舒展' },
-        { src: 'photos/12.jpg', caption: '💊 医养结合 · 科学养生' },
-        { src: 'photos/4.jpg', caption: '🏯 非遗体验 · 文化传承' },
-        { src: 'photos/7.jpg', caption: '🏔 生态度假 · 回归自然' },
-        { src: 'photos/10.jpg', caption: '🍽 美食之旅 · 舌尖养生' },
-        { src: 'photos/13.jpg', caption: '🧘 康养理疗 · 活力焕新' }
+        { src: 'photos/11.jpg', caption: '🏥 健康管理 · 中医理疗养生' }
     ];
     var currentSlide = 0;
     var carouselTrack = document.getElementById('carouselTrack');
     var carouselDots = document.getElementById('carouselDots');
     var autoSlideTimer = null;
-    var loadedSlides = new Set([0]);
 
-    // 图片加载完成回调
-    function handleImgLoad(img) {
-        img.classList.add('loaded');
-        var overlay = img.nextElementSibling;
-        if (overlay && overlay.classList.contains('carousel-slide-overlay')) {
-            overlay.style.opacity = '1';
-        }
-    }
-
-    // 初始化轮播图组件（懒加载版本 + 骨架屏）
+    // 初始化轮播图组件
     function initCarousel() {
         var trackHtml = '';
         var dotsHtml = '';
         carouselImages.forEach(function(img, i) {
-            var skeletonHtml = '<div class="img-skeleton carousel-slide ' + (i === 0 ? '' : 'lazy-carousel-img') + '"></div>';
-            var imgTag = i === 0 
-                ? '<img src="' + img.src + '" alt="' + img.caption + '" loading="eager" decoding="async" onload="handleImgLoad(this)">'
-                : '<img data-src="' + img.src + '" alt="' + img.caption + '" loading="lazy" decoding="async" class="lazy-carousel-img" onload="handleImgLoad(this)">';
             trackHtml +=
-                '<div class="carousel-slide" data-slide-index="' + i + '">' +
-                    skeletonHtml +
-                    imgTag +
+                '<div class="carousel-slide">' +
+                    '<img src="' + img.src + '" alt="' + img.caption + '" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">' +
                     '<div class="carousel-slide-overlay">' + img.caption + '</div>' +
                 '</div>';
             dotsHtml += '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '"></button>';
         });
         carouselTrack.innerHTML = trackHtml;
         carouselDots.innerHTML = dotsHtml;
-        
-        // 首屏图片立即显示
-        var firstImg = carouselTrack.querySelector('.carousel-slide img[loading="eager"]');
-        if (firstImg) {
-            firstImg.classList.add('loaded');
-        }
-        var firstOverlay = carouselTrack.querySelector('.carousel-slide:first-child .carousel-slide-overlay');
-        if (firstOverlay) {
-            firstOverlay.style.opacity = '1';
-        }
-        
-        // 预加载相邻slide的图片
-        preloadAdjacentSlides(0);
-        preloadAdjacentSlides(1);
-        
         startAutoSlide();
-    }
-
-    // 预加载相邻slide的图片
-    function preloadAdjacentSlides(centerIndex) {
-        var indices = [centerIndex - 1, centerIndex + 1];
-        indices.forEach(function(idx) {
-            if (idx >= 0 && idx < carouselImages.length && !loadedSlides.has(idx)) {
-                var slide = carouselTrack.querySelector('[data-slide-index="' + idx + '"]');
-                if (slide) {
-                    var skeleton = slide.querySelector('.img-skeleton');
-                    var img = slide.querySelector('img[data-src]');
-                    if (img) {
-                        img.src = img.getAttribute('data-src');
-                        img.removeAttribute('data-src');
-                        img.classList.remove('lazy-carousel-img');
-                        img.onload = function() {
-                            handleImgLoad(this);
-                            if (skeleton) skeleton.style.display = 'none';
-                        };
-                        loadedSlides.add(idx);
-                    }
-                }
-            }
-        });
     }
 
     function goToSlide(index) {
@@ -1656,7 +1593,6 @@
         dots.forEach(function(d, i) {
             d.classList.toggle('active', i === currentSlide);
         });
-        preloadAdjacentSlides(currentSlide);
     }
 
     function startAutoSlide() {
@@ -1680,11 +1616,7 @@
             startAutoSlide();
         }
     });
-    
-    // 使用 requestAnimationFrame 延迟初始化轮播图，确保DOM已渲染
-    requestAnimationFrame(function() {
-        initCarousel();
-    });
+    initCarousel();
 
     var newsData = [
         {
