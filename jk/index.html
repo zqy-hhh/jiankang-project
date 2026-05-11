@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="zh-CN">
 
 <head>
@@ -103,6 +103,10 @@
                     <span class="nav-icon">&#x1F465;</span>
                     <span class="nav-text">旅游组群</span>
                 </a>
+                <a class="nav-item" id="navFeedbackPage" data-page="feedbackPage">
+                    <span class="nav-icon">&#x1F4E7;</span>
+                    <span class="nav-text">反馈与建议</span>
+                </a>
                 <div class="nav-section-title">数据分析</div>
                 <a class="nav-item" id="navDataSelect" data-page="dataSelectPage">
                     <span class="nav-icon">&#x1F4CA;</span>
@@ -171,6 +175,14 @@
                         <div class="home-card-body">
                             <div class="home-card-title">旅游组群</div>
                             <div class="home-card-desc">加入微信/QQ群，与老年朋友们一起聊天</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-feedback" id="homeCardFeedback">
+                        <div class="home-card-icon">&#x1F4E7;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">反馈与建议</div>
+                            <div class="home-card-desc">提交您的使用反馈与改进建议</div>
                         </div>
                         <div class="home-card-arrow">›</div>
                     </div>
@@ -260,6 +272,82 @@
                             <li>欢迎大家积极发言，分享自己的旅游经历和心得</li>
                             <li>如有疑问可联系群管理员获取帮助</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 反馈与建议页面 -->
+            <div id="feedbackPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4E7; 银发经济·康养旅游平台 用户反馈+调研建议</h1>
+                </div>
+                <div class="content-card">
+                    <div class="feedback-contact-info">
+                        <h3>📬 联系方式</h3>
+                        <p><strong>邮箱：</strong>zqy052300@qq.com</p>
+                        <p><strong>手机号：</strong>15612160067</p>
+                    </div>
+                    
+                    <div class="feedback-list">
+                        <button class="feedback-section-toggle" onclick="toggleFeedbackSection(this)">
+                            <span class="toggle-icon">▶</span>
+                            <span class="toggle-text">展开清单</span>
+                        </button>
+                        
+                        <div class="feedback-section-content" style="display:none;">
+                            <div class="feedback-category">
+                                <h3>一、平台整体体验类</h3>
+                                <ol>
+                                    <li>您初次使用本康养旅游平台，整体使用感受是否便捷顺畅？</li>
+                                    <li>平台页面布局、字体大小、色彩风格是否适配中老年群体使用习惯？</li>
+                                    <li>平台操作步骤是否简单易懂，能否快速找到所需康养旅游服务？</li>
+                                    <li>平台加载速度、系统稳定性如何，是否频繁卡顿闪退？</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="feedback-category">
+                                <h3>二、功能板块实用性提问</h3>
+                                <ol>
+                                    <li>平台康养路线、旅居养老、理疗养生、休闲游玩板块划分是否清晰？</li>
+                                    <li>线上预约报名、一键咨询、行程查看功能是否满足日常使用需求？</li>
+                                    <li>健康档案、体质测评、康养指导相关功能您是否经常使用？</li>
+                                    <li>平台亲情陪同、结伴旅居、专属陪护功能是否贴合老年出行需求？</li>
+                                    <li>线上直播康养课堂、养生科普板块内容是否符合大众喜好？</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="feedback-category">
+                                <h3>三、康养旅游产品与线路类</h3>
+                                <ol>
+                                    <li>平台推出的康养旅游路线数量、覆盖景区范围是否充足？</li>
+                                    <li>行程节奏、游玩强度、住宿休息安排是否适配老年人身体状况？</li>
+                                    <li>康养配套服务：中医理疗、膳食养生、康复护理、户外疗愈是否完善？</li>
+                                    <li>旅游价位、套餐档次、收费标准是否合理透明，有无隐形消费？</li>
+                                    <li>目的地环境、空气质量、医疗配套、交通便利程度是否满意？</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="feedback-category">
+                                <h3>四、安全保障与服务类</h3>
+                                <ol>
+                                    <li>平台出行安全保障、应急救助、随行医护配置是否让您放心？</li>
+                                    <li>客服咨询响应速度、服务态度、问题解答专业度如何？</li>
+                                    <li>出行接送、全程陪护、住宿餐饮、紧急就医配套是否完善？</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="feedback-form">
+                                <h3>📝 请填写您的反馈与建议</h3>
+                                <textarea id="feedbackText" rows="8" placeholder="请在此输入您的反馈意见或建议..."></textarea>
+                                <button class="btn-primary feedback-submit-btn" onclick="submitFeedback()">提交反馈</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feedback-thanks">
+                        <p>衷心感谢各位用户一直以来对银发康养旅游平台的支持与使用，感谢大家积极参与体验并提出宝贵意见。</p>
+                        <p>平台始终立足中老年群体需求，用心打造舒适安心的康养旅居服务，未来我们也会吸纳多方建议，不断优化完善功能与服务，竭力为广大长者提供更优质、贴心、专业的康养旅游体验。</p>
+                        <p>若您在使用过程中有疑问或者建议，可以通过上述方式进行反馈，谢谢您的配合。</p>
                     </div>
                 </div>
             </div>

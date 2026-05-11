@@ -1903,3 +1903,142 @@ body {
         top: 10px;
     }
 }
+
+/* 反馈与建议页面样式 */
+.feedback-contact-info {
+    background: linear-gradient(135deg, #e8f5e0, #d4ecc8);
+    border: 2px solid #6bae5e;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.feedback-contact-info h3 {
+    color: #2d4a2d;
+    margin-bottom: 15px;
+}
+
+.feedback-contact-info p {
+    color: #3a5535;
+    font-size: 1rem;
+    margin: 8px 0;
+}
+
+.feedback-contact-info strong {
+    color: #2d4a2d;
+}
+
+.feedback-list {
+    margin-bottom: 25px;
+}
+
+.feedback-section-toggle {
+    width: 100%;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #2d4a2d, #3d5a3d);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feedback-section-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 74, 45, 0.3);
+}
+
+.toggle-icon {
+    font-size: 1.2rem;
+}
+
+.feedback-section-content {
+    margin-top: 15px;
+}
+
+.feedback-category {
+    background: #fff;
+    border: 2px solid #e8f0dd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+
+.feedback-category h3 {
+    color: #2d4a2d;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.feedback-category ol {
+    padding-left: 25px;
+    margin: 0;
+}
+
+.feedback-category li {
+    color: #4a6b3a;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+.feedback-form {
+    background: linear-gradient(135deg, #fff8e8, #fff3d0);
+    border: 2px solid #e9c46a;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.feedback-form h3 {
+    color: #8a6520;
+    margin-bottom: 15px;
+}
+
+#feedbackText {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e9c46a;
+    border-radius: 10px;
+    font-size: 1rem;
+    resize: vertical;
+    font-family: inherit;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+#feedbackText:focus {
+    outline: none;
+    border-color: #d4a55e;
+    box-shadow: 0 0 0 3px rgba(212, 165, 94, 0.2);
+}
+
+.feedback-submit-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+.feedback-thanks {
+    background: linear-gradient(135deg, #f0f7e8, #e8f5e0);
+    border: 2px solid #b8d4a0;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 25px;
+}
+
+.feedback-thanks p {
+    color: #4a6b3a;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.feedback-thanks p:last-child {
+    margin-bottom: 0;
+}
