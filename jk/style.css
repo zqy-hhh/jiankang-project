@@ -1730,3 +1730,176 @@ body {
         padding: 16px;
     }
 }
+
+/* 旅游组群页面样式 */
+.group-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.group-mascot-area {
+    position: relative;
+    flex-shrink: 0;
+    width: 280px;
+}
+
+.group-mascot {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.group-speech-bubble {
+    position: absolute;
+    top: 20px;
+    right: -20px;
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    color: #5a4a20;
+    padding: 12px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.5);
+    animation: bubbleBounce 2s ease-in-out infinite;
+    z-index: 10;
+}
+
+.group-speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border: 10px solid transparent;
+    border-top-color: #fdcb6e;
+}
+
+.group-speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 22px;
+    border: 8px solid transparent;
+    border-top-color: #ffeaa7;
+}
+
+@keyframes bubbleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.group-qr-codes {
+    flex: 1;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.qr-code-card {
+    background: linear-gradient(135deg, #ffffff, #f8faf4);
+    border: 3px solid #d8e8c8;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    width: 220px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.qr-code-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(107, 174, 94, 0.25);
+}
+
+.qr-code-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #e8f0dd;
+}
+
+.qr-code-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2d4a2d;
+    margin-bottom: 8px;
+}
+
+.qr-code-desc {
+    font-size: 0.85rem;
+    color: #5a6a4a;
+    line-height: 1.5;
+}
+
+.group-tips {
+    background: linear-gradient(135deg, #f0f7e8, #e8f5e0);
+    border: 2px solid #b8d4a0;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 25px;
+}
+
+.group-tips h4 {
+    color: #2d4a2d;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+
+.group-tips ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.group-tips ul li {
+    color: #4a6b3a;
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.group-tips ul li::before {
+    content: '🌿';
+    position: absolute;
+    left: 0;
+}
+
+@media (max-width: 768px) {
+    .group-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .group-mascot-area {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .group-mascot {
+        max-width: 100%;
+    }
+
+    .group-qr-codes {
+        width: 100%;
+    }
+
+    .qr-code-card {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .group-speech-bubble {
+        right: 0;
+        top: 10px;
+    }
+}

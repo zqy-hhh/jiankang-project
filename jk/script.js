@@ -1370,6 +1370,10 @@
                 renderModeIntroduction();
             }
             if (pageId === 'interestScorePage') renderInterestScorePage();
+            if (pageId === 'groupPage') {
+                showPage('groupPage');
+                return;
+            }
             if (pageId === 'healthStylePage') renderHealthStylePage();
             if (pageId === 'visualPage') {
                 if (!usrVec || bestIdx === null) {
@@ -1395,6 +1399,8 @@
             } else if (cardId === 'homeCardInterest') {
                 renderInterestScorePage();
                 showPage('interestScorePage');
+            } else if (cardId === 'homeCardGroup') {
+                showPage('groupPage');
             } else if (cardId === 'homeCardData') {
                 showPage('dataSelectPage');
             } else if (cardId === 'homeCardVisual') {

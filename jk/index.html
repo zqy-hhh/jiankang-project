@@ -99,6 +99,10 @@
                     <span class="nav-icon">&#x1F4F0;</span>
                     <span class="nav-text">兴趣打分表</span>
                 </a>
+                <a class="nav-item" id="navGroupPage" data-page="groupPage">
+                    <span class="nav-icon">&#x1F465;</span>
+                    <span class="nav-text">旅游组群</span>
+                </a>
                 <div class="nav-section-title">数据分析</div>
                 <a class="nav-item" id="navDataSelect" data-page="dataSelectPage">
                     <span class="nav-icon">&#x1F4CA;</span>
@@ -162,6 +166,14 @@
                         </div>
                         <div class="home-card-arrow">›</div>
                     </div>
+                    <div class="home-card card-group" id="homeCardGroup">
+                        <div class="home-card-icon">&#x1F465;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">旅游组群</div>
+                            <div class="home-card-desc">加入微信/QQ群，与老年朋友们一起聊天</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
                     <div class="home-card card-data" id="homeCardData">
                         <div class="home-card-icon">&#x1F4CA;</div>
                         <div class="home-card-body">
@@ -211,6 +223,45 @@
                     <p class="page-subtitle">根据您的实际情况，对以下五种兴趣类型进行10分制打分，作为数据化选择的参考依据</p>
                 </div>
                 <div class="content-card" id="interestScoreContent"></div>
+            </div>
+
+            <!-- 旅游组群页面 -->
+            <div id="groupPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F465; 旅游组群</h1>
+                    <p class="page-subtitle">加入我们的微信/QQ群，与老年朋友们一起分享旅游心得、聊天交流</p>
+                </div>
+                <div class="content-card">
+                    <div class="group-container">
+                        <div class="group-mascot-area">
+                            <img src="photos/动漫少女.png" alt="动漫少女" class="group-mascot">
+                            <div class="group-speech-bubble">
+                                <span>加群一起聊天哦</span>
+                            </div>
+                        </div>
+                        <div class="group-qr-codes">
+                            <div class="qr-code-card">
+                                <img src="photos/weixin-group.jpg" alt="微信群二维码" class="qr-code-img">
+                                <div class="qr-code-label">📱 微信群</div>
+                                <div class="qr-code-desc">长按识别二维码<br>添加工作人员进群</div>
+                            </div>
+                            <div class="qr-code-card">
+                                <img src="photos/qq-group.jpg" alt="QQ群二维码" class="qr-code-img">
+                                <div class="qr-code-label">💬 QQ群</div>
+                                <div class="qr-code-desc">长按识别二维码<br>加入群聊交流</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-tips">
+                        <h4>💡 温馨提示</h4>
+                        <ul>
+                            <li>扫码后即可加入群聊，与志同道合的老年朋友一起交流</li>
+                            <li>群内会分享最新的旅游资讯、养生知识和优惠活动</li>
+                            <li>欢迎大家积极发言，分享自己的旅游经历和心得</li>
+                            <li>如有疑问可联系群管理员获取帮助</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- 数据化选择页面 -->
