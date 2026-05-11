@@ -1370,10 +1370,6 @@
                 showPage('groupPage');
                 return;
             }
-            if (pageId === 'feedbackPage') {
-                showPage('feedbackPage');
-                return;
-            }
             if (pageId === 'healthStylePage') renderHealthStylePage();
             if (pageId === 'visualPage') {
                 if (!usrVec || bestIdx === null) {
@@ -1401,8 +1397,6 @@
                 showPage('interestScorePage');
             } else if (cardId === 'homeCardGroup') {
                 showPage('groupPage');
-            } else if (cardId === 'homeCardFeedback') {
-                showPage('feedbackPage');
             } else if (cardId === 'homeCardData') {
                 showPage('dataSelectPage');
             } else if (cardId === 'homeCardVisual') {
@@ -1415,32 +1409,6 @@
             }
         });
     });
-
-    function toggleFeedbackSection(btn) {
-        var content = btn.nextElementSibling;
-        var icon = btn.querySelector('.toggle-icon');
-        var text = btn.querySelector('.toggle-text');
-        if (content.style.display === 'none') {
-            content.style.display = 'block';
-            icon.textContent = '▼';
-            text.textContent = '收起清单';
-        } else {
-            content.style.display = 'none';
-            icon.textContent = '▶';
-            text.textContent = '展开清单';
-        }
-    }
-
-    function submitFeedback() {
-        var feedbackText = document.getElementById('feedbackText').value;
-        if (!feedbackText.trim()) {
-            alert('请填写反馈内容后再提交！');
-            return;
-        }
-        alert('感谢您的反馈！您的意见对我们非常重要，我们会认真考虑并加以改进。');
-        document.getElementById('feedbackText').value = '';
-    }
-});
 
     sidebarToggle.addEventListener('click', function() {
         sidebar.classList.toggle('open');
@@ -1905,3 +1873,5 @@
             '&#x1F4CB; 具体内容：' + detail + '<br><br>' +
             tips;
     }
+
+})();
