@@ -1572,23 +1572,50 @@
     var carouselTrack = document.getElementById('carouselTrack');
     var carouselDots = document.getElementById('carouselDots');
     var autoSlideTimer = null;
+    var loadedSlides = new Set([0]);
 
-    // 初始化轮播图组件
-    // 动态生成幻灯片和指示点，并启动自动播放
+    // 初始化轮播图组件（懒加载版本）
     function initCarousel() {
         var trackHtml = '';
         var dotsHtml = '';
         carouselImages.forEach(function(img, i) {
+            var imgTag = i === 0 
+                ? '<img src="' + img.src + '" alt="' + img.caption + '" loading="eager" decoding="async">'
+                : '<img data-src="' + img.src + '" alt="' + img.caption + '" loading="lazy" decoding="async" class="lazy-carousel-img">';
             trackHtml +=
-                '<div class="carousel-slide">' +
-                    '<img src="' + img.src + '" alt="' + img.caption + '" loading="lazy" decoding="async">' +
+                '<div class="carousel-slide" data-slide-index="' + i + '">' +
+                    imgTag +
                     '<div class="carousel-slide-overlay">' + img.caption + '</div>' +
                 '</div>';
             dotsHtml += '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '"></button>';
         });
         carouselTrack.innerHTML = trackHtml;
         carouselDots.innerHTML = dotsHtml;
+        
+        // 预加载相邻slide的图片
+        preloadAdjacentSlides(0);
+        preloadAdjacentSlides(1);
+        
         startAutoSlide();
+    }
+
+    // 预加载相邻slide的图片
+    function preloadAdjacentSlides(centerIndex) {
+        var indices = [centerIndex - 1, centerIndex + 1];
+        indices.forEach(function(idx) {
+            if (idx >= 0 && idx < carouselImages.length && !loadedSlides.has(idx)) {
+                var slide = carouselTrack.querySelector('[data-slide-index="' + idx + '"]');
+                if (slide) {
+                    var img = slide.querySelector('img[data-src]');
+                    if (img) {
+                        img.src = img.getAttribute('data-src');
+                        img.removeAttribute('data-src');
+                        img.classList.remove('lazy-carousel-img');
+                        loadedSlides.add(idx);
+                    }
+                }
+            }
+        });
     }
 
     function goToSlide(index) {
@@ -1600,6 +1627,7 @@
         dots.forEach(function(d, i) {
             d.classList.toggle('active', i === currentSlide);
         });
+        preloadAdjacentSlides(currentSlide);
     }
 
     function startAutoSlide() {
