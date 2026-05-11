@@ -1438,7 +1438,8 @@
         }
     });
 
-    function toggleFeedbackSection(btn) {
+    function toggleFeedbackSection() {
+        var btn = document.getElementById('feedbackToggleBtn');
         var content = btn.nextElementSibling;
         var icon = btn.querySelector('.toggle-icon');
         var text = btn.querySelector('.toggle-text');
@@ -1452,6 +1453,8 @@
             text.textContent = '展开建议';
         }
     }
+
+    document.getElementById('feedbackToggleBtn').addEventListener('click', toggleFeedbackSection);
 
     function submitFeedback() {
         var form = document.getElementById('feedbackForm');
