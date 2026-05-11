@@ -484,11 +484,14 @@
 
     function renderImageGallery(images) {
         var html = '<div class="image-gallery">';
-        images.forEach(function(img) {
+        images.forEach(function(img, idx) {
             html +=
-                '<img src="' + img.src + '" alt="' + img.alt + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'flex\';">' +
+                '<div class="lazy-img-container" style="display:inline-block; margin:5px;">' +
+                '<div class="img-skeleton" style="width:100%;max-width:320px;height:220px;border-radius:20px;"></div>' +
+                '<img data-src="' + img.src + '" alt="' + img.alt + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'flex\';" onload="this.classList.add(\'loaded\');this.previousElementSibling.style.display=\'none\';">' +
                 '<div class="img-fallback" style="display:none;width:100%;max-width:320px;height:220px;background:#e8f0dd;border-radius:20px;align-items:center;justify-content:center;color:#7a9a60;font-size:0.9rem;text-align:center;padding:20px;">' +
                   '🖼 ' + img.alt + '<br><small>（图片待添加）</small>' +
+                '</div>' +
                 '</div>';
         });
         html += '</div>';
@@ -1574,16 +1577,27 @@
     var autoSlideTimer = null;
     var loadedSlides = new Set([0]);
 
-    // 初始化轮播图组件（懒加载版本）
+    // 图片加载完成回调
+    function handleImgLoad(img) {
+        img.classList.add('loaded');
+        var overlay = img.nextElementSibling;
+        if (overlay && overlay.classList.contains('carousel-slide-overlay')) {
+            overlay.style.opacity = '1';
+        }
+    }
+
+    // 初始化轮播图组件（懒加载版本 + 骨架屏）
     function initCarousel() {
         var trackHtml = '';
         var dotsHtml = '';
         carouselImages.forEach(function(img, i) {
+            var skeletonHtml = '<div class="img-skeleton carousel-slide ' + (i === 0 ? '' : 'lazy-carousel-img') + '"></div>';
             var imgTag = i === 0 
-                ? '<img src="' + img.src + '" alt="' + img.caption + '" loading="eager" decoding="async">'
-                : '<img data-src="' + img.src + '" alt="' + img.caption + '" loading="lazy" decoding="async" class="lazy-carousel-img">';
+                ? '<img src="' + img.src + '" alt="' + img.caption + '" loading="eager" decoding="async" onload="handleImgLoad(this)">'
+                : '<img data-src="' + img.src + '" alt="' + img.caption + '" loading="lazy" decoding="async" class="lazy-carousel-img" onload="handleImgLoad(this)">';
             trackHtml +=
                 '<div class="carousel-slide" data-slide-index="' + i + '">' +
+                    skeletonHtml +
                     imgTag +
                     '<div class="carousel-slide-overlay">' + img.caption + '</div>' +
                 '</div>';
@@ -1591,6 +1605,16 @@
         });
         carouselTrack.innerHTML = trackHtml;
         carouselDots.innerHTML = dotsHtml;
+        
+        // 首屏图片立即显示
+        var firstImg = carouselTrack.querySelector('.carousel-slide img[loading="eager"]');
+        if (firstImg) {
+            firstImg.classList.add('loaded');
+        }
+        var firstOverlay = carouselTrack.querySelector('.carousel-slide:first-child .carousel-slide-overlay');
+        if (firstOverlay) {
+            firstOverlay.style.opacity = '1';
+        }
         
         // 预加载相邻slide的图片
         preloadAdjacentSlides(0);
@@ -1606,11 +1630,16 @@
             if (idx >= 0 && idx < carouselImages.length && !loadedSlides.has(idx)) {
                 var slide = carouselTrack.querySelector('[data-slide-index="' + idx + '"]');
                 if (slide) {
+                    var skeleton = slide.querySelector('.img-skeleton');
                     var img = slide.querySelector('img[data-src]');
                     if (img) {
                         img.src = img.getAttribute('data-src');
                         img.removeAttribute('data-src');
                         img.classList.remove('lazy-carousel-img');
+                        img.onload = function() {
+                            handleImgLoad(this);
+                            if (skeleton) skeleton.style.display = 'none';
+                        };
                         loadedSlides.add(idx);
                     }
                 }
@@ -1651,7 +1680,11 @@
             startAutoSlide();
         }
     });
-    initCarousel();
+    
+    // 使用 requestAnimationFrame 延迟初始化轮播图，确保DOM已渲染
+    requestAnimationFrame(function() {
+        initCarousel();
+    });
 
     var newsData = [
         {
