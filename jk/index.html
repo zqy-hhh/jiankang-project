@@ -1,0 +1,280 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
+    <title>健康养生旅游模式可视化选择 · 石家庄铁道大学</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decor">
+        <span></span><span></span><span></span>
+    </div>
+
+    <!-- AI助手悬浮按钮区域 -->
+    <div class="ai-assistant-wrapper" id="aiAssistantWrapper">
+        <!-- 气泡提示 -->
+        <div class="ai-bubble" id="aiBubble">不会就来问小旅助手哦！</div>
+        <!-- 可爱的小旅头像按钮 -->
+        <div class="ai-avatar-btn" id="aiAvatarBtn" title="点击召唤小旅助手">
+            <div class="ai-leaf"></div>
+            <div class="ai-face">
+                <div class="ai-eye left"></div>
+                <div class="ai-eye right"></div>
+                <div class="ai-blush left"></div>
+                <div class="ai-blush right"></div>
+                <div class="ai-mouth"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI聊天面板 -->
+    <div class="ai-chat-panel" id="aiChatPanel">
+        <!-- 聊天面板头部 -->
+        <div class="ai-chat-header">
+            小旅 - 康旅AI小助手
+            <button class="ai-chat-close" id="aiChatClose">x</button>
+        </div>
+        <!-- 快捷按钮区域 -->
+        <div class="ai-quick-btns" id="aiQuickBtns">
+            <button class="ai-quick-btn" data-q="介绍模式">介绍模式</button>
+            <button class="ai-quick-btn" data-q="怎么使用">怎么使用</button>
+            <button class="ai-quick-btn" data-q="帮我导航">帮我导航</button>
+            <button class="ai-quick-btn" data-q="查看结果">查看结果</button>
+            <button class="ai-quick-btn" data-q="朗读推荐">朗读推荐</button>
+        </div>
+        <!-- 缩放控制区域 -->
+        <div class="ai-zoom-controls">
+            <span>&#x1F50D; 页面缩放：</span>
+            <button class="ai-zoom-btn" id="aiZoomIn">放大+</button>
+            <button class="ai-zoom-btn" id="aiZoomOut">缩小-</button>
+            <button class="ai-zoom-btn" id="aiZoomReset">重置</button>
+        </div>
+        <!-- 聊天消息区域 -->
+        <div class="ai-chat-body" id="aiChatBody">
+            <div class="ai-msg assistant">
+                👋 你好呀！我是<strong>小旅</strong>，你的康养旅游智能助手！<br>你可以点击上方快捷按钮，或直接输入问题来问我哦～
+            </div>
+        </div>
+        <!-- 聊天输入区域 -->
+        <div class="ai-chat-footer">
+            <input type="text" id="aiChatInput" placeholder="输入问题，小旅帮你解答...">
+            <button id="aiSendBtn">发送</button>
+            <button class="ai-speak-btn" id="aiSpeakLastBtn" title="朗读最后一条回复">&#x1F50A;</button>
+        </div>
+    </div>
+
+    <!-- 主布局区域 -->
+    <div class="app-layout">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar" id="sidebar">
+            <!-- 导航栏头部 -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">&#x1F33F;</div>
+                <div class="sidebar-brand">康养旅游系统</div>
+                <div class="sidebar-sub">石家庄铁道大学</div>
+            </div>
+            <!-- 导航菜单 -->
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">功能导航</div>
+                <a class="nav-item active" id="navHome" data-page="homePage">
+                    <span class="nav-icon">&#x1F3E0;</span>
+                    <span class="nav-text">系统首页</span>
+                </a>
+                <a class="nav-item" id="navResearch" data-page="researchPage">
+                    <span class="nav-icon">&#x1F4D6;</span>
+                    <span class="nav-text">背景与模式</span>
+                </a>
+                <a class="nav-item" id="navHealthStyle" data-page="healthStylePage">
+                    <span class="nav-icon">&#x1F33F;</span>
+                    <span class="nav-text">养生方式</span>
+                </a>
+                <a class="nav-item" id="navInterestScore" data-page="interestScorePage">
+                    <span class="nav-icon">&#x1F4F0;</span>
+                    <span class="nav-text">兴趣打分表</span>
+                </a>
+                <div class="nav-section-title">数据分析</div>
+                <a class="nav-item" id="navDataSelect" data-page="dataSelectPage">
+                    <span class="nav-icon">&#x1F4CA;</span>
+                    <span class="nav-text">数据化选择</span>
+                </a>
+                <a class="nav-item" id="navVisual" data-page="visualPage">
+                    <span class="nav-icon">&#x1F4C8;</span>
+                    <span class="nav-text">可视化分析</span>
+                </a>
+            </nav>
+            <!-- 导航栏底部 -->
+            <div class="sidebar-footer">
+                <div class="sidebar-version">v2.0 · 健康养生旅游模式系统</div>
+            </div>
+        </aside>
+
+        <!-- 移动端菜单切换按钮 -->
+        <button class="sidebar-toggle" id="sidebarToggle">&#x2630;</button>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 首页 -->
+            <div id="homePage" class="page active">
+                <!-- 打字机效果标题 -->
+                <div class="home-typewriter-area">
+                    <h1 class="home-typewriter-text" id="homeTypewriterText"></h1>
+                    <span class="typewriter-cursor" id="typewriterCursor">|</span>
+                </div>
+
+                <!-- 图片轮播区域 -->
+                <div class="home-carousel" id="homeCarousel">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                    <button class="carousel-btn carousel-prev" id="carouselPrev">&#x276E;</button>
+                    <button class="carousel-btn carousel-next" id="carouselNext">&#x276F;</button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+
+                <!-- 首页功能卡片 -->
+                <div class="home-cards">
+                    <div class="home-card card-research" id="homeCardResearch">
+                        <div class="home-card-icon">&#x1F4D6;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">背景与模式</div>
+                            <div class="home-card-desc">了解康养旅游模式的研究背景与理论基础</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-health" id="homeCardHealth">
+                        <div class="home-card-icon">&#x1F33F;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">养生方式</div>
+                            <div class="home-card-desc">图文介绍各模式养生方式与消费档次</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-interest" id="homeCardInterest">
+                        <div class="home-card-icon">&#x1F4F0;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">兴趣打分表</div>
+                            <div class="home-card-desc">参考五种兴趣类型的10分制标准打分表</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-data" id="homeCardData">
+                        <div class="home-card-icon">&#x1F4CA;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">数据化选择</div>
+                            <div class="home-card-desc">输入兴趣偏好，智能匹配最佳康养模式</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-visual" id="homeCardVisual">
+                        <div class="home-card-icon">&#x1F4C8;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">可视化分析</div>
+                            <div class="home-card-desc">多图表对比展示，精准推荐可视化呈现</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                </div>
+
+                <!-- 新闻动态区域 -->
+                <div class="home-news-section">
+                    <h2 class="home-news-title">&#x1F4F0; 康养旅游 · 行业动态</h2>
+                    <div class="home-news-grid" id="homeNewsGrid"></div>
+                </div>
+            </div>
+
+            <!-- 背景与模式页面 -->
+            <div id="researchPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4D6; 背景与模式</h1>
+                </div>
+                <div class="content-card" id="researchContent"></div>
+                <div class="content-card" id="modeIntroContent"></div>
+            </div>
+
+            <!-- 养生方式页面 -->
+            <div id="healthStylePage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F33F; 养生方式</h1>
+                </div>
+                <div class="content-card" id="healthStyleContent"></div>
+            </div>
+
+            <!-- 兴趣打分表页面 -->
+            <div id="interestScorePage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4F0; 兴趣打分参考表</h1>
+                    <p class="page-subtitle">根据您的实际情况，对以下五种兴趣类型进行10分制打分，作为数据化选择的参考依据</p>
+                </div>
+                <div class="content-card" id="interestScoreContent"></div>
+            </div>
+
+            <!-- 数据化选择页面 -->
+            <div id="dataSelectPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4CA; 康养模式数据化选择</h1>
+                    <p class="page-subtitle">输入您对各方面的兴趣值，系统将智能匹配最适合的康养模式</p>
+                </div>
+                <div class="content-card">
+                    <!-- 兴趣值输入区域 -->
+                    <div class="input-grid">
+                        <div class="param-group"><label>&#x1F4DA; 文化兴趣</label><input type="number" id="cultureInput" value="8" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F331; 生态兴趣</label><input type="number" id="ecoInput" value="3" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F9CB; 休闲兴趣</label><input type="number" id="leisureInput" value="2" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F3E5; 医疗兴趣</label><input type="number" id="medicalInput" value="5" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F4B0; 消费预测</label><input type="number" id="consumptionInput" value="5" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                    </div>
+                    <!-- 计算按钮区域 -->
+                    <div class="action-bar">
+                        <button class="btn-primary" id="quickCalcBtn">🧮 快速计算</button>
+                    </div>
+                    <!-- 计算结果展示区域 -->
+                    <div id="calcResultDisplay" class="result-box" style="display:none;"></div>
+                    <!-- 导出和跳转按钮 -->
+                    <div class="action-bar" style="margin-top:15px;">
+                        <button id="exportExcelFromCalcBtn" class="btn-secondary" style="display:none;">&#x1F4E4; 导出 Excel</button>
+                        <button id="gotoVisualBtn" class="btn-accent" style="display:none;">&#x1F4C8; 进入可视化分析</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 可视化分析页面 -->
+            <div id="visualPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4C8; 可视化呈现图分析</h1>
+                    <p class="page-subtitle">多图表对比，精准推荐可视化呈现</p>
+                </div>
+                
+                <!-- 图表展示区域 -->
+                <div class="content-card" style="margin-left: 10px;">
+                    <!-- 图表类型选择 -->
+                    <div id="chartSelectionArea">
+                        <div class="chart-selector">
+                            <button class="chart-type-btn" data-chart="line">&#x1F4C9; 折线图对比</button>
+                            <button class="chart-type-btn" data-chart="pie">&#x1F967; 饼状图分布</button>
+                            <button class="chart-type-btn" data-chart="scatter">&#x1F50C; 散点图展示</button>
+                        </div>
+                    </div>
+                    <!-- 图表渲染区域 -->
+                    <div id="chartDisplayArea" style="display:none;"></div>
+                </div>
+            </div>
+
+            <!-- 详情页面 -->
+            <div id="detailPage" class="page">
+                <div class="page-header">
+                    <div class="breadcrumb" id="breadcrumb"></div>
+                </div>
+                <div class="content-card" id="detailContent"></div>
+                <button class="back-btn" id="backFromDetail">&#x21A9; 返回上一页</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
