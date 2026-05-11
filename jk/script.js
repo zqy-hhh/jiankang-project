@@ -31,8 +31,7 @@
             ],
             images: [
                 { src: 'photos/2.jpg', alt: ' ' },
-                { src: 'photos/3.jpg', alt: ' ' },
-                { src: 'photos/4.jpg', alt: ' ' }
+                { src: 'photos/3.jpg', alt: ' ' }
             ]
         },
         1: {
@@ -53,8 +52,7 @@
             ],
             images: [
                 { src: 'photos/5.jpg', alt: ' ' },
-                { src: 'photos/6.jpg', alt: ' ' },
-                { src: 'photos/7.jpg', alt: ' ' }
+                { src: 'photos/6.jpg', alt: ' ' }
             ]
         },
         2: {
@@ -75,8 +73,7 @@
             ],
             images: [
                 { src: 'photos/8.jpg', alt: ' ' },
-                { src: 'photos/9.jpg', alt: ' ' },
-                { src: 'photos/10.jpg', alt: ' ' }
+                { src: 'photos/9.jpg', alt: ' ' }
             ]
         },
         3: {
@@ -97,8 +94,7 @@
             ],
             images: [
                 { src: 'photos/11.jpg', alt: ' ' },
-                { src: 'photos/12.jpg', alt: ' ' },
-                { src: 'photos/13.jpg', alt: ' ' }
+                { src: 'photos/12.jpg', alt: ' ' }
             ]
         }
     };
