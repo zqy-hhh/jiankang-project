@@ -1438,6 +1438,40 @@
         }
     });
 
+    function toggleFeedbackSection(btn) {
+        var content = btn.nextElementSibling;
+        var icon = btn.querySelector('.toggle-icon');
+        var text = btn.querySelector('.toggle-text');
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            icon.textContent = '▼';
+            text.textContent = '收起建议';
+        } else {
+            content.style.display = 'none';
+            icon.textContent = '▶';
+            text.textContent = '展开建议';
+        }
+    }
+
+    function submitFeedback() {
+        var form = document.getElementById('feedbackForm');
+        if (!form) return;
+        var inputs = form.querySelectorAll('textarea');
+        var hasAnswer = false;
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value.trim()) {
+                hasAnswer = true;
+                break;
+            }
+        }
+        if (!hasAnswer) {
+            alert('请填写反馈内容后再提交！');
+            return;
+        }
+        alert('感谢您的反馈！您的意见对我们非常重要，我们会认真考虑并加以改进。');
+        form.reset();
+    }
+
     exportExcelFromCalcBtn.addEventListener('click', exportSimsToExcel);
 
     gotoVisualBtn.addEventListener('click', function() {

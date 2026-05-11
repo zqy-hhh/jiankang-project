@@ -2042,3 +2042,55 @@ body {
 .feedback-thanks p:last-child {
     margin-bottom: 0;
 }
+
+.feedback-form-container {
+    margin-bottom: 25px;
+}
+
+.feedback-question-item {
+    background: #fff;
+    border: 1px solid #e8f0dd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.feedback-question-item label {
+    display: block;
+    color: #3a5535;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.feedback-question-item textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d8e8c8;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    resize: vertical;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.feedback-question-item textarea:focus {
+    outline: none;
+    border-color: #6bae5e;
+    box-shadow: 0 0 0 3px rgba(107, 174, 94, 0.2);
+}
+
+.feedback-submit-area {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.feedback-submit-area .btn-primary {
+    padding: 15px 50px;
+    font-size: 1.1rem;
+}
+
+#feedbackForm {
+    width: 100%;
+}
