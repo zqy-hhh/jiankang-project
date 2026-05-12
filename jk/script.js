@@ -1438,45 +1438,40 @@
         }
     });
 
-    function toggleFeedbackSection() {
-        var btn = document.getElementById('feedbackToggleBtn');
-        var content = btn.nextElementSibling;
-        var icon = btn.querySelector('.toggle-icon');
-        var text = btn.querySelector('.toggle-text');
-        if (content.style.display === 'none') {
-            content.style.display = 'block';
-            icon.textContent = '▼';
-            text.textContent = '收起建议';
-        } else {
-            content.style.display = 'none';
-            icon.textContent = '▶';
-            text.textContent = '展开建议';
-        }
-    }
+    var feedbackToggleBtn = document.getElementById('feedbackToggleBtn');
+    var feedbackSubmitBtn = document.getElementById('feedbackSubmitBtn');
+    var feedbackContent = document.querySelector('.feedback-section-content');
+    var feedbackText = document.getElementById('feedbackText');
+    var toggleIcon = feedbackToggleBtn ? feedbackToggleBtn.querySelector('.toggle-icon') : null;
+    var toggleText = feedbackToggleBtn ? feedbackToggleBtn.querySelector('.toggle-text') : null;
 
-    document.getElementById('feedbackToggleBtn').addEventListener('click', toggleFeedbackSection);
-
-    function submitFeedback() {
-        var form = document.getElementById('feedbackForm');
-        if (!form) return;
-        var inputs = form.querySelectorAll('textarea');
-        var hasAnswer = false;
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].value.trim()) {
-                hasAnswer = true;
-                break;
+    if (feedbackToggleBtn) {
+        feedbackToggleBtn.onclick = function() {
+            if (feedbackContent.style.display === 'none') {
+                feedbackContent.style.display = 'block';
+                if (toggleIcon) toggleIcon.textContent = '▼';
+                if (toggleText) toggleText.textContent = '收起建议';
+            } else {
+                feedbackContent.style.display = 'none';
+                if (toggleIcon) toggleIcon.textContent = '▶';
+                if (toggleText) toggleText.textContent = '展开建议';
             }
-        }
-        if (!hasAnswer) {
-            alert('请填写反馈内容后再提交！');
-            return;
-        }
-        alert('感谢您的反馈！您的意见对我们非常重要，我们会认真考虑并加以改进。');
-        form.reset();
-        toggleFeedbackSection();
+        };
     }
 
-    document.getElementById('feedbackSubmitBtn').addEventListener('click', submitFeedback);
+    if (feedbackSubmitBtn) {
+        feedbackSubmitBtn.onclick = function() {
+            if (!feedbackText || !feedbackText.value.trim()) {
+                alert('请填写反馈内容后再提交！');
+                return;
+            }
+            alert('感谢您的反馈！您的意见对我们非常重要，我们会认真考虑并加以改进。');
+            feedbackText.value = '';
+            feedbackContent.style.display = 'none';
+            if (toggleIcon) toggleIcon.textContent = '▶';
+            if (toggleText) toggleText.textContent = '展开建议';
+        };
+    }
 
     exportExcelFromCalcBtn.addEventListener('click', exportSimsToExcel);
 

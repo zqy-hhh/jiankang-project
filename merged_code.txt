@@ -1,0 +1,3959 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
+    <title>健康养生旅游模式可视化选择 · 石家庄铁道大学</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 背景装饰 -->
+    <div class="bg-decor">
+        <span></span><span></span><span></span>
+    </div>
+    <!-- AI助手悬浮按钮区域 -->
+    <div class="ai-assistant-wrapper" id="aiAssistantWrapper">
+        <!-- 气泡提示 -->
+        <div class="ai-bubble" id="aiBubble">不会就来问小旅助手哦！</div>
+        <!-- 可爱的小旅头像按钮 -->
+        <div class="ai-avatar-btn" id="aiAvatarBtn" title="点击召唤小旅助手">
+            <div class="ai-leaf"></div>
+            <div class="ai-face">
+                <div class="ai-eye left"></div>
+                <div class="ai-eye right"></div>
+                <div class="ai-blush left"></div>
+                <div class="ai-blush right"></div>
+                <div class="ai-mouth"></div>
+            </div>
+        </div>
+    </div>
+    <!-- AI聊天面板 -->
+    <div class="ai-chat-panel" id="aiChatPanel">
+        <!-- 聊天面板头部 -->
+        <div class="ai-chat-header">
+            小旅 - 康旅AI小助手
+            <button class="ai-chat-close" id="aiChatClose">x</button>
+        </div>
+        <!-- 快捷按钮区域 -->
+        <div class="ai-quick-btns" id="aiQuickBtns">
+            <button class="ai-quick-btn" data-q="介绍模式">介绍模式</button>
+            <button class="ai-quick-btn" data-q="怎么使用">怎么使用</button>
+            <button class="ai-quick-btn" data-q="帮我导航">帮我导航</button>
+            <button class="ai-quick-btn" data-q="查看结果">查看结果</button>
+            <button class="ai-quick-btn" data-q="朗读推荐">朗读推荐</button>
+        </div>
+        <!-- 缩放控制区域 -->
+        <div class="ai-zoom-controls">
+            <span>&#x1F50D; 页面缩放：</span>
+            <button class="ai-zoom-btn" id="aiZoomIn">放大+</button>
+            <button class="ai-zoom-btn" id="aiZoomOut">缩小-</button>
+            <button class="ai-zoom-btn" id="aiZoomReset">重置</button>
+        </div>
+        <!-- 聊天消息区域 -->
+        <div class="ai-chat-body" id="aiChatBody">
+            <div class="ai-msg assistant">
+                👋 你好呀！我是<strong>小旅</strong>，你的康养旅游智能助手！<br>你可以点击上方快捷按钮，或直接输入问题来问我哦～
+            </div>
+        </div>
+        <!-- 聊天输入区域 -->
+        <div class="ai-chat-footer">
+            <input type="text" id="aiChatInput" placeholder="输入问题，小旅帮你解答...">
+            <button id="aiSendBtn">发送</button>
+            <button class="ai-speak-btn" id="aiSpeakLastBtn" title="朗读最后一条回复">&#x1F50A;</button>
+        </div>
+    </div>
+    <!-- 主布局区域 -->
+    <div class="app-layout">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar" id="sidebar">
+            <!-- 导航栏头部 -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">&#x1F33F;</div>
+                <div class="sidebar-brand">康养旅游系统</div>
+                <div class="sidebar-sub">石家庄铁道大学</div>
+            </div>
+            <!-- 导航菜单 -->
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">功能导航</div>
+                <a class="nav-item active" id="navHome" data-page="homePage">
+                    <span class="nav-icon">&#x1F3E0;</span>
+                    <span class="nav-text">系统首页</span>
+                </a>
+                <a class="nav-item" id="navResearch" data-page="researchPage">
+                    <span class="nav-icon">&#x1F4D6;</span>
+                    <span class="nav-text">背景与模式</span>
+                </a>
+                <a class="nav-item" id="navHealthStyle" data-page="healthStylePage">
+                    <span class="nav-icon">&#x1F33F;</span>
+                    <span class="nav-text">养生方式</span>
+                </a>
+                <a class="nav-item" id="navInterestScore" data-page="interestScorePage">
+                    <span class="nav-icon">&#x1F4F0;</span>
+                    <span class="nav-text">兴趣打分表</span>
+                </a>
+                <a class="nav-item" id="navGroupPage" data-page="groupPage">
+                    <span class="nav-icon">&#x1F465;</span>
+                    <span class="nav-text">旅游组群</span>
+                </a>
+                <div class="nav-section-title">数据分析</div>
+                <a class="nav-item" id="navDataSelect" data-page="dataSelectPage">
+                    <span class="nav-icon">&#x1F4CA;</span>
+                    <span class="nav-text">数据化选择</span>
+                </a>
+                <a class="nav-item" id="navVisual" data-page="visualPage">
+                    <span class="nav-icon">&#x1F4C8;</span>
+                    <span class="nav-text">可视化分析</span>
+                </a>
+                <div class="nav-section-title">用户服务</div>
+                <a class="nav-item" id="navFeedbackPage" data-page="feedbackPage">
+                    <span class="nav-icon">&#x1F4E7;</span>
+                    <span class="nav-text">反馈与建议</span>
+                </a>
+            </nav>
+            <!-- 导航栏底部 -->
+            <div class="sidebar-footer">
+                <div class="sidebar-version">v2.0 · 健康养生旅游模式系统</div>
+            </div>
+        </aside>
+        <!-- 移动端菜单切换按钮 -->
+        <button class="sidebar-toggle" id="sidebarToggle">&#x2630;</button>
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 首页 -->
+            <div id="homePage" class="page active">
+                <!-- 打字机效果标题 -->
+                <div class="home-typewriter-area">
+                    <h1 class="home-typewriter-text" id="homeTypewriterText"></h1>
+                    <span class="typewriter-cursor" id="typewriterCursor">|</span>
+                </div>
+                <!-- 图片轮播区域 -->
+                <div class="home-carousel" id="homeCarousel">
+                    <div class="carousel-track" id="carouselTrack"></div>
+                    <button class="carousel-btn carousel-prev" id="carouselPrev">&#x276E;</button>
+                    <button class="carousel-btn carousel-next" id="carouselNext">&#x276F;</button>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+                <!-- 首页功能卡片 -->
+                <div class="home-cards">
+                    <div class="home-card card-research" id="homeCardResearch">
+                        <div class="home-card-icon">&#x1F4D6;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">背景与模式</div>
+                            <div class="home-card-desc">了解康养旅游模式的研究背景与理论基础</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-health" id="homeCardHealth">
+                        <div class="home-card-icon">&#x1F33F;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">养生方式</div>
+                            <div class="home-card-desc">图文介绍各模式养生方式与消费档次</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-interest" id="homeCardInterest">
+                        <div class="home-card-icon">&#x1F4F0;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">兴趣打分表</div>
+                            <div class="home-card-desc">参考五种兴趣类型的10分制标准打分表</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-group" id="homeCardGroup">
+                        <div class="home-card-icon">&#x1F465;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">旅游组群</div>
+                            <div class="home-card-desc">加入微信/QQ群，与老年朋友们一起聊天</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-feedback" id="homeCardFeedback">
+                        <div class="home-card-icon">&#x1F4E7;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">反馈与建议</div>
+                            <div class="home-card-desc">提交您的使用反馈与改进建议</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-data" id="homeCardData">
+                        <div class="home-card-icon">&#x1F4CA;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">数据化选择</div>
+                            <div class="home-card-desc">输入兴趣偏好，智能匹配最佳康养模式</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                    <div class="home-card card-visual" id="homeCardVisual">
+                        <div class="home-card-icon">&#x1F4C8;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">可视化分析</div>
+                            <div class="home-card-desc">多图表对比展示，精准推荐可视化呈现</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
+                </div>
+                <!-- 新闻动态区域 -->
+                <div class="home-news-section">
+                    <h2 class="home-news-title">&#x1F4F0; 康养旅游 · 行业动态</h2>
+                    <div class="home-news-grid" id="homeNewsGrid"></div>
+                </div>
+            </div>
+            <!-- 背景与模式页面 -->
+            <div id="researchPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4D6; 背景与模式</h1>
+                </div>
+                <div class="content-card" id="researchContent"></div>
+                <div class="content-card" id="modeIntroContent"></div>
+            </div>
+            <!-- 养生方式页面 -->
+            <div id="healthStylePage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F33F; 养生方式</h1>
+                </div>
+                <div class="content-card" id="healthStyleContent"></div>
+            </div>
+            <!-- 兴趣打分表页面 -->
+            <div id="interestScorePage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4F0; 兴趣打分参考表</h1>
+                    <p class="page-subtitle">根据您的实际情况，对以下五种兴趣类型进行10分制打分，作为数据化选择的参考依据</p>
+                </div>
+                <div class="content-card" id="interestScoreContent"></div>
+            </div>
+            <!-- 旅游组群页面 -->
+            <div id="groupPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F465; 旅游组群</h1>
+                    <p class="page-subtitle">加入我们的微信/QQ群，与老年朋友们一起分享旅游心得、聊天交流</p>
+                </div>
+                <div class="content-card">
+                    <div class="group-container">
+                        <div class="group-mascot-area">
+                            <img src="photos/动漫少女.png" alt="动漫少女" class="group-mascot">
+                            <div class="group-speech-bubble">
+                                <span>加群一起聊天哦</span>
+                            </div>
+                        </div>
+                        <div class="group-qr-codes">
+                            <div class="qr-code-card">
+                                <img src="photos/weixin-group.jpg" alt="微信群二维码" class="qr-code-img">
+                                <div class="qr-code-label">📱 微信群</div>
+                                <div class="qr-code-desc">长按识别二维码<br>添加工作人员进群</div>
+                            </div>
+                            <div class="qr-code-card">
+                                <img src="photos/qq-group.jpg" alt="QQ群二维码" class="qr-code-img">
+                                <div class="qr-code-label">💬 QQ群</div>
+                                <div class="qr-code-desc">长按识别二维码<br>加入群聊交流</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group-tips">
+                        <h4>💡 温馨提示</h4>
+                        <ul>
+                            <li>扫码后即可加入群聊，与志同道合的老年朋友一起交流</li>
+                            <li>群内会分享最新的旅游资讯、养生知识和优惠活动</li>
+                            <li>欢迎大家积极发言，分享自己的旅游经历和心得</li>
+                            <li>如有疑问可联系群管理员获取帮助</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 反馈与建议页面 -->
+            <div id="feedbackPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4E7; 银发经济·康养旅游平台 用户反馈+调研建议</h1>
+                </div>
+                <div class="content-card">
+                    <div class="feedback-contact-info">
+                        <h3>📬 联系方式</h3>
+                        <p><strong>邮箱：</strong>zqy052300@qq.com</p>
+                        <p><strong>手机号：</strong>15612160067</p>
+                    </div>
+                    <div class="feedback-form-container">
+                        <button class="feedback-section-toggle" id="feedbackToggleBtn">
+                            <span class="toggle-icon">▶</span>
+                            <span class="toggle-text">展开建议</span>
+                        </button>
+                        <div class="feedback-section-content" style="display:none;">
+                            <div class="feedback-category">
+                                <h3>一、平台整体体验类</h3>
+                                <ol>
+                                    <li>您初次使用本康养旅游平台，整体使用感受是否便捷顺畅？</li>
+                                    <li>平台页面布局、字体大小、色彩风格是否适配中老年群体使用习惯？</li>
+                                    <li>平台操作步骤是否简单易懂，能否快速找到所需康养旅游服务？</li>
+                                    <li>平台加载速度、系统稳定性如何，是否频繁卡顿闪退？</li>
+                                </ol>
+                            </div>
+                            <div class="feedback-category">
+                                <h3>二、功能板块实用性提问</h3>
+                                <ol>
+                                    <li>平台康养路线、旅居养老、理疗养生、休闲游玩板块划分是否清晰？</li>
+                                    <li>线上预约报名、一键咨询、行程查看功能是否满足日常使用需求？</li>
+                                    <li>健康档案、体质测评、康养指导相关功能您是否经常使用？</li>
+                                    <li>平台亲情陪同、结伴旅居、专属陪护功能是否贴合老年出行需求？</li>
+                                    <li>线上直播康养课堂、养生科普板块内容是否符合大众喜好？</li>
+                                </ol>
+                            </div>
+                            <div class="feedback-category">
+                                <h3>三、康养旅游产品与线路类</h3>
+                                <ol>
+                                    <li>平台推出的康养旅游路线数量、覆盖景区范围是否充足？</li>
+                                    <li>行程节奏、游玩强度、住宿休息安排是否适配老年人身体状况？</li>
+                                    <li>康养配套服务：中医理疗、膳食养生、康复护理、户外疗愈是否完善？</li>
+                                    <li>旅游价位、套餐档次、收费标准是否合理透明，有无隐形消费？</li>
+                                    <li>目的地环境、空气质量、医疗配套、交通便利程度是否满意？</li>
+                                </ol>
+                            </div>
+                            <div class="feedback-category">
+                                <h3>四、安全保障与服务类</h3>
+                                <ol>
+                                    <li>平台出行安全保障、应急救助、随行医护配置是否让您放心？</li>
+                                    <li>客服咨询响应速度、服务态度、问题解答专业度如何？</li>
+                                    <li>出行接送、全程陪护、住宿餐饮、紧急就医配套是否完善？</li>
+                                </ol>
+                            </div>
+                            <div class="feedback-form">
+                                <h3>📝 请填写您的反馈与建议</h3>
+                                <textarea id="feedbackText" rows="8" placeholder="请在此输入您的反馈意见或建议..."></textarea>
+                                <button type="button" class="btn-primary feedback-submit-btn" id="feedbackSubmitBtn">提交反馈</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="feedback-thanks">
+                        <p>衷心感谢各位用户一直以来对银发康养旅游平台的支持与使用，感谢大家积极参与体验并提出宝贵意见。</p>
+                        <p>平台始终立足中老年群体需求，用心打造舒适安心的康养旅居服务，未来我们也会吸纳多方建议，不断优化完善功能与服务，竭力为广大长者提供更优质、贴心、专业的康养旅游体验。</p>
+                        <p>若您在使用过程中有疑问或者建议，可以通过上述方式进行反馈，谢谢您的配合。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 数据化选择页面 -->
+            <div id="dataSelectPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4CA; 康养模式数据化选择</h1>
+                    <p class="page-subtitle">输入您对各方面的兴趣值，系统将智能匹配最适合的康养模式</p>
+                </div>
+                <div class="content-card">
+                    <!-- 兴趣值输入区域 -->
+                    <div class="input-grid">
+                        <div class="param-group"><label>&#x1F4DA; 文化兴趣</label><input type="number" id="cultureInput" value="8" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F331; 生态兴趣</label><input type="number" id="ecoInput" value="3" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F9CB; 休闲兴趣</label><input type="number" id="leisureInput" value="2" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F3E5; 医疗兴趣</label><input type="number" id="medicalInput" value="5" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                        <div class="param-group"><label>&#x1F4B0; 消费预测</label><input type="number" id="consumptionInput" value="5" min="0" max="10" step="0.1" placeholder="0-10"><span class="score-hint">满分10分</span></div>
+                    </div>
+                    <!-- 计算按钮区域 -->
+                    <div class="action-bar">
+                        <button class="btn-primary" id="quickCalcBtn">🧮 快速计算</button>
+                    </div>
+                    <!-- 计算结果展示区域 -->
+                    <div id="calcResultDisplay" class="result-box" style="display:none;"></div>
+                    <!-- 导出和跳转按钮 -->
+                    <div class="action-bar" style="margin-top:15px;">
+                        <button id="exportExcelFromCalcBtn" class="btn-secondary" style="display:none;">&#x1F4E4; 导出 Excel</button>
+                        <button id="gotoVisualBtn" class="btn-accent" style="display:none;">&#x1F4C8; 进入可视化分析</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 可视化分析页面 -->
+            <div id="visualPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F4C8; 可视化呈现图分析</h1>
+                    <p class="page-subtitle">多图表对比，精准推荐可视化呈现</p>
+                </div>
+                <!-- 图表展示区域 -->
+                <div class="content-card" style="margin-left: 10px;">
+                    <!-- 图表类型选择 -->
+                    <div id="chartSelectionArea">
+                        <div class="chart-selector">
+                            <button class="chart-type-btn" data-chart="line">&#x1F4C9; 折线图对比</button>
+                            <button class="chart-type-btn" data-chart="pie">&#x1F967; 饼状图分布</button>
+                            <button class="chart-type-btn" data-chart="scatter">&#x1F50C; 散点图展示</button>
+                        </div>
+                    </div>
+                    <!-- 图表渲染区域 -->
+                    <div id="chartDisplayArea" style="display:none;"></div>
+                </div>
+            </div>
+            <!-- 详情页面 -->
+            <div id="detailPage" class="page">
+                <div class="page-header">
+                    <div class="breadcrumb" id="breadcrumb"></div>
+                </div>
+                <div class="content-card" id="detailContent"></div>
+                <button class="back-btn" id="backFromDetail">&#x21A9; 返回上一页</button>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+/* 鍩虹鏍峰紡閲嶇疆 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* 椤甸潰涓讳綋鏍峰紡 */
+body {
+    font-family: 'Segoe UI', 'Roboto', 'Noto Sans', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    transition: font-size 0.3s ease;
+}
+/* 鑳屾櫙瑁呴グ灞?- 娴姩妯＄硦鍦嗙悆 */
+.bg-decor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+.bg-decor span {
+    position: absolute;
+    display: block;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    filter: blur(30px);
+    animation: floatBlur 18s infinite ease-in-out;
+}
+/* 绗竴涓诞鍔ㄧ悆 - 鍙充笂瑙?*/
+.bg-decor span:nth-child(1) {
+    width: 400px;
+    height: 400px;
+    top: -5%;
+    right: 10%;
+    background: rgba(200, 240, 210, 0.4);
+    animation-duration: 22s;
+}
+/* 绗簩涓诞鍔ㄧ悆 - 宸︿笅瑙?*/
+.bg-decor span:nth-child(2) {
+    width: 300px;
+    height: 300px;
+    bottom: 5%;
+    left: 30%;
+    background: rgba(180, 220, 190, 0.35);
+    animation-duration: 20s;
+    animation-delay: -5s;
+}
+/* 绗笁涓诞鍔ㄧ悆 - 鍙充腑 */
+.bg-decor span:nth-child(3) {
+    width: 250px;
+    height: 250px;
+    top: 40%;
+    right: 20%;
+    background: rgba(220, 245, 210, 0.3);
+    animation-duration: 25s;
+    animation-delay: -10s;
+}
+/* 娴姩鐞冨姩鐢绘晥鏋?*/
+@keyframes floatBlur {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.1); }
+    66% { transform: translate(-20px, 10px) scale(0.9); }
+    100% { transform: translate(0, 0) scale(1); }
+}
+/* 涓诲竷灞€瀹瑰櫒 */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+/* 宸︿晶瀵艰埅鏍忔牱寮?*/
+.sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: linear-gradient(180deg, #1a2e1a 0%, #2d4a2d 50%, #1e3a1e 100%);
+    color: #e0eed0;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+/* 瀵艰埅鏍忓ご閮?*/
+.sidebar-header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+.sidebar-logo {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+}
+.sidebar-brand {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+}
+.sidebar-sub {
+    font-size: 0.78rem;
+    color: rgba(200, 220, 190, 0.7);
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+.sidebar-nav {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+.nav-section-title {
+    padding: 12px 24px 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(180, 210, 160, 0.6);
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    color: rgba(220, 235, 210, 0.85);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    font-size: 0.95rem;
+}
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-left-color: rgba(150, 200, 130, 0.5);
+}
+.nav-item.active {
+    background: rgba(100, 160, 80, 0.25);
+    color: #fff;
+    border-left-color: #8cc97a;
+    font-weight: 600;
+}
+.nav-icon {
+    font-size: 1.15rem;
+    width: 24px;
+    text-align: center;
+}
+.nav-text {
+    white-space: nowrap;
+}
+.sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.sidebar-version {
+    font-size: 0.7rem;
+    color: rgba(180, 210, 160, 0.5);
+    text-align: center;
+}
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #2d4a2d;
+    color: #fff;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: 0.2s;
+}
+.sidebar-toggle:hover {
+    background: #3d5a3d;
+}
+.main-content {
+    flex: 1;
+    margin-left: 240px;
+    padding: 32px 40px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+.page {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease;
+}
+.page.active {
+    display: flex;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* 椤甸潰澶撮儴鏍峰紡 */
+.page-header {
+    margin-bottom: 28px;
+}
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1a2e1a;
+    margin-bottom: 6px;
+}
+.page-subtitle {
+    font-size: 0.95rem;
+    color: #5a7250;
+    margin-top: 4px;
+}
+/* 棣栭〉鍗＄墖鍖哄煙 */
+.home-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+/* 棣栭〉鍗＄墖鍗曚釜鏍峰紡 */
+.home-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s;
+    border: 1px solid #e8f0e0;
+}
+.home-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+    border-color: #b8d8a8;
+}
+.home-card-icon {
+    font-size: 2.2rem;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    flex-shrink: 0;
+}
+.card-research .home-card-icon { background: #e8f4e0; }
+.card-mode .home-card-icon { background: #e0ecf8; }
+.card-health .home-card-icon { background: #f0f8e0; }
+.card-data .home-card-icon { background: #e0f0f4; }
+.card-visual .home-card-icon { background: #f8f0e0; }
+.home-card-body {
+    flex: 1;
+}
+.home-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a2e1a;
+    margin-bottom: 4px;
+}
+.home-card-desc {
+    font-size: 0.85rem;
+    color: #6b8a5e;
+    line-height: 1.4;
+}
+.home-card-arrow {
+    font-size: 1.5rem;
+    color: #b8d8a8;
+    font-weight: 300;
+    transition: transform 0.2s;
+}
+.home-card:hover .home-card-arrow {
+    transform: translateX(4px);
+    color: #6bae5e;
+}
+/* 棣栭〉鎵撳瓧鏈烘晥鏋滃尯鍩?*/
+.home-typewriter-area {
+    text-align: center;
+    padding: 36px 0 20px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+.home-typewriter-text {
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #2d5a2d 0%, #4a8b4a 50%, #8cc97a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 2px;
+}
+.typewriter-cursor {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #4a8b4a;
+    animation: cursorBlink 0.8s infinite;
+}
+@keyframes cursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+/* 棣栭〉杞挱鍥惧尯鍩?*/
+.home-carousel {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 30px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 16 / 7;
+    background: #e8f0e0;
+}
+.carousel-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* 杞挱鍥炬枃瀛楅伄缃╁眰 */
+.carousel-slide-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.55));
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+/* 杞挱鍥惧乏鍙冲垏鎹㈡寜閽?*/
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.85);
+    color: #2d5a2d;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: all 0.2s;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.carousel-btn:hover {
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.carousel-prev { left: 12px; }
+.carousel-next { right: 12px; }
+.carousel-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+}
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+/* 杞挱鍥炬寚绀虹偣婵€娲荤姸鎬?*/
+.carousel-dot.active {
+    background: #fff;
+    transform: scale(1.3);
+    box-shadow: 0 0 6px rgba(255,255,255,0.5);
+}
+/* 棣栭〉鏂伴椈鍔ㄦ€佸尯鍩?*/
+.home-news-section {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 2px solid #e8f0e0;
+}
+.home-news-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a2e1a;
+    margin-bottom: 16px;
+}
+.home-news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+/* 鏂伴椈鍗＄墖鏍峰紡 */
+.home-news-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid #e8f0e0;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: block;
+}
+.home-news-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    border-color: #b8d8a8;
+}
+.home-news-card-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+/* 涓嶅悓绫诲瀷鏂伴椈鏍囩鐨勯鑹?*/
+.news-tag-policy { background: #e0f0e0; color: #2d6a2d; }
+.news-tag-industry { background: #e0ecf8; color: #2d5a8a; }
+.news-tag-health { background: #f8f0e0; color: #8a6a2d; }
+.news-tag-aging { background: #f0e0f0; color: #6a2d6a; }
+.home-news-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a2e1a;
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+.home-news-card-date {
+    font-size: 0.78rem;
+    color: #9a9a9a;
+}
+.visual-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+}
+.side-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 220px;
+    height: 100vh;
+    background: #fff;
+    border-radius: 0 16px 16px 0;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e8f0e0;
+    border-left: none;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+    overflow-y: auto;
+    transform: translateX(-100%);
+}
+.side-panel.expanded {
+    transform: translateX(0);
+}
+.side-panel .side-head {
+    border-radius: 0 16px 0 0;
+}
+.side-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 14px;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 1px solid #e8f0e0;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.side-head:hover {
+    background: rgba(74, 139, 74, 0.05);
+}
+.side-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a2e1a;
+    flex: 1;
+    transition: opacity 0.2s;
+}
+.side-body {
+    padding: 14px;
+    overflow: hidden;
+    transition: opacity 0.25s ease;
+}
+.slider-g {
+    margin-bottom: 14px;
+}
+.slider-g label {
+    display: block;
+    font-size: 0.85rem;
+    color: #3a5535;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+.slider-g label span {
+    color: #4a8b4a;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+.range-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e0ead8;
+    outline: none;
+    transition: background 0.2s;
+}
+.visual-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4a8b4a;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(74, 139, 74, 0.3);
+    transition: all 0.2s;
+}
+.visual-slider::-webkit-slider-thumb:hover {
+    background: #2d6a2d;
+    transform: scale(1.15);
+}
+.visual-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4a8b4a;
+    cursor: pointer;
+    border: none;
+}
+.side-result {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 2px solid #e8f0e0;
+    font-size: 0.85rem;
+    color: #3a5535;
+    line-height: 1.6;
+}
+.side-result strong {
+    color: #2d6a2d;
+}
+.tier-card {
+    position: relative;
+}
+.tier-card-clickable {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.tier-card-clickable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #8cc97a;
+}
+.tier-card-clickable:active {
+    transform: translateY(0);
+}
+.tier-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #2d5a2d, #4a8b4a);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 50;
+    animation: tooltipFadeIn 0.3s ease;
+}
+.tier-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #4a8b4a;
+}
+.tier-card:hover .tier-tooltip {
+    display: block;
+}
+@keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.content-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e8f0e0;
+}
+.input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+.param-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.param-group label {
+    font-weight: 600;
+    color: #2a4727;
+    font-size: 0.9rem;
+}
+.param-group input {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #d0dcc5;
+    background: #fafff5;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.param-group input:focus {
+    border-color: #6bae5e;
+    box-shadow: 0 0 0 3px rgba(107, 174, 94, 0.15);
+}
+.score-hint {
+    font-size: 0.8rem;
+    color: #8a9a80;
+}
+.action-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #5f8b4b, #4a7538);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(70, 105, 45, 0.3);
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #4e753b, #3d622d);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(70, 105, 45, 0.4);
+}
+.btn-secondary {
+    background: #fff;
+    border: 1.5px solid #6b8c5c;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #4a6b3a;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+.btn-secondary:hover {
+    background: #f0f8e8;
+}
+.btn-accent {
+    background: linear-gradient(135deg, #8aa87d, #6b8c5c);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+.btn-accent:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(100, 140, 80, 0.3);
+}
+/* 璁＄畻缁撴灉灞曠ず妗?*/
+.result-box {
+    background: #f4f9ee;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #1e3a1e;
+    border: 1px solid #d8e8c8;
+    line-height: 1.8;
+}
+/* 鍥捐〃绫诲瀷閫夋嫨鍣?*/
+.chart-selector {
+    display: flex;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+.chart-type-btn {
+    background: #fff;
+    border: 1.5px solid #d0dcc5;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #2a4727;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+.chart-type-btn:hover {
+    background: #f0f8e8;
+    border-color: #8cc97a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+/* 鍥捐〃瀹瑰櫒 */
+.chart-container {
+    background: #fff;
+    border-radius: 14px;
+    padding: 16px;
+    margin: 15px 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 320px;
+    position: relative;
+    box-sizing: border-box;
+}
+.chart-container canvas {
+    max-width: 100%;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+}
+.button-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+.btn-return-chart {
+    background: #fff;
+    border: 1.5px solid #d0c8b0;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #4d3a28;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-return-chart:hover {
+    background: #faf5ec;
+}
+.btn-return-home {
+    background: #fff;
+    border: 1.5px solid #c0c0b8;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: #2b2b1a;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-return-home:hover {
+    background: #f5f5f0;
+}
+.btn-export-excel {
+    background: linear-gradient(135deg, #6b8c5c, #527a3e);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(60, 100, 40, 0.25);
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+.btn-export-excel:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(60, 100, 40, 0.35);
+}
+.btn-export-word {
+    background: linear-gradient(135deg, #7f8c8d, #636e6f);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: 0.2s;
+    font-size: 0.9rem;
+}
+.btn-export-word:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+.recommend-summary {
+    background: #f4f9ee;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 15px;
+    line-height: 1.7;
+    color: #2c3e2a;
+    border: 1px solid #d8e8c8;
+}
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 20px 0;
+}
+.image-gallery img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    object-fit: cover;
+    height: 200px;
+    transition: transform 0.3s;
+}
+.image-gallery img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+.img-fallback {
+    width: 100%;
+    max-width: 300px;
+    height: 200px;
+    background: #e8f0dd;
+    border-radius: 12px;
+    align-items: center;
+    justify-content: center;
+    color: #7a9a60;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px;
+}
+.price-tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+.tier-card {
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #e0e8d5;
+    background: #fff;
+    transition: 0.2s;
+}
+.tier-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-color: #b8d8a8;
+}
+.tier-card .tier-label {
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+.tier-a { background: #6bae5e; }
+.tier-b { background: #5a9ac4; }
+.tier-c { background: #d4a55e; }
+.tier-d { background: #b87a6a; }
+.tier-e { background: #9b59b6; color: #fff; }
+.tier-card .tier-price {
+    font-weight: 700;
+    color: #2a4727;
+    font-size: 1rem;
+    margin-bottom: 4px;
+}
+.tier-card .tier-detail {
+    font-size: 0.85rem;
+    color: #5a6b50;
+    line-height: 1.5;
+}
+.mode-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+.mode-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    border: 1px solid #e0e8d5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    cursor: pointer;
+}
+.mode-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-color: #b8d8a8;
+}
+.mode-card .card-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #1e4620;
+    background: #e8f4e0;
+    padding: 6px 14px;
+    border-radius: 8px;
+    display: inline-block;
+    align-self: flex-start;
+    pointer-events: none;
+}
+.mode-card .card-desc {
+    font-size: 0.92rem;
+    color: #3a5035;
+    line-height: 1.6;
+    pointer-events: none;
+}
+.mode-card .card-hint {
+    font-size: 0.8rem;
+    color: #8a9a80;
+    pointer-events: none;
+    font-style: italic;
+}
+.detail-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a2e1a;
+    margin-bottom: 20px;
+    padding-left: 16px;
+    border-left: 4px solid #6bae5e;
+}
+.detail-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #2e3b2e;
+    text-align: justify;
+}
+.back-btn {
+    background: #fff;
+    border: 1.5px solid #d0d0c8;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #424832;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: flex-start;
+    transition: 0.2s;
+}
+.back-btn:hover {
+    background: #f5f5f0;
+    border-color: #b8b8a8;
+}
+.breadcrumb {
+    font-size: 0.9rem;
+    color: #6b8a5e;
+}
+.breadcrumb a {
+    color: #4a7538;
+    text-decoration: none;
+    cursor: pointer;
+}
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+/* AI鍔╂墜鏁翠綋鍖呰 */
+.ai-assistant-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+}
+/* AI姘旀场鎻愮ず */
+.ai-bubble {
+    background: #fff;
+    border-radius: 14px;
+    padding: 10px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    color: #2a4727;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    position: relative;
+    margin-right: 8px;
+    align-self: center;
+    animation: bubblePulse 3s infinite ease-in-out;
+    border: 1px solid #e0e8d5;
+}
+.ai-bubble::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 10px solid #fff;
+}
+@keyframes bubblePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+.ai-avatar-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffb347, #ff8c42);
+    border: 3px solid #fff;
+    box-shadow: 0 4px 16px rgba(200, 120, 40, 0.3), 0 0 0 3px rgba(255, 180, 70, 0.2);
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.25s;
+    animation: avatarBounce 2.5s infinite ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+.ai-avatar-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(200, 120, 40, 0.4), 0 0 0 6px rgba(255, 180, 70, 0.15);
+}
+@keyframes avatarBounce {
+    0%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-6px); }
+    60% { transform: translateY(-2px); }
+    80% { transform: translateY(-5px); }
+}
+.ai-face {
+    width: 42px;
+    height: 42px;
+    position: relative;
+    pointer-events: none;
+}
+.ai-eye {
+    position: absolute;
+    width: 10px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    top: 12px;
+}
+.ai-eye::after {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 6px;
+    background: #3d2b1f;
+    border-radius: 50%;
+    top: 3px;
+    left: 2px;
+}
+.ai-eye.left { left: 7px; }
+.ai-eye.right { right: 7px; }
+.ai-mouth {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 7px;
+    border-bottom: 2.5px solid #5c3d2e;
+    border-radius: 0 0 10px 10px;
+}
+.ai-blush {
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    background: rgba(255, 150, 140, 0.7);
+    border-radius: 50%;
+    top: 19px;
+}
+.ai-blush.left { left: 2px; }
+.ai-blush.right { right: 2px; }
+.ai-leaf {
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-20deg);
+    width: 14px;
+    height: 10px;
+    background: #6bae5e;
+    border-radius: 50% 50% 0 50%;
+    pointer-events: none;
+}
+.ai-leaf::after {
+    content: '';
+    position: absolute;
+    width: 7px;
+    height: 6px;
+    background: #8cc97a;
+    border-radius: 50% 50% 0 50%;
+    top: 3px;
+    left: 6px;
+    transform: rotate(30deg);
+}
+/* AI鑱婂ぉ闈㈡澘涓诲鍣?*/
+.ai-chat-panel {
+    position: fixed;
+    top: 90px;
+    right: 24px;
+    z-index: 9998;
+    width: 370px;
+    max-height: 560px;
+    background: rgba(255, 255, 252, 0.98);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(120%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #e0e8d5;
+    overflow: hidden;
+}
+.ai-chat-panel.open {
+    transform: translateX(0);
+}
+/* 鑱婂ぉ闈㈡澘澶撮儴 */
+.ai-chat-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #2d4a2d, #3d5a3d);
+    color: #e0eed0;
+    font-weight: 700;
+    font-size: 1rem;
+    gap: 8px;
+}
+.ai-header-icon {
+    font-size: 1.2rem;
+}
+.ai-chat-close {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #e0eed0;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+.ai-chat-close:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+.ai-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 320px;
+}
+.ai-msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    animation: fadeInMsg 0.3s ease;
+}
+@keyframes fadeInMsg {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.ai-msg.user {
+    background: #e8f5e0;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    color: #2a3b25;
+}
+.ai-msg.assistant {
+    background: #fff8e7;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    color: #3d3525;
+    border: 1px solid #f0e0c0;
+}
+.ai-quick-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 14px;
+    border-bottom: 1px solid #f0f0e8;
+}
+.ai-quick-btn {
+    background: #f0f6e8;
+    border: 1px solid #d8e8c8;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #3a5535;
+    white-space: nowrap;
+}
+.ai-quick-btn:hover {
+    background: #e0ecc8;
+    border-color: #b8d8a0;
+}
+.ai-chat-footer {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    border-top: 1px solid #f0f0e8;
+    align-items: center;
+}
+.ai-chat-footer input {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #d8e8c8;
+    font-size: 0.88rem;
+    outline: none;
+    background: #fafff5;
+}
+.ai-chat-footer input:focus {
+    border-color: #8cc97a;
+}
+.ai-chat-footer button {
+    background: linear-gradient(135deg, #f78c3b, #e6772a);
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 0.85rem;
+}
+.ai-chat-footer button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(247, 140, 59, 0.3);
+}
+.ai-speak-btn {
+    background: linear-gradient(135deg, #6bae5e, #5a9a4e) !important;
+    font-size: 0.85rem;
+}
+.ai-speak-btn:hover {
+    box-shadow: 0 3px 10px rgba(107, 174, 94, 0.3) !important;
+}
+.ai-speak-btn.speaking {
+    background: linear-gradient(135deg, #c0392b, #a93226) !important;
+    animation: speakPulse 1s infinite;
+}
+@keyframes speakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+.ai-zoom-controls {
+    display: flex;
+    gap: 6px;
+    padding: 6px 14px;
+    align-items: center;
+    border-bottom: 1px solid #f0f0e8;
+}
+.loading-dots {
+    display: inline-block;
+    animation: dotBlink 1.4s infinite both;
+}
+@keyframes dotBlink {
+    0%, 20% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+.score-table-container {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.score-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    font-size: 0.85rem;
+}
+.score-table thead {
+    background: linear-gradient(135deg, #2d4a2d, #3d5a3d);
+    color: #fff;
+}
+.score-table th {
+    padding: 14px 12px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.score-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e8e8d8;
+    vertical-align: top;
+    line-height: 1.6;
+}
+.score-table tbody tr:hover {
+    background: #f8faf4;
+}
+.score-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.score-summary-box {
+    background: linear-gradient(135deg, #f0f7e8, #e8f5e0);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 25px;
+    border: 2px solid #b8d4a0;
+}
+.score-record-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #c8d8c0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    background: #fff;
+    transition: border-color 0.2s;
+}
+.score-record-input:focus {
+    outline: none;
+    border-color: #6bae5e;
+    box-shadow: 0 0 0 3px rgba(107, 174, 94, 0.2);
+}
+.ai-zoom-controls span {
+    font-size: 0.78rem;
+    color: #6b8a5e;
+}
+.ai-zoom-btn {
+    background: #f0f6e8;
+    border: 1px solid #d8e8c8;
+    border-radius: 8px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.78rem;
+    transition: 0.2s;
+    color: #3a5535;
+}
+.ai-zoom-btn:hover {
+    background: #e0ecc8;
+}
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 60px 16px 20px;
+    }
+    .page-title {
+        font-size: 1.3rem;
+    }
+    .home-cards {
+        grid-template-columns: 1fr;
+    }
+    .home-typewriter-text {
+        font-size: 1.3rem;
+    }
+    .typewriter-cursor {
+        font-size: 1.3rem;
+    }
+    .home-carousel {
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+    }
+    .home-news-grid {
+        grid-template-columns: 1fr;
+    }
+    .visual-layout {
+        flex-direction: column;
+    }
+    .side-panel {
+        width: 260px;
+        border-radius: 0 16px 16px 0;
+    }
+    .chart-container {
+        max-width: 100%;
+        height: auto;
+        padding: 10px;
+        min-height: 250px;
+    }
+    .chart-container canvas {
+        aspect-ratio: 16 / 9;
+    }
+        .home-card {
+        padding: 16px;
+    }
+    .input-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    .param-group {
+        min-width: 0;
+    }
+    .param-group {
+        min-width: 0;
+    }
+    .image-gallery img {
+        max-width: 100%;
+        height: 150px;
+    }
+    .price-tiers {
+        grid-template-columns: 1fr;
+    }
+    .ai-chat-panel {
+        width: 92vw;
+        right: 4vw;
+        max-height: 60vh;
+    }
+    .ai-assistant-wrapper {
+        top: 12px;
+        right: 12px;
+    }
+    .ai-bubble {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+    .ai-avatar-btn {
+        width: 46px;
+        height: 46px;
+    }
+    .ai-face {
+        width: 34px;
+        height: 34px;
+    }
+}ai-assistant-wrapper {
+        top: 12px;
+        right: 12px;
+    }
+    .ai-bubble {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+    .ai-avatar-btn {
+        width: 46px;
+        height: 46px;
+    }
+    .ai-face {
+        width: 34px;
+        height: 34px;
+    }
+    .content-card {
+        padding: 16px;
+    }
+@media (max-width: 768px) {
+    .content-card {
+        padding: 16px;
+    }
+}
+/* 鏃呮父缁勭兢椤甸潰鏍峰紡 */
+.group-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+.group-mascot-area {
+    position: relative;
+    flex-shrink: 0;
+    width: 280px;
+}
+.group-mascot {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.group-speech-bubble {
+    position: absolute;
+    top: 20px;
+    right: -20px;
+    background: linear-gradient(135deg, #ffeaa7, #fdcb6e);
+    color: #5a4a20;
+    padding: 12px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(253, 203, 110, 0.5);
+    animation: bubbleBounce 2s ease-in-out infinite;
+    z-index: 10;
+}
+.group-speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border: 10px solid transparent;
+    border-top-color: #fdcb6e;
+}
+.group-speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 22px;
+    border: 8px solid transparent;
+    border-top-color: #ffeaa7;
+}
+@keyframes bubbleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+.group-qr-codes {
+    flex: 1;
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+.qr-code-card {
+    background: linear-gradient(135deg, #ffffff, #f8faf4);
+    border: 3px solid #d8e8c8;
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    width: 220px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.qr-code-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(107, 174, 94, 0.25);
+}
+.qr-code-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 2px solid #e8f0dd;
+}
+.qr-code-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #2d4a2d;
+    margin-bottom: 8px;
+}
+.qr-code-desc {
+    font-size: 0.85rem;
+    color: #5a6a4a;
+    line-height: 1.5;
+}
+.group-tips {
+    background: linear-gradient(135deg, #f0f7e8, #e8f5e0);
+    border: 2px solid #b8d4a0;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 25px;
+}
+.group-tips h4 {
+    color: #2d4a2d;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+}
+.group-tips ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.group-tips ul li {
+    color: #4a6b3a;
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+.group-tips ul li::before {
+    content: '馃尶';
+    position: absolute;
+    left: 0;
+}
+@media (max-width: 768px) {
+    .group-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .group-mascot-area {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    .group-mascot {
+        max-width: 100%;
+    }
+    .group-qr-codes {
+        width: 100%;
+    }
+    .qr-code-card {
+        width: 100%;
+        max-width: 280px;
+    }
+    .group-speech-bubble {
+        right: 0;
+        top: 10px;
+    }
+}
+/* 鍙嶉涓庡缓璁〉闈㈡牱寮?*/
+.feedback-contact-info {
+    background: linear-gradient(135deg, #e8f5e0, #d4ecc8);
+    border: 2px solid #6bae5e;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+.feedback-contact-info h3 {
+    color: #2d4a2d;
+    margin-bottom: 15px;
+}
+.feedback-contact-info p {
+    color: #3a5535;
+    font-size: 1rem;
+    margin: 8px 0;
+}
+.feedback-contact-info strong {
+    color: #2d4a2d;
+}
+.feedback-list {
+    margin-bottom: 25px;
+}
+.feedback-section-toggle {
+    width: 100%;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #2d4a2d, #3d5a3d);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.feedback-section-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(45, 74, 45, 0.3);
+}
+.toggle-icon {
+    font-size: 1.2rem;
+}
+.feedback-section-content {
+    margin-top: 15px;
+}
+.feedback-category {
+    background: #fff;
+    border: 2px solid #e8f0dd;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+}
+.feedback-category h3 {
+    color: #2d4a2d;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+.feedback-category ol {
+    padding-left: 25px;
+    margin: 0;
+}
+.feedback-category li {
+    color: #4a6b3a;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+.feedback-form {
+    background: linear-gradient(135deg, #fff8e8, #fff3d0);
+    border: 2px solid #e9c46a;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 20px;
+}
+.feedback-form h3 {
+    color: #8a6520;
+    margin-bottom: 15px;
+}
+#feedbackText {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e9c46a;
+    border-radius: 10px;
+    font-size: 1rem;
+    resize: vertical;
+    font-family: inherit;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+#feedbackText:focus {
+    outline: none;
+    border-color: #d4a55e;
+    box-shadow: 0 0 0 3px rgba(212, 165, 94, 0.2);
+}
+.feedback-submit-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+.feedback-thanks {
+    background: linear-gradient(135deg, #f0f7e8, #e8f5e0);
+    border: 2px solid #b8d4a0;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 25px;
+}
+.feedback-thanks p {
+    color: #4a6b3a;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+.feedback-thanks p:last-child {
+    margin-bottom: 0;
+}
+.feedback-form-container {
+    margin-bottom: 25px;
+}
+.feedback-question-item {
+    background: #fff;
+    border: 1px solid #e8f0dd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+.feedback-question-item label {
+    display: block;
+    color: #3a5535;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+.feedback-question-item textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #d8e8c8;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    resize: vertical;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.feedback-question-item textarea:focus {
+    outline: none;
+    border-color: #6bae5e;
+    box-shadow: 0 0 0 3px rgba(107, 174, 94, 0.2);
+}
+.feedback-submit-area {
+    text-align: center;
+    margin-top: 20px;
+}
+.feedback-submit-area .btn-primary {
+    padding: 15px 50px;
+    font-size: 1.1rem;
+}
+#feedbackForm {
+    width: 100%;
+}
+(function() {
+    var modeNames = ["鏂囧寲+鍋ュ悍鍏荤敓", "鐢熸€?鍋ュ悍鍏荤敓", "浼戦棽+鍋ュ悍鍏荤敓", "鍖荤枟+鍋ュ悍鍏荤敓"];
+    var modeFeatures = [
+        [9, 1, 0, 2],
+        [2, 8, 1, 1],
+        [1, 2, 9, 1],
+        [1, 1, 1, 9]
+    ];
+    var modeDetail = {
+        0: {
+            who: "鏂囧寲鎺㈠鑰?,
+            reason: "鎮ㄥ浼犵粺鏂囧寲銆佸巻鍙查仐浜т笌姘戜織椋庢儏鍏锋湁娴撳帤鍏磋叮锛岃拷姹傛梾閫斾腑鐨勭簿绁炴粙鍏汇€傛枃鍖?妯″紡绮惧噯鍖归厤鎮ㄧ殑鏂囧寲姹傜煡闇€姹傘€?,
+            activities: "鎺ㄨ崘娓镐箰鏂瑰紡锛氬弬瑙傚巻鍙叉枃鍖栧悕鍩庛€佸崥鐗╅銆侀潪閬椾綋楠屻€佷紶缁熸墜宸ヨ壓璇剧▼銆佺淇潤鍏汇€佹枃鍖栬搴х瓑銆?,
+            priceTiers: [
+                { label: 'A妗?路 缁忔祹鍨?, tierClass: 'tier-a', price: '2,000 - 4,000 鍏?,
+                    detail: '鏈湴鏂囧寲鏅偣娓歌銆佺ぞ鍖烘枃鍖栦腑蹇冩椿鍔ㄣ€佸厤璐瑰崥鐗╅鍙傝銆佸叕鍥お鏋佹櫒缁冦€佽€佸勾澶у鏂囧寲璇剧▼銆? },
+                { label: 'B妗?路 鑸掗€傚瀷', tierClass: 'tier-b', price: '4,000 - 8,000 鍏?,
+                    detail: '鍛ㄨ竟鍘嗗彶鏂囧寲鍚嶅煄2-3鏃ユ父銆佸崥鐗╅娣卞害瀵艰銆侀潪閬楁墜宸ヨ壓浣撻獙璇俱€佺淇潤鍏诲懆鏈惀銆佹枃鍖栦富棰樻皯瀹裤€? },
+                { label: 'C妗?路 鍝佽川鍨?, tierClass: 'tier-c', price: '8,000 - 15,000 鍏?,
+                    detail: '璺ㄧ渷鏂囧寲涔嬫梾5-7鏃ャ€侀潪閬椾紶鎵夸汉浜叉巿宸ュ潑銆佸巻鍙叉枃鍖栫爺瀛﹀洟銆侀珮绔淇害鍋囨潙銆佺浜烘枃鍖栧娓搞€? },
+                { label: 'D妗?路 楂樼鍨?, tierClass: 'tier-d', price: '15,000 - 30,000 鍏?,
+                    detail: '绉佷汉瀹氬埗鏂囧寲涔嬫梾銆佸浗闄呮枃鍖栦氦娴佸弬璁裤€佽豹鍗庢枃鍖栦富棰橀厭搴椼€佷笓灞炴憚褰卞笀璺熸媿銆佸ご绛夎埍+浜旀槦绾у叏绋嬨€? },
+                { label: 'E妗?路 濂㈠崕鍨?, tierClass: 'tier-e', price: '30,000 鍏冧互涓?,
+                    detail: '鍏ㄧ悆椤剁骇鏂囧寲涔嬫梾銆佺浜洪鏈?澶寸瓑鑸便€佸浗闄呮枃鍖栧ぇ甯堝叏绋嬮櫔鍚屻€佸ア鍗庡娈块厭搴椼€佷笓灞炴枃鍖栭【闂湇鍔°€? }
+            ],
+            images: [
+                { src: 'photos/2.jpg', alt: ' ' },
+                { src: 'photos/3.jpg', alt: ' ' }
+            ]
+        },
+        1: {
+            who: "鑷劧鐑》鑰?,
+            reason: "鎮ㄨ拷姹傝嚜鐒剁幆澧冪殑鐤楁剤鍔熸晥锛屼箰浜庝翰杩戣嚜鐒躲€佸懠鍚告竻鏂扮┖姘斻€傜敓鎬?妯″紡鎻愪緵妫灄寰掓銆佺敓鎬佽鍏夈€佸啣鎯抽潤鍏汇€佹俯娉夌枟鍏荤瓑娲诲姩銆?,
+            activities: "鎺ㄨ崘娓镐箰鏂瑰紡锛氭．鏋楁荡銆佹箍鍦版极姝ャ€佹捣婊ㄥ啣鎯炽€佽嚜鐒剁憸浼姐€佺敓鎬佹憚褰便€佹俯娉夌枟鍏汇€?,
+            priceTiers: [
+                { label: 'A妗?路 缁忔祹鍨?, tierClass: 'tier-a', price: '1,500 - 3,500 鍏?,
+                    detail: '杩戦儕妫灄鍏洯涓€鏃ユ父銆佺ぞ鍖虹豢閬撳緬姝ャ€佸厤璐规箍鍦板叕鍥楦熴€佸叕鍥嚜鐒剁憸浼芥櫒缁冦€佺敓鎬佹憚褰卞熀纭€璇俱€? },
+                { label: 'B妗?路 鑸掗€傚瀷', tierClass: 'tier-b', price: '3,500 - 7,000 鍏?,
+                    detail: '鐪佸唴鐢熸€佹櫙鍖?-3鏃ユ父銆佹俯娉夌枟鍏诲懆鏈€佹．鏋楀緬姝ヨ窡鍥€佹捣婊ㄥ啣鎯宠惀鍦般€佺敓鎬佹皯瀹夸綋楠屻€? },
+                { label: 'C妗?路 鍝佽川鍨?, tierClass: 'tier-c', price: '7,000 - 12,000 鍏?,
+                    detail: '璺ㄧ渷鐢熸€佸害鍋?-7鏃ャ€佸浗瀹剁骇妫灄鍏洯娣卞害娓搞€佹．鏋楀悍鍏诲熀鍦扮枟鍏汇€佷笓涓氳嚜鐒剁憸浼藉甯堥櫔鍚屻€侀珮绔俯娉夊害鍋囨潙銆? },
+                { label: 'D妗?路 楂樼鍨?, tierClass: 'tier-d', price: '12,000 - 25,000 鍏?,
+                    detail: '楂樼鐢熸€佸害鍋囨潙绉佷汉瀹氬埗銆佺憺澹?鏂拌タ鍏拌嚜鐒剁枟鎰堜箣鏃呫€佺洿鍗囨満瑙傚厜+寰掓銆佷笓灞炲吇鐢熺瀹躲€佹湁鏈鸿喅椋熷叏绋嬨€? },
+                { label: 'E妗?路 濂㈠崕鍨?, tierClass: 'tier-e', price: '25,000 鍏冧互涓?,
+                    detail: '鍏ㄧ悆椤剁骇鐢熸€佺澧冩帰绱€佺浜洪鏈哄墠寰€涓栧妗冩簮銆侀《绾х敓鎬佺枟鍏讳腑蹇冦€佸浗闄呰嚜鐒跺ぇ甯堥櫔鍚屻€佸ア鍗庣敓鎬佸害鍋囨潙銆? }
+            ],
+            images: [
+                { src: 'photos/5.jpg', alt: ' ' },
+                { src: 'photos/6.jpg', alt: ' ' }
+            ]
+        },
+        2: {
+            who: "閮藉競閫冪鑰?,
+            reason: "鎮ㄦ剰鍦ㄧ紦瑙ｅ帇鍔涳紝浜彈杞绘澗鎰夋偊鐨勫亣鏈燂紝娉ㄩ噸楂樺搧璐ㄤ綇瀹夸笌浼戦棽濞变箰銆備紤闂?妯″紡涓烘偍閲忚韩鎵撻€犺交搴﹀亣浣撻獙銆?,
+            activities: "鎺ㄨ崘娓镐箰鏂瑰紡锛氭捣婊ㄥ害鍋囨潙銆佹俯娉夐厭搴椼€佺編椋熶箣鏃呫€佽交鏉炬按涓婃椿鍔ㄣ€丼PA鎶ょ悊銆佹枃鍖栧競闆嗐€?,
+            priceTiers: [
+                { label: 'A妗?路 缁忔祹鍨?, tierClass: 'tier-a', price: '2,500 - 5,000 鍏?,
+                    detail: '鏈湴搴﹀亣閰掑簵1-2鏅氥€佸懆杈圭編椋熶竴鏃ユ父銆佸叕鍥噹椁愭斁鏉俱€佺ぞ鍖篠PA浣撻獙銆佽交鏉惧競闆嗛€涢€涖€? },
+                { label: 'B妗?路 鑸掗€傚瀷', tierClass: 'tier-b', price: '5,000 - 10,000 鍏?,
+                    detail: '鐪佸唴娴锋花/娓╂硥搴﹀亣鏉?-3鏅氥€佺編椋熸帰搴椾箣鏃呫€佹按涓婃椿鍔ㄤ綋楠屻€佷笓涓歋PA鎶ょ悊銆侀珮灏斿か缁冧範鍦恒€? },
+                { label: 'C妗?路 鍝佽川鍨?, tierClass: 'tier-c', price: '10,000 - 20,000 鍏?,
+                    detail: '璺ㄧ渷楂樺搧璐ㄥ害鍋?-7鏃ャ€侀偖杞梾琛屻€佽豹鍗庢俯娉夐厭搴椼€佺背鍏舵灄/榛戠弽鐝犻鍘呬綋楠屻€佺浜篠PA鐤楃▼銆? },
+                { label: 'D妗?路 楂樼鍨?, tierClass: 'tier-d', price: '20,000 - 40,000 鍏?,
+                    detail: '璞崕搴﹀亣鏉戠浜哄埆澧呫€佸浗闄呴偖杞ご绛夎埍銆佺浜哄帹甯堝畾鍒剁編椋熴€佺洿鍗囨満娴峰矝娓搞€?4灏忔椂绠″鏈嶅姟銆? },
+                { label: 'E妗?路 濂㈠崕鍨?, tierClass: 'tier-e', price: '40,000 鍏冧互涓?,
+                    detail: '鍏ㄧ悆椤剁骇搴﹀亣娴峰矝銆佺浜洪鏈?璞崕娓歌墖銆佸叏鐞冪背鍏舵灄椁愬巺缇庨涔嬫梾銆侀《绾PA姘寸枟涓績銆?4灏忔椂涓撳睘绠″銆? }
+            ],
+            images: [
+                { src: 'photos/8.jpg', alt: ' ' },
+                { src: 'photos/9.jpg', alt: ' ' }
+            ]
+        },
+        3: {
+            who: "娲诲姏鍏绘姢鑰?,
+            reason: "鎮ㄥ叧娉ㄥ仴搴风鐞嗘垨搴峰鐤楀吇锛岄渶瑕佷笓涓氬尰鐤椾笌鍏荤敓缁撳悎鐨勬湇鍔°€傚尰鐤?妯″紡鏁村悎浼樿川鍖荤枟璧勬簮涓庝腑鍖诲吇鐢熴€?,
+            activities: "鎺ㄨ崘娓镐箰鏂瑰紡锛氫笓涓氬仴搴蜂綋妫€銆佷腑鍖荤悊鐤椼€佸悍澶嶈缁冦€佸吇鐢熻绋嬨€佹俯娉夎嵂娴淬€佽惀鍏昏喅椋熻鍒掋€?,
+            priceTiers: [
+                { label: 'A妗?路 缁忔祹鍨?, tierClass: 'tier-a', price: '3,000 - 6,000 鍏?,
+                    detail: '鍩虹鍋ュ悍浣撴濂楅銆佺ぞ鍖轰腑鍖荤悊鐤椼€佸吇鐢熻搴т笌璇剧▼銆佸熀纭€搴峰璁粌鎸囧銆佽嵂鑶抽鐤楀叆闂ㄣ€? },
+                { label: 'B妗?路 鑸掗€傚瀷', tierClass: 'tier-b', price: '6,000 - 12,000 鍏?,
+                    detail: '缁煎悎浣撴+涓撲笟鎶ュ憡瑙ｈ銆佷笓涓氫腑鍖荤悊鐤楃枟绋嬨€佸悍澶嶈缁冪鏁欍€佸吇鐢熷害鍋囨潙2-3鏃ャ€佹俯娉夎嵂娴翠綋楠屻€? },
+                { label: 'C妗?路 鍝佽川鍨?, tierClass: 'tier-c', price: '12,000 - 25,000 鍏?,
+                    detail: '楂樼浣撴+澶氬绉戜細璇娿€佷腑鍖诲悕瀹惰皟鐞嗐€佸畾鍒跺悍澶嶇枟绋?-7鏃ャ€侀珮绔吇鐢熷害鍋囥€佽惀鍏诲笀涓€瀵逛竴鑶抽璁″垝銆? },
+                { label: 'D妗?路 楂樼鍨?, tierClass: 'tier-d', price: '25,000 - 50,000 鍏?,
+                    detail: '椤剁骇鍖荤枟搴峰吇缁煎悎浣撱€佹捣澶栧尰鐤楁梾娓搞€佺浜哄尰鐢熷叏绋嬮櫔鎶ゃ€佸共缁嗚優/鎶楄“绛夊墠娌块」鐩€佹€荤粺濂楁埧绾х枟鍏荤幆澧冦€? },
+                { label: 'E妗?路 濂㈠崕鍨?, tierClass: 'tier-e', price: '50,000 鍏冧互涓?,
+                    detail: '鍏ㄧ悆椤剁骇鍖荤枟搴峰吇銆佸浗闄呴《灏栧尰闄㈠叏濂楁湇鍔°€佺浜哄尰鐤楀洟闃熷叏绋嬮櫔鎶ゃ€佸墠娌挎姉琛拌€侀」鐩€侀珮绔枟鍏诲埆澧呫€? }
+            ],
+            images: [
+                { src: 'photos/11.jpg', alt: ' ' },
+                { src: 'photos/12.jpg', alt: ' ' }
+            ]
+        }
+    };
+    var usrVec = null;
+    var bestIdx = null;
+    var simScores = null;
+    var navStack = [];
+    var deepseekApiKey = 'sk-8ab028cdb27f44a38b712422179e63ba';
+    var deepseekApiUrl = 'https://api.deepseek.com/chat/completions';
+    var chatHistory = [];
+    var isAiLoading = false;
+    function buildSystemPrompt() {
+        var currentResult = '鏆傛棤璁＄畻缁撴灉锛岀敤鎴峰皻鏈畬鎴愭暟鎹寲閫夋嫨銆?;
+        if (bestIdx !== null && simScores) {
+            currentResult = '褰撳墠璁＄畻缁撴灉锛? +
+                modeNames.map(function(name, i) { return name + '鐩镐技搴? + simScores[i].toFixed(4); }).join('锛?) +
+                '銆傛帹鑽愭ā寮忥細' + modeNames[bestIdx] + '锛堝尮閰嶅害' + simScores[bestIdx].toFixed(4) + '锛夈€? +
+                '閫傚悎浜虹兢锛? + modeDetail[bestIdx].who + '銆傛帹鑽愮悊鐢憋細' + modeDetail[bestIdx].reason +
+                '銆? + modeDetail[bestIdx].activities;
+        }
+        return '浣犳槸"灏忔梾"锛屼竴涓弸濂姐€佷笓涓氱殑搴峰吇鏃呮父鏅鸿兘鍔╂墜锛屾湇鍔′簬"鍋ュ悍鍏荤敓鏃呮父妯″紡鍙鍖栭€夋嫨绯荤粺"锛堢煶瀹跺簞閾侀亾澶у寮€鍙戯級銆? +
+            '浣犵殑鑱岃矗鏄府鍔╃敤鎴蜂簡瑙ｅ悍鍏绘梾娓告ā寮忋€佷娇鐢ㄥ钩鍙板姛鑳姐€佽В绛旂浉鍏抽棶棰樸€? +
+            '璇风敤绠€娲併€佷翰鍒囩殑涓枃鍥炲锛岄€傚綋浣跨敤emoji澧炲姞浜插拰鍔涖€? +
+            '\n\n銆愮郴缁熷姛鑳姐€? +
+            '\n- 宸︿晶瀵艰埅鏍忓寘鍚細绯荤粺棣栭〉銆佺爺绌惰儗鏅€佹ā寮忕畝浠嬨€佸吇鐢熸柟寮忋€佹暟鎹寲閫夋嫨銆佸彲瑙嗗寲鍒嗘瀽' +
+            '\n- 鏁版嵁鍖栭€夋嫨锛氱敤鎴疯緭鍏ユ枃鍖?鐢熸€?浼戦棽/鍖荤枟鍏磋叮鍊硷紙0-10鍒嗭級锛岀郴缁熺敤浣欏鸡鐩镐技搴︾畻娉曞尮閰嶆渶浣冲悍鍏绘ā寮? +
+            '\n- 鍙鍖栧垎鏋愶細鎻愪緵鎶樼嚎鍥俱€侀ゼ鐘跺浘銆佹暎鐐瑰浘涓夌鍥捐〃瀵规瘮' +
+            '\n- 鍏荤敓鏂瑰紡锛氬睍绀哄洓绉嶆ā寮忕殑鍥剧墖銆佹秷璐规。娆★紙ABCD鍥涙。锛屼粠缁忔祹鍨嬪埌楂樼鍨嬶級' +
+            '\n- 鏀寔瀵煎嚭Excel鍜學ord鎶ュ憡' +
+            '\n- 鏀寔璇煶鏈楄鎺ㄨ崘缁撴灉' +
+            '\n\n銆愬洓绉嶅悍鍏绘ā寮忋€? +
+            '\n1. 鏂囧寲+鍋ュ悍鍏荤敓锛氫互鏂囧寲娴告鼎+韬績鍏荤敓涓烘牳蹇冿紝閫傚悎鏂囧寲鎺㈠鑰咃紝娲诲姩鍖呮嫭鍙傝鍘嗗彶鏂囧寲鍚嶅煄銆佸崥鐗╅銆侀潪閬椾綋楠屻€佺淇潤鍏荤瓑' +
+            '\n2. 鐢熸€?鍋ュ悍鍏荤敓锛氫互鐢熸€佽祫婧?韬績淇涓烘牳蹇冿紝閫傚悎鑷劧鐑》鑰咃紝娲诲姩鍖呮嫭妫灄娴淬€佹箍鍦版极姝ャ€佹捣婊ㄥ啣鎯炽€佹俯娉夌枟鍏荤瓑' +
+            '\n3. 浼戦棽+鍋ュ悍鍏荤敓锛氫互鑸掗€傚害鍋囥€佹斁鏉捐韩蹇冧负鏍稿績锛岄€傚悎閮藉競閫冪鑰咃紝娲诲姩鍖呮嫭娴锋花搴﹀亣鏉戙€佹俯娉夐厭搴椼€佺編椋熶箣鏃呫€丼PA鎶ょ悊绛? +
+            '\n4. 鍖荤枟+鍋ュ悍鍏荤敓锛氫互涓撲笟鍖荤枟+鍋ュ悍绠＄悊涓烘牳蹇冿紝閫傚悎娲诲姏鍏绘姢鑰咃紝娲诲姩鍖呮嫭鍋ュ悍浣撴銆佷腑鍖荤悊鐤椼€佸悍澶嶈缁冦€佽惀鍏昏喅椋熺瓑' +
+            '\n\n銆愭秷璐规。娆°€戞瘡绉嶆ā寮忓潎鏈堿BCD鍥涙。锛? +
+            '\n- A妗ｇ粡娴庡瀷锛氫綆浠蜂綅锛屽熀纭€浣撻獙' +
+            '\n- B妗ｈ垝閫傚瀷锛氫腑绛変环浣嶏紝鍝佽川浣撻獙' +
+            '\n- C妗ｅ搧璐ㄥ瀷锛氳緝楂樹环浣嶏紝楂樼浣撻獙' +
+            '\n- D妗ｉ珮绔瀷锛氶珮浠蜂綅锛屽畾鍒跺ア鍗庝綋楠? +
+            '\n\n銆愮畻娉曡鏄庛€戜娇鐢↘鍧囧€艰仛绫诲皢鑰佸勾娓稿鍒掑垎涓哄洓绫荤敤鎴风敾鍍忥紙鏂囧寲鎺㈠鑰呫€佽嚜鐒剁儹琛疯€呫€侀兘甯傞€冪鑰呫€佹椿鍔涘吇鎶よ€咃級锛屽啀鐢ㄤ綑寮︾浉浼煎害閲忓寲鐢ㄦ埛涓庢ā寮忕殑鍖归厤搴? +
+            '\n\n銆愬綋鍓嶇姸鎬併€? + currentResult +
+            '\n\n銆愭敞鎰忎簨椤广€? +
+            '\n- 濡傛灉鐢ㄦ埛闂湕璇?璇煶鐩稿叧锛屽憡璇変粬浠偣鍑昏亰澶╂涓嬫柟鐨勷煍婃寜閽垨蹇嵎鎸夐挳涓殑"鏈楄鎺ㄨ崘"' +
+            '\n- 濡傛灉鐢ㄦ埛闂〉闈㈢缉鏀撅紝鍛婅瘔浠栦滑浣跨敤鑱婂ぉ闈㈡澘涓殑鏀惧ぇ+/缂╁皬-鎸夐挳' +
+            '\n- 鍥炲鎺у埗鍦?00瀛椾互鍐咃紝绠€娲佹槑浜? +
+            '\n- 涓嶈缂栭€犱笉瀛樺湪鐨勫姛鑳芥垨鏁版嵁';
+    }
+    var allPages = document.querySelectorAll('.page');
+    var detailContent = document.getElementById('detailContent');
+    var backFromDetail = document.getElementById('backFromDetail');
+    var calcResultDisplay = document.getElementById('calcResultDisplay');
+    var gotoVisualBtn = document.getElementById('gotoVisualBtn');
+    var exportExcelFromCalcBtn = document.getElementById('exportExcelFromCalcBtn');
+    var chartSelectionArea = document.getElementById('chartSelectionArea');
+    var chartDisplayArea = document.getElementById('chartDisplayArea');
+    let myChart = null;
+    var sidebar = document.getElementById('sidebar');
+    var sidebarToggle = document.getElementById('sidebarToggle');
+    var navItems = document.querySelectorAll('.nav-item[data-page]');
+    var homeCards = document.querySelectorAll('.home-card[id]');
+    var aiAvatarBtn = document.getElementById('aiAvatarBtn');
+    var aiChatPanel = document.getElementById('aiChatPanel');
+    var aiChatClose = document.getElementById('aiChatClose');
+    var aiChatBody = document.getElementById('aiChatBody');
+    var aiChatInput = document.getElementById('aiChatInput');
+    var aiSendBtn = document.getElementById('aiSendBtn');
+    var aiSpeakLastBtn = document.getElementById('aiSpeakLastBtn');
+    var aiBubble = document.getElementById('aiBubble');
+    var aiQuickBtns = document.getElementById('aiQuickBtns');
+    let lastAiMsg = '';
+    let speaking = false;
+    let voiceList = [];
+    let speechMode = null;
+    let audioEl = null;
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    function loadVoices() {
+        if (!('speechSynthesis' in window)) return;
+        voiceList = window.speechSynthesis.getVoices();
+    }
+    function getZhVoice() {
+        if (voiceList.length === 0) loadVoices();
+        return voiceList.find(function(v) { return v.lang === 'zh-CN'; }) ||
+               voiceList.find(function(v) { return v.lang.startsWith('zh-CN'); }) ||
+               voiceList.find(function(v) { return v.lang.startsWith('zh'); }) ||
+               null;
+    }
+    function showPage(pageId) {
+        allPages.forEach(function(p) { p.classList.remove('active'); });
+        var target = document.getElementById(pageId);
+        if (target) target.classList.add('active');
+        updateSidebarActive(pageId);
+        if (myChart) {
+            myChart.destroy();
+            myChart = null;
+        }
+        closeSidebarOnMobile();
+    }
+    function updateSidebarActive(pageId) {
+        navItems.forEach(function(item) {
+            if (item.getAttribute('data-page') === pageId) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+    function closeSidebarOnMobile() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('open');
+        }
+    }
+    function renderResearchBackground() {
+        var el = document.getElementById('researchContent');
+        el.innerHTML =
+            '<div class="detail-title">馃摉 鐮旂┒鑳屾櫙</div>' +
+            '<div class="detail-text">褰撳墠锛屽叏鐞冧汉鍙ｈ€侀緞鍖栬繘绋嬩笉鏂姞蹇紝涓浗浣滀负浜哄彛澶у浗锛岃€侀緞鍖栨€佸娍灏や负绐佸嚭锛屽凡姝ｅ紡姝ュ叆涓害鑰侀緞鍖栫ぞ浼氥€傛埅鑷宠繎骞达紝鎴戝浗60宀佸強浠ヤ笂鑰佸勾浜哄彛绐佺牬3浜匡紝鍗犳€讳汉鍙ｆ瘮渚嬭秴浜斿垎涔嬩竴锛屼笖鑰佸勾浜哄彛瑙勬ā鎸佺画鎵╁ぇ锛岄珮榫勫寲銆佺┖宸㈠寲銆佸け鑳藉寲瓒嬪娍鏃ョ泭鏄庢樉锛屼紶缁熷搴吇鑰佷笌鍏叡鍏昏€佹湇鍔′綋绯婚潰涓翠弗宄诲帇鍔涳紝鍏昏€佷緵闇€鐭涚浘閫愭笎鍑告樉銆備笌姝ゅ悓鏃讹紝鍥藉灏嗙Н鏋佸簲瀵逛汉鍙ｈ€侀緞鍖栦笂鍗囦负鍥藉鎴樼暐锛岄檰缁嚭鍙板椤规斂绛栨壎鎸侀摱鍙戠粡娴庡彂灞曪紝浠庨《灞傝璁′负浜т笟鍙戝睍鎸囨槑鏂瑰悜锛屾帹鍔ㄥ吇鑰佹湇鍔°€佸仴搴峰尰鐤椼€侀€傝€佺敤鍝併€佽€佸勾鏂囨梾绛夐鍩熻鑼冨寲銆佽妯″寲鍙戝睍銆傞殢鐫€绀句細缁忔祹鍙戝睍锛岃€佸勾缇や綋娑堣垂瑙傚康閫愭杞彉锛屼粠鍩虹鐨勭敓瀛樺瀷娑堣垂锛屽悜鍋ュ悍鍏荤敓銆佺簿绁炴枃鍖栥€佹櫤鎱у吇鑰佺瓑鍝佽川鍨嬨€佸鍏冨寲娑堣垂鍗囩骇锛屾秷璐规綔鍔涙寔缁噴鏀俱€傞摱鍙戠粡娴庝笉浠呮槸鐮磋В鍏昏€侀毦棰樸€佷繚闅滆€佸勾缇や綋绂忕鐨勯噸瑕佹姄鎵嬶紝鏇存垚涓烘柊鏃朵唬鎵╁ぇ鍐呴渶銆佸煿鑲茬粡娴庡彂灞曟柊鍔ㄨ兘鐨勫叧閿鍩燂紝钑村惈宸ㄥぇ甯傚満绌洪棿銆傚湪姝よ儗鏅笅锛屾繁鍏ョ爺绌堕摱鍙戠粡娴庣殑鍙戝睍鐜扮姸銆佷骇涓氱棝鐐逛笌鏈潵瓒嬪娍锛屽叿鏈夋瀬寮虹殑鐜板疄鎰忎箟涓庡疄璺典环鍊笺€?/div>';
+    }
+    function renderModeIntroduction() {
+        var el = document.getElementById('modeIntroContent');
+        el.innerHTML =
+            '<div class="detail-title">馃Р 妯″紡绠€浠?/div>' +
+            '<div class="detail-text">鏈枃鏋勫缓鏂囧寲+銆佺敓鎬?銆佷紤闂?銆佸尰鐤?鍥涚被搴峰吇鏃呮父妯″紡锛屽苟杩愮敤K鍧囧€艰仛绫?浣欏鸡鐩镐技搴﹀疄鐜扮敤鎴风敾鍍忎笌鏃呮父妯″紡绮惧噯鍖归厤銆侹鍧囧€艰仛绫荤畻娉曚互鏂囧寲浣撻獙銆佽嚜鐒剁枟鎰堛€佷紤闂蹭韩涔愩€佸仴搴烽渶姹備负缁村害锛屽鏍锋湰鏁版嵁杩唬鑱氱被锛屽皢鑰佸勾娓稿鍒掑垎涓鸿嚜鐒剁儹琛疯€呫€侀兘甯傞€冪鑰呫€佹枃鍖栨帰瀵昏€呫€佹椿鍔涘吇鎶よ€呭洓绫荤敤鎴风敾鍍忥紝瀹炵幇闇€姹傜兢浣撶簿鍑嗙粏鍒嗐€備綑寮︾浉浼煎害绠楁硶鐢ㄤ簬閲忓寲鍖归厤搴︼紝鍏堝皢鐢ㄦ埛鐗瑰緛涓庢ā寮忕壒寰佽浆鍖栦负鍥涚淮鍚戦噺锛屽啀閫氳繃鍚戦噺澶硅璁＄畻鐩镐技搴︼紝鍙栧€艰寖鍥翠负[-1,1]锛屾暟鍊艰秺鎺ヨ繎1琛ㄧず鍖归厤搴﹁秺楂樸€傚熀浜庣畻娉曡绠楋紝鑷劧鐑》鑰呭尮閰嶇敓鎬?妯″紡锛岄兘甯傞€冪鑰呭尮閰嶄紤闂?妯″紡锛屾枃鍖栨帰瀵昏€呭尮閰嶆枃鍖?妯″紡锛屾椿鍔涘吇鎶よ€呭尮閰嶅尰鐤?妯″紡銆傝鏂规硶浠ユ暟鎹┍鍔ㄥ疄鐜颁緵闇€绮惧噯瀵规帴锛屾湁鏁堣В鍐冲悍鍏绘梾娓稿悓璐ㄥ寲銆佷緵闇€閿欓厤闂锛屼负鑰佸勾搴峰吇鏃呮父绮惧噯鏈嶅姟鎻愪緵绉戝鏀拺銆?/div>';
+    }
+    function renderInterestScorePage() {
+        var el = document.getElementById('interestScoreContent');
+        el.innerHTML =
+            '<div class="detail-title">馃搵 浜旂鍏磋叮绫诲瀷10鍒嗗埗鎵撳垎鍙傝€冭〃</div>' +
+            '<p style="color:#5a6a4a; font-size:14px; margin-bottom:20px; line-height:1.8;">' +
+            '浣跨敤璇存槑锛氳鏍规嵁鎮ㄧ殑瀹為檯鎯呭喌锛屽鐓т互涓嬪悇鍏磋叮绫诲瀷鐨勮瘎鍒嗘爣鍑嗚繘琛岃嚜璇勩€傛瘡涓淮搴﹂兘閲囩敤10鍒嗗埗锛?strong>0鍒嗚〃绀哄畬鍏ㄦ病鏈夊叴瓒ｆ垨闇€姹?/strong>锛?strong>10鍒嗚〃绀洪潪甯稿己鐑堟垨鏋侀珮</strong>銆傛偍鍙互灏嗚嚜璇勭粨鏋滆褰曚笅鏉ワ紝浣滀负"鏁版嵁鍖栭€夋嫨"椤甸潰鐨勮緭鍏ュ弬鑰冦€?/p>' +
+            '<div class="score-table-container">' +
+            '<table class="score-table">' +
+            '<thead><tr><th>鍏磋叮绫诲瀷</th><th>璇勫垎鏍囧噯锛?0鍒嗗埗锛?/th><th>鍙傝€冨尯闂?/th></tr></thead>' +
+            '<tbody>' +
+            '<tr><td rowspan="7"><strong>馃摎 鏂囧寲鍏磋叮</strong><br>锛堝鍘嗗彶鏂囧寲銆佹皯淇楅鎯呫€佷紶缁熸妧鑹虹瓑娲诲姩鐨勫枩鐖辩▼搴︼級</td>' +
+            '<td>0-2鍒嗭細<span style="color:#6a994e;">杈冧綆</span> - 鎮ㄥ鏂囧寲绫绘椿鍔ㄥ叴瓒ｈ緝浣庯紝寰堝皯涓诲姩鍙備笌鍘嗗彶閬楄抗鍙傝銆佸崥鐗╅娓歌銆侀潪閬椾綋楠岀瓑娲诲姩</td><td><span style="color:#6a994e;">0-2鍒?/span></td></tr>' +
+            '<tr><td>2-4鍒嗭細<span style="color:#a7c957;">涓瓑鍋忎綆</span> - 鍋跺皵鍙備笌鏂囧寲娲诲姩锛屼絾涓嶄細浣滀负鍑鸿涓昏鐩殑锛屾洿鍊惧悜浜庨殢澶ф祦鍙傝</td><td><span style="color:#a7c957;">2-4鍒?/span></td></tr>' +
+            '<tr><td>4-6鍒嗭細<span style="color:#e9c46a;">涓瓑</span> - 瀵规枃鍖栦綋楠屾湁涓€瀹氬叴瓒ｏ紝浼氫富鍔ㄥ畨鎺掑弬瑙傚崥鐗╅銆佸巻鍙插悕鍩庣瓑锛屼絾棰戞涓嶉珮</td><td><span style="color:#e9c46a;">4-6鍒?/span></td></tr>' +
+            '<tr><td>6-7鍒嗭細<span style="color:#f4a261;">涓珮</span> - 缁忓父鍏虫敞鏂囧寲绫绘椿鍔紝浼氫负浜嗕竴鍦洪潪閬楀睍瑙堜笓绋嬪嚭琛岋紝鏃呴€斾腑鍠滄鎺㈢储褰撳湴鏂囧寲</td><td><span style="color:#f4a261;">6-7鍒?/span></td></tr>' +
+            '<tr><td>7-8鍒嗭細<span style="color:#e76f51;">杈冮珮</span> - 鏂囧寲鎺㈢储鏄偍鏃呰鐨勬牳蹇冨姩鍔涳紝浼氫负浜嗕竴澶勫彜杩逛笓绋嬪墠寰€锛屽绂呬慨銆佷紶缁熸枃鍖栬绋嬫湁娴撳帤鍏磋叮</td><td><span style="color:#e76f51;">7-8鍒?/span></td></tr>' +
+            '<tr><td>8-9鍒嗭細<span style="color:#d62828;">寰堥珮</span> - 鎮ㄦ槸娣卞害鐨勬枃鍖栫埍濂借€咃紝浼氱爺绌跺巻鍙茶儗鏅紝瀵逛紶缁熸墜宸ヨ壓銆佷功娉曘€佽尪閬撶瓑鏈変笓涓氱骇鍏磋叮</td><td><span style="color:#d62828;">8-9鍒?/span></td></tr>' +
+            '<tr><td>9-10鍒嗭細<span style="color:#a4133c;">鏋侀珮</span> - 鏂囧寲浣撻獙鏄偍鐢熷懡鐨勯噸瑕佺粍鎴愰儴鍒嗭紝鎮ㄨ拷姹傛繁搴︾殑鏂囧寲娌夋蹈锛屾効鎰忎负楂樺搧璐ㄦ枃鍖栦箣鏃呮姇鍏ュぇ閲忔椂闂村拰閲戦挶</td><td><span style="color:#a4133c;">9-10鍒?/span></td></tr>' +
+            '<tr><td rowspan="6"><strong>馃尡 鐢熸€佸叴瓒?/strong><br>锛堝鑷劧鐜銆佺豢鑹茬敓鎬併€佹埛澶栧悍鍏荤瓑娲诲姩鐨勫枩鐖辩▼搴︼級</td>' +
+            '<td>0-2鍒嗭細<span style="color:#6a994e;">杈冧綆</span> - 鎮ㄦ洿鍠滄瀹ゅ唴娲诲姩鎴栧煄甯傜幆澧冿紝瀵硅嚜鐒舵埛澶栧叴瓒ｄ笉澶э紝涓嶅父杩涜寰掓銆佺櫥灞辩瓑娲诲姩</td><td><span style="color:#6a994e;">0-2鍒?/span></td></tr>' +
+            '<tr><td>2-4鍒嗭細<span style="color:#a7c957;">涓瓑鍋忎綆</span> - 鍋跺皵浜彈鑷劧锛屼絾涓昏鏄櫔鍚屽浜烘湅鍙嬶紝涓嶄富鍔ㄥ鎵捐嚜鐒跺悍鍏绘満浼?/td><td><span style="color:#a7c957;">2-4鍒?/span></td></tr>' +
+            '<tr><td>4-6鍒嗭細<span style="color:#e9c46a;">涓瓑</span> - 鍠滄鍦ㄨ嚜鐒剁幆澧冧腑鏀炬澗锛屼細鍙傚姞鍏洯娲诲姩銆佸懆鏈儕娓革紝浣嗕笉浼氫笓闂ㄥ鎵剧敓鎬佸悍鍏荤洰鐨勫湴</td><td><span style="color:#e9c46a;">4-6鍒?/span></td></tr>' +
+            '<tr><td>6-7鍒嗭細<span style="color:#f4a261;">涓珮</span> - 缁忓父杩涜妫灄娴淬€佹箍鍦版极姝ョ瓑鑷劧娲诲姩锛屾敞閲嶇┖姘旇川閲忓拰鐢熸€佺幆澧冿紝浼氫负浜嗕竴鐗囧ソ椋庢櫙涓撶▼鍓嶅線</td><td><span style="color:#f4a261;">6-7鍒?/span></td></tr>' +
+            '<tr><td>7-8鍒嗭細<span style="color:#e76f51;">杈冮珮</span> - 鐢熸€佸悍鍏绘槸鎮ㄩ噸瑕佺殑鐢熸椿鏂瑰紡锛屾偍鍠滄娴锋花鍐ユ兂銆佹俯娉夌枟鍏汇€佹．鏋楁哀鍚х瓑锛屼細绯荤粺鎬у湴杩芥眰鑷劧鐤楁剤</td><td><span style="color:#e76f51;">7-8鍒?/span></td></tr>' +
+            '<tr><td>8-10鍒嗭細<span style="color:#d62828;">寰堥珮-鏋侀珮</span> - 鑷劧鏄偍蹇冪伒鐨勫綊瀹匡紝鎮ㄨ拷姹傛瀬鑷寸殑鐢熸€佸悍鍏讳綋楠岋紝鍏虫敞鏈夋満鑶抽銆佽嚜鐒剁憸浼斤紝鎰挎剰涓洪珮绔敓鎬佸害鍋囨姇鍏?/td><td><span style="color:#d62828;">8-10鍒?/span></td></tr>' +
+            '<tr><td rowspan="6"><strong>馃泲 浼戦棽鍏磋叮</strong><br>锛堝杞绘澗鑸掗€傚害鍋囥€佷紤闂插ū涔愩€佺編椋烻PA绛夋椿鍔ㄧ殑鍠滅埍绋嬪害锛?/td>' +
+            '<td>0-2鍒嗭細<span style="color:#6a994e;">杈冧綆</span> - 鎮ㄦ洿鍋忓ソ绱у噾鍏呭疄鐨勮绋嬶紝涓嶅枩娆㈢函绮圭殑浼戦棽鏀炬澗锛岃寰楀害鍋囨氮璐规椂闂?/td><td><span style="color:#6a994e;">0-2鍒?/span></td></tr>' +
+            '<tr><td>2-4鍒嗭細<span style="color:#a7c957;">涓瓑鍋忎綆</span> - 鍙互鎺ュ彈閫傚害鏀炬澗锛屼絾涓嶄細鎶婁紤闂插害鍋囦綔涓轰富瑕佸嚭琛岀洰鐨勶紝鏇村枩娆㈣鍏夋墦鍗?/td><td><span style="color:#a7c957;">2-4鍒?/span></td></tr>' +
+            '<tr><td>4-6鍒嗭細<span style="color:#e9c46a;">涓瓑</span> - 鍠滄杞绘澗鐨勫亣鏈燂紝浼氫韩鍙楁俯娉夈€丼PA锛屼絾涔熶細瀹夋帓涓€浜涜鍏夋椿鍔紝娉ㄩ噸鏃呴€旇垝閫傚害</td><td><span style="color:#e9c46a;">4-6鍒?/span></td></tr>' +
+            '<tr><td>6-7鍒嗭細<span style="color:#f4a261;">涓珮</span> - 浼戦棽搴﹀亣鏄偍鏃呰鐨勬牳蹇冪洰鐨勶紝鎮ㄨ拷姹傞珮鍝佽川浣忓銆佺編椋熶綋楠岋紝鍠滄娴锋花搴﹀亣鏉戙€佺簿鍝佹皯瀹?/td><td><span style="color:#f4a261;">6-7鍒?/span></td></tr>' +
+            '<tr><td>7-8鍒嗭細<span style="color:#e76f51;">杈冮珮</span> - 鎮ㄨ拷姹傜簿鑷寸殑鐢熸椿鏂瑰紡锛屽枩娆㈤偖杞梾琛屻€佺背鍏舵灄缇庨銆侀珮绔疭PA锛屽鏈嶅姟鍝佽川瑕佹眰楂?/td><td><span style="color:#e76f51;">7-8鍒?/span></td></tr>' +
+            '<tr><td>8-10鍒嗭細<span style="color:#d62828;">寰堥珮-鏋侀珮</span> - 鏋佽嚧鑸掗€傛槸鎮ㄧ殑杩芥眰锛屾偍鎰挎剰涓鸿豹鍗庡害鍋囨潙銆佺浜虹瀹舵湇鍔°€佸浗闄呴偖杞瓑鎶曞叆锛岃拷姹傝韩蹇冪殑鍏ㄩ潰鏀炬澗涓庝韩鍙?/td><td><span style="color:#d62828;">8-10鍒?/span></td></tr>' +
+            '<tr><td rowspan="6"><strong>馃彞 鍖荤枟鍏磋叮</strong><br>锛堝鍋ュ悍绠＄悊銆佸尰鐤楀悍鍏汇€佸悍澶嶇枟鍏荤瓑鏈嶅姟鐨勯渶姹傜▼搴︼級</td>' +
+            '<td>0-2鍒嗭細<span style="color:#6a994e;">杈冧綆</span> - 鎮ㄨ韩浣撳仴搴风姸鍐佃壇濂斤紝鍑犱箮涓嶉渶瑕佸尰鐤楀悍鍏绘湇鍔★紝涓嶅叧娉ㄤ綋妫€鎴栧悍澶嶉」鐩?/td><td><span style="color:#6a994e;">0-2鍒?/span></tr>' +
+            '<tr><td>2-4鍒嗭細<span style="color:#a7c957;">涓瓑鍋忎綆</span> - 浼氳繘琛屽父瑙勪綋妫€锛屼絾涓嶄細涓撻棬瀵绘眰鍖荤枟搴峰吇鏈嶅姟锛屽鍏荤敓璇剧▼鏈夎交搴﹀叴瓒?/td><td><span style="color:#a7c957;">2-4鍒?/span></td></tr>' +
+            '<tr><td>4-6鍒嗭細<span style="color:#e9c46a;">涓瓑</span> - 寮€濮嬪叧娉ㄥ仴搴风鐞嗭紝浼氬弬鍔犱竴浜涘吇鐢熻搴с€佷腑鍖昏皟鐞嗭紝瀵瑰悍鍏诲熀鍦版湁涓€瀹氬叴瓒?/td><td><span style="color:#e9c46a;">4-6鍒?/span></td></tr>' +
+            '<tr><td>6-7鍒嗭細<span style="color:#f4a261;">涓珮</span> - 鏈夋槑纭殑鍋ュ悍缁存姢闇€姹傦紝浼氬畾鏈熶綋妫€锛屽叧娉ㄥ悍澶嶈缁冨拰钀ュ吇鑶抽璁″垝锛屽涓撲笟搴峰吇鏈嶅姟鏈夎緝寮洪渶姹?/td><td><span style="color:#f4a261;">6-7鍒?/span></td></tr>' +
+            '<tr><td>7-8鍒嗭細<span style="color:#e76f51;">杈冮珮</span> - 鎮ㄩ潪甯告敞閲嶅仴搴风鐞嗭紝瀵绘眰涓撲笟鐨勫尰鐤楀悍鍏绘湇鍔★紝瀵逛腑鍖诲悕瀹惰皟鐞嗐€侀珮绔綋妫€銆佺浜哄尰鐢熸湁鏄庣‘闇€姹?/td><td><span style="color:#e76f51;">7-8鍒?/span></td></tr>' +
+            '<tr><td>8-10鍒嗭細<span style="color:#d62828;">寰堥珮-鏋侀珮</span> - 鍋ュ悍鏄偍鐢熷懡鐨勫ご绛夊ぇ浜嬶紝鎮ㄩ渶瑕佸叏鏂逛綅鐨勫尰鐤楀悍鍏绘湇鍔★紝鍙兘娑夊強娴峰鍖荤枟銆佸悍澶嶇枟鍏汇€佹姉琛拌€侀」鐩瓑楂樼鏈嶅姟</td><td><span style="color:#d62828;">8-10鍒?/span></td></tr>' +
+            '<tr><td rowspan="7"><strong>馃挵 娑堣垂棰勬祴</strong><br>锛堝搴峰吇鏃呮父鐨勯绠楁姇鍏ユ剰鎰垮拰娑堣垂鑳藉姏棰勪及锛?/td>' +
+            '<td>0-2鍒嗭細<span style="color:#6a994e;">缁忔祹鍨?/span> - 棰勭畻鏈夐檺锛屽亸濂藉厤璐规垨浣庝环娲诲姩锛岄€夋嫨缁忔祹鍨嬩綇瀹匡紝鍑鸿浠ュ懆杈圭煭閫斾负涓伙紝涓嶆効鍦ㄦ梾娓镐笂鎶曞叆杩囧璧勯噾</td><td><span style="color:#6a994e;">0-2鍒?/span></td></tr>' +
+            '<tr><td>2-3鍒嗭細<span style="color:#a7c957;">缁忔祹鍋忕粡娴?/span> - 娉ㄩ噸鎬т环姣旓紝鎰挎剰閫夋嫨鎬т环姣旈珮鐨勭洰鐨勫湴锛屽彲浠ユ帴鍙楃粡娴庡瀷浣嗗笇鏈涙湁涓€瀹氬搧璐紝鍋跺皵鍙備笌鍛ㄨ竟浣庝环娓?/td><td><span style="color:#a7c957;">2-3鍒?/span></td></tr>' +
+            '<tr><td>3-5鍒嗭細<span style="color:#e9c46a;">鑸掗€傚瀷</span> - 鍙互鎺ュ彈涓瓑浠蜂綅娑堣垂锛屾効鎰忎负鑸掗€備綇瀹挎敮浠樻孩浠凤紝鍋忓ソ鍛ㄨ竟2-3鏃ユ父锛屽吋椤惧搧璐ㄥ拰浠锋牸</td><td><span style="color:#e9c46a;">3-5鍒?/span></td></tr>' +
+            '<tr><td>5-7鍒嗭細<span style="color:#f4a261;">鍝佽川鍨?/span> - 鏈変竴瀹氭秷璐硅兘鍔涳紝鎰挎剰涓洪珮鍝佽川浣撻獙浠樿垂锛屽亸濂借法鐪?-7鏃ユ父锛岄€夋嫨涓珮绔害鍋囨潙锛屾効鎰忔姇璧勫仴搴?/td><td><span style="color:#f4a261;">5-7鍒?/span></td></tr>' +
+            '<tr><td>7-8鍒嗭細<span style="color:#e76f51;">楂樼鍨?/span> - 娑堣垂鑳藉姏杈冨己锛岃拷姹傞珮绔畾鍒舵湇鍔★紝鎰挎剰閫夋嫨濂㈠崕搴﹀亣鏉戙€佺浜哄畾鍒惰绋嬶紝瀵规湇鍔¤川閲忚姹傞珮</td><td><span style="color:#e76f51;">7-8鍒?/span></td></tr>' +
+            '<tr><td>8-9鍒嗭細<span style="color:#d62828;">楂樼鍋忓ア鍗?/span> - 杩芥眰鏋佽嚧浣撻獙锛屾効鎰忎负椤剁骇鏈嶅姟涔板崟锛屾帴鍙楃洿鍗囨満瑙傚厜銆佺浜虹瀹躲€佸浗闄呴偖杞瓑楂樼椤圭洰</td><td><span style="color:#d62828;">8-9鍒?/span></td></tr>' +
+            '<tr><td>9-10鍒嗭細<span style="color:#a4133c;">濂㈠崕鍨?/span> - 涓嶈棰勭畻涓婇檺锛岃拷姹傞《绾уア鍗庝綋楠岋紝鎰挎剰涓烘€荤粺濂楁埧銆佹捣澶栧尰鐤楁梾娓搞€佷笓灞炲畾鍒剁瓑鎶曞叆锛屾敹鍏ュ彲瑙傛垨瑙嗗仴搴蜂负鏈€楂樻姇璧?/td><td><span style="color:#a4133c;">9-10鍒?/span></td></tr>' +
+            '</tbody></table></div>' +
+            '<div class="score-summary-box">' +
+            '<h4 style="color:#2d4a2c; margin-bottom:12px;">馃摑 璁板綍鎮ㄧ殑鑷瘎缁撴灉</h4>' +
+            '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">' +
+            '<div><strong>鏂囧寲鍏磋叮锛?/strong><input type="number" class="score-record-input" id="recordCulture" min="0" max="10" step="0.5" placeholder="0-10鍒?></div>' +
+            '<div><strong>鐢熸€佸叴瓒ｏ細</strong><input type="number" class="score-record-input" id="recordEco" min="0" max="10" step="0.5" placeholder="0-10鍒?></div>' +
+            '<div><strong>浼戦棽鍏磋叮锛?/strong><input type="number" class="score-record-input" id="recordLeisure" min="0" max="10" step="0.5" placeholder="0-10鍒?></div>' +
+            '<div><strong>鍖荤枟鍏磋叮锛?/strong><input type="number" class="score-record-input" id="recordMedical" min="0" max="10" step="0.5" placeholder="0-10鍒?></div>' +
+            '<div><strong>娑堣垂棰勬祴锛?/strong><input type="number" class="score-record-input" id="recordConsumption" min="0" max="10" step="0.5" placeholder="0-10鍒?></div>' +
+            '</div>' +
+            '<p style="color:#666; font-size:12px; margin-top:10px;">鎻愮ず锛氳褰曞畬鎴愬悗锛岀偣鍑?杩涘叆鏁版嵁鍖栭€夋嫨"鎸夐挳灏嗘暟鍊煎甫鍏ヨ绠?/p>' +
+            '<button class="btn-primary" style="margin-top:15px;" id="gotoDataSelectBtn">鉃?杩涘叆鏁版嵁鍖栭€夋嫨</button>' +
+            '</div>';
+        setTimeout(function() {
+            var gotoBtn = document.getElementById('gotoDataSelectBtn');
+            if (gotoBtn) {
+                gotoBtn.addEventListener('click', function() {
+                    var c = parseFloat(document.getElementById('recordCulture').value) || 0;
+                    var e = parseFloat(document.getElementById('recordEco').value) || 0;
+                    var l = parseFloat(document.getElementById('recordLeisure').value) || 0;
+                    var m = parseFloat(document.getElementById('recordMedical').value) || 0;
+                    var consumptionVal = parseFloat(document.getElementById('recordConsumption').value) || 0;
+                    document.getElementById('cultureInput').value = c;
+                    document.getElementById('ecoInput').value = e;
+                    document.getElementById('leisureInput').value = l;
+                    document.getElementById('medicalInput').value = m;
+                    var consumptionInput = document.getElementById('consumptionInput');
+                    if (consumptionInput) consumptionInput.value = consumptionVal;
+                    showPage('dataSelectPage');
+                });
+            }
+        }, 100);
+    }
+    function renderHealthStylePage() {
+        var el = document.getElementById('healthStyleContent');
+        var html =
+            '<div class="detail-title">馃尶 鍏荤敓鏂瑰紡鎬昏</div>' +
+            '<div class="mode-cards">' +
+            '<div class="mode-card" data-mode-index="0">' +
+                '<span class="card-title">馃摎 鏂囧寲浣撻獙鏃呮父妯″紡</span>' +
+                '<div class="card-desc">鏂囧寲浣撻獙搴峰吇鏃呮父浠ユ枃鍖栨蹈娑?韬績鍏荤敓涓烘牳蹇冿紝铻嶅悎鍘嗗彶鏂囧寲銆佹皯淇楅鎯呫€佷紶缁熸妧鑹轰笌绂呬慨闈欏吇绛夊唴瀹癸紝渚濇墭鏂囧寲鍙よ抗銆佷紶缁熸潙钀姐€侀潪閬楄祫婧愭墦閫犳矇娴稿紡浣撻獙鍦烘櫙銆?/div>' +
+                '<div class="card-hint">>> 鐐瑰嚮鏌ョ湅鍥剧墖灞曠ず & 娑堣垂妗ｆ</div>' +
+            '</div>' +
+            '<div class="mode-card" data-mode-index="1">' +
+                '<span class="card-title">馃尡 鑷劧鐤楁剤鏃呮父妯″紡</span>' +
+                '<div class="card-desc">鑷劧鐤楁剤搴峰吇鏃呮父浠ョ敓鎬佽祫婧?韬績淇涓烘牳蹇冿紝渚濇墭妫灄銆佹箍鍦般€佹捣婊ㄣ€佹俯娉夌瓑鑷劧鐢熸€佺幆澧冿紝绐佸嚭鑷劧鐜鐨勭枟鎰堝姛鏁堜笌鐢熸€佷簰鍔ㄤ綋楠屻€?/div>' +
+                '<div class="card-hint">>> 鐐瑰嚮鏌ョ湅鍥剧墖灞曠ず & 娑堣垂妗ｆ</div>' +
+            '</div>' +
+            '<div class="mode-card" data-mode-index="2">' +
+                '<span class="card-title">馃泲 浼戦棽浜箰鏃呮父妯″紡</span>' +
+                '<div class="card-desc">浼戦棽浜箰搴峰吇鏃呮父浠ヨ垝閫傚害鍋囥€佹斁鏉捐韩蹇冧负鏍稿績锛岄潰鍚戣拷姹傞珮鍝佽川鏃呭眳浣撻獙鐨勮€佸勾缇や綋锛屼富鎵撹交鏉捐垝閫傜殑杞诲害鍋囧舰鎬併€?/div>' +
+                '<div class="card-hint">>> 鐐瑰嚮鏌ョ湅鍥剧墖灞曠ず & 娑堣垂妗ｆ</div>' +
+            '</div>' +
+            '<div class="mode-card" data-mode-index="3">' +
+                '<span class="card-title">馃彞 鍋ュ悍闇€姹傛梾娓告ā寮?/span>' +
+                '<div class="card-desc">鍋ュ悍闇€姹傚悍鍏绘梾娓镐互涓撲笟鍖荤枟+鍋ュ悍绠＄悊涓烘牳蹇冿紝闈㈠悜瀛樺湪鍋ュ悍缁存姢銆佸悍澶嶇枟鍏绘垨浜氬仴搴疯皟鐞嗛渶姹傜殑鑰佸勾缇や綋锛屾彁渚涘仴搴蜂綋妫€銆佷腑鍖荤悊鐤楃瓑鏈嶅姟銆?/div>' +
+                '<div class="card-hint">>> 鐐瑰嚮鏌ョ湅鍥剧墖灞曠ず & 娑堣垂妗ｆ</div>' +
+            '</div>' +
+            '</div>';
+        el.innerHTML = html;
+        setTimeout(function() {
+            el.querySelectorAll('.mode-card[data-mode-index]').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    var modeIdx = parseInt(this.getAttribute('data-mode-index'));
+                    showModeDetail(modeIdx);
+                });
+            });
+        }, 100);
+    }
+    function showModeDetail(modeIdx) {
+        var detail = modeDetail[modeIdx];
+        var imgHtml = renderImageGallery(detail.images);
+        var tiersHtml = renderPriceTiers(detail.priceTiers, modeNames[modeIdx]);
+        var contentHtml =
+            '<h3 style="color:#2d4a2c; margin-bottom:10px;">' + modeNames[modeIdx] + '</h3>' +
+            '<p style="color:#3a5535; line-height:1.7;">' + detail.reason + '</p>' +
+            '<p style="color:#3a5535; line-height:1.7;"><strong>' + detail.activities + '</strong></p>' +
+            '<h4 style="color:#4a6b3a; margin-top:18px;">馃柤 鍥剧墖灞曠ず</h4>' +
+            imgHtml +
+            '<h4 style="color:#4a6b3a; margin-top:18px;">馃挼 娑堣垂妗ｆ涓庢秷璐归娴嬪尮閰?/h4>' +
+            '<p style="color:#5a6a4a; font-size:13px; margin-bottom:12px;">璇疯緭鍏ユ偍鐨勬秷璐归娴嬪緱鍒嗭紙0-10鍒嗭級锛岀郴缁熷皢涓烘偍鍖归厤鏈€鍚堥€傜殑娑堣垂妗ｆ锛?/p>' +
+            '<div style="margin-bottom:15px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">' +
+            '<label style="font-weight:600;">鎮ㄧ殑娑堣垂棰勬祴寰楀垎锛?/label>' +
+            '<input type="number" id="detailConsumptionInput" value="5" min="0" max="10" step="0.5" style="padding:8px 12px; border:2px solid #c8d8c0; border-radius:8px; width:80px; font-size:0.9rem;" oninput="updateMatchedTier(this.value, \'' + modeNames[modeIdx] + '\')">' +
+            '<span style="color:#666; font-size:13px;">锛?-10鍒嗭級</span>' +
+            '</div>' +
+            '<div id="matchedTierDisplay" style="background:linear-gradient(135deg, #f0f7e8, #e8f5e0); padding:15px; border-radius:10px; border:2px solid #6bae5e; margin-bottom:15px;">' +
+            '<strong style="color:#2d4a2d;">寤鸿鎮ㄩ€夋嫨锛?span id="suggestedTierName">B妗?路 鑸掗€傚瀷</span></strong>' +
+            '<br><span style="color:#5a6a4a; font-size:13px;">鏍规嵁鎮ㄧ殑娑堣垂棰勬祴寰楀垎锛岀郴缁熸帹鑽愭妗ｆ銆傜偣鍑讳笅鏂瑰崱鐗囦簡瑙ｆ洿澶氳鎯呫€?/span>' +
+            '</div>' +
+            '<div style="margin-bottom:15px;">' + tiersHtml + '</div>' +
+            '<div style="margin-top:15px; text-align:center;">' +
+            '<button class="btn-primary" onclick="askAIAboutMatchedTier(\'' + modeNames[modeIdx] + '\')" style="padding:12px 24px; font-size:0.95rem;">馃 璇㈤棶AI灏忓姪鎵嬩簡瑙ｈ鎯?/button>' +
+            '</div>';
+        detailContent.innerHTML =
+            '<div class="detail-title">馃尶 ' + modeNames[modeIdx] + ' 路 璇︽儏</div>' +
+            '<div class="detail-text">' + contentHtml + '</div>';
+        navStack.push('healthStyle');
+        showPage('detailPage');
+        backFromDetail.textContent = '<< 杩斿洖鍏荤敓鏂瑰紡';
+        setTimeout(function() {
+            var input = document.getElementById('detailConsumptionInput');
+            if (input) {
+                input.addEventListener('input', function() {
+                    updateMatchedTier(this.value, modeNames[modeIdx]);
+                });
+            }
+        }, 100);
+    }
+    function updateMatchedTier(consumptionScore, modeName) {
+        var tier = getConsumptionTier(consumptionScore);
+        var tierName = '';
+        var tierLabel = '';
+        var tierClass = '';
+        if (tier === 'A') {
+            tierLabel = 'A妗?路 缁忔祹鍨?;
+            tierClass = 'tier-a';
+        } else if (tier === 'B') {
+            tierLabel = 'B妗?路 鑸掗€傚瀷';
+            tierClass = 'tier-b';
+        } else if (tier === 'C') {
+            tierLabel = 'C妗?路 鍝佽川鍨?;
+            tierClass = 'tier-c';
+        } else if (tier === 'D') {
+            tierLabel = 'D妗?路 楂樼鍨?;
+            tierClass = 'tier-d';
+        } else {
+            tierLabel = 'E妗?路 濂㈠崕鍨?;
+            tierClass = 'tier-e';
+        }
+        var display = document.getElementById('matchedTierDisplay');
+        if (display) {
+            var suggestedName = document.getElementById('suggestedTierName');
+            if (suggestedName) {
+                suggestedName.textContent = tierLabel;
+            }
+        }
+        document.querySelectorAll('.tier-card').forEach(function(card) {
+            card.style.opacity = '0.5';
+            card.style.transform = 'scale(0.98)';
+            card.style.border = '';
+            if (card.querySelector('.tier-label').textContent.includes(tierLabel.split('路')[0].trim())) {
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+                card.style.border = '3px solid #6bae5e';
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    }
+    function askAIAboutMatchedTier(modeName) {
+        var consumptionScore = 5;
+        var input = document.getElementById('detailConsumptionInput');
+        if (input) {
+            consumptionScore = parseFloat(input.value) || 5;
+        }
+        var tier = getConsumptionTier(consumptionScore);
+        var tierName = getConsumptionLabelFromTier(tier);
+        quickConsultConsumption(modeName, consumptionScore, tier);
+    }
+    function renderPriceTiers(tiers, modeName) {
+        var html = '<div class="price-tiers">';
+        tiers.forEach(function(t) {
+            html +=
+                '<div class="tier-card">' +
+                  '<span class="tier-label ' + t.tierClass + '">' + t.label + '</span>' +
+                  '<div class="tier-price">馃挵 ' + t.price + '</div>' +
+                  '<div class="tier-detail">' + t.detail + '</div>' +
+                '</div>';
+        });
+        html += '</div>';
+        return html;
+    }
+    function renderImageGallery(images) {
+        var html = '<div class="image-gallery">';
+        images.forEach(function(img) {
+            html +=
+                '<img src="' + img.src + '" alt="' + img.alt + '" loading="lazy" decoding="async" onerror="this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'flex\';">' +
+                '<div class="img-fallback" style="display:none;width:100%;max-width:320px;height:220px;background:#e8f0dd;border-radius:20px;align-items:center;justify-content:center;color:#7a9a60;font-size:0.9rem;text-align:center;padding:20px;">' +
+                  '馃柤 ' + img.alt + '<br><small>锛堝浘鐗囧緟娣诲姞锛?/small>' +
+                '</div>';
+        });
+        html += '</div>';
+        return html;
+    }
+    function cosineSim(vecA, vecB) {
+        var dot = 0, magA = 0, magB = 0;
+        for (var i = 0; i < vecA.length; i++) {
+            dot += vecA[i] * vecB[i];
+            magA += vecA[i] ** 2;
+            magB += vecB[i] ** 2;
+        }
+        magA = Math.sqrt(magA);
+        magB = Math.sqrt(magB);
+        if (magA === 0 || magB === 0) return 0;
+        return dot / (magA * magB);
+    }
+    function performCalculation() {
+        var culture = parseFloat(document.getElementById('cultureInput').value);
+        var eco = parseFloat(document.getElementById('ecoInput').value);
+        var leisure = parseFloat(document.getElementById('leisureInput').value);
+        var medical = parseFloat(document.getElementById('medicalInput').value);
+        var consumption = parseFloat(document.getElementById('consumptionInput').value);
+        if (isNaN(culture) || isNaN(eco) || isNaN(leisure) || isNaN(medical) || isNaN(consumption)) {
+            alert('璇峰～鍐欐墍鏈夊叴瓒ｅ€硷紙鍖呮嫭娑堣垂棰勬祴锛?-10鍒嗭級');
+            return null;
+        }
+        if ([culture, eco, leisure, medical, consumption].some(function(v) { return v < 0 || v > 10; })) {
+            alert('姣忛」鍏磋叮鍊奸渶鍦?鍒?0涔嬮棿');
+            return null;
+        }
+        var userVec = [culture, eco, leisure, medical];
+        var sims = modeFeatures.map(function(feat) { return cosineSim(userVec, feat); });
+        var best = sims.indexOf(Math.max.apply(null, sims));
+        return { userVec: userVec, sims: sims, bestIdx: best, consumption: consumption };
+    }
+    function getConsumptionTier(score) {
+        if (score <= 2) return 'A';
+        if (score <= 4) return 'B';
+        if (score <= 6) return 'C';
+        if (score <= 8) return 'D';
+        return 'E';
+    }
+    function getConsumptionLabel(tier) {
+        var labels = {
+            'A': '缁忔祹鍨嬶紙0-2鍒嗭級',
+            'B': '鑸掗€傚瀷锛?-4鍒嗭級',
+            'C': '鍝佽川鍨嬶紙4-6鍒嗭級',
+            'D': '楂樼鍨嬶紙6-8鍒嗭級',
+            'E': '濂㈠崕鍨嬶紙8-10鍒嗭級'
+        };
+        return labels[tier] || '';
+    }
+    function getConsumptionLabelFromTier(tier) {
+        var labels = {
+            'A': '缁忔祹鍨?,
+            'B': '鑸掗€傚瀷',
+            'C': '鍝佽川鍨?,
+            'D': '楂樼鍨?,
+            'E': '濂㈠崕鍨?
+        };
+        return labels[tier] || '鍝佽川鍨?;
+    }
+    function getIntelligentRecommendation(bestModeIdx, consumption) {
+        var tier = getConsumptionTier(consumption);
+        var modeName = modeNames[bestModeIdx];
+        var detail = modeDetail[bestModeIdx];
+        var recommendations = {
+            'A': {
+                title: '馃挕 缁忔祹鍨嬫櫤鑳藉绛?,
+                content: '鏍规嵁鎮ㄧ殑鍏磋叮鐗瑰緛锛屾垜浠负鎮ㄦ帹鑽?<strong>' + modeName + '</strong>銆傝€冭檻鍒版偍鐨勬秷璐归娴嬪緱鍒嗭紙' + consumption + '鍒嗭級锛屽缓璁偍閫夋嫨 <span style="color:#6a994e;">A妗Ｂ风粡娴庡瀷</span> 娑堣垂妗ｆ銆? +
+                         '璇ユ。娆℃彁渚涢珮鎬т环姣旂殑搴峰吇浣撻獙锛屼緥濡傦細鏈湴鏂囧寲鏅偣娓歌銆佺ぞ鍖烘枃鍖栦腑蹇冩椿鍔ㄣ€佸厤璐瑰崥鐗╅鍙傝銆佸叕鍥お鏋佹櫒缁冪瓑銆? +
+                         '寤鸿鎻愬墠鍏虫敞鏅尯浼樻儬娲诲姩锛岄€夋嫨娣″鍑鸿锛岄€夋嫨缁忔祹鍨嬩綇瀹匡紝璁╂瘡涓€鍒嗛挶閮借姳鍦ㄥ垁鍒冧笂銆?
+            },
+            'B': {
+                title: '馃挕 鑸掗€傚瀷鏅鸿兘瀵圭瓥',
+                content: '鏍规嵁鎮ㄧ殑鍏磋叮鐗瑰緛锛屾垜浠负鎮ㄦ帹鑽?<strong>' + modeName + '</strong>銆傝€冭檻鍒版偍鐨勬秷璐归娴嬪緱鍒嗭紙' + consumption + '鍒嗭級锛屽缓璁偍閫夋嫨 <span style="color:#a7c957;">B妗Ｂ疯垝閫傚瀷</span> 娑堣垂妗ｆ銆? +
+                         '璇ユ。娆″湪鍝佽川鍜屼环鏍奸棿鍙栧緱鑹ソ骞宠　锛屾彁渚涘懆杈瑰巻鍙叉枃鍖栧悕鍩?-3鏃ユ父銆佸崥鐗╅娣卞害瀵艰銆侀潪閬楁墜宸ヨ壓浣撻獙璇剧瓑銆? +
+                         '寤鸿閫夋嫨鍙ｇ濂界殑涓珮绔皯瀹挎垨搴﹀亣鏉戯紝鍏虫敞鍥㈣喘浼樻儬锛屾彁鍓嶉绾︾儹闂ㄩ」鐩€?
+            },
+            'C': {
+                title: '馃挕 鍝佽川鍨嬫櫤鑳藉绛?,
+                content: '鏍规嵁鎮ㄧ殑鍏磋叮鐗瑰緛锛屾垜浠负鎮ㄦ帹鑽?<strong>' + modeName + '</strong>銆傝€冭檻鍒版偍鐨勬秷璐归娴嬪緱鍒嗭紙' + consumption + '鍒嗭級锛屽缓璁偍閫夋嫨 <span style="color:#e9c46a;">C妗Ｂ峰搧璐ㄥ瀷</span> 娑堣垂妗ｆ銆? +
+                         '璇ユ。娆℃彁渚涜法鐪佹枃鍖栦箣鏃?-7鏃ャ€侀潪閬椾紶鎵夸汉浜叉巿宸ュ潑銆佸巻鍙叉枃鍖栫爺瀛﹀洟銆侀珮绔淇害鍋囨潙绛夐珮绔綋楠屻€? +
+                         '寤鸿鎻愬墠瑙勫垝琛岀▼锛岄€夋嫨浼樿川鏃呰鏈烘瀯锛屾敞鎰忔梾閫斾紤鎭笌钀ュ吇鎼厤锛岃搴峰吇涔嬫梾鏇村姞鍏呭疄銆?
+            },
+            'D': {
+                title: '馃挕 楂樼鍨嬫櫤鑳藉绛?,
+                content: '鏍规嵁鎮ㄧ殑鍏磋叮鐗瑰緛锛屾垜浠负鎮ㄦ帹鑽?<strong>' + modeName + '</strong>銆傝€冭檻鍒版偍鐨勬秷璐归娴嬪緱鍒嗭紙' + consumption + '鍒嗭級锛屽缓璁偍閫夋嫨 <span style="color:#f4a261;">D妗Ｂ烽珮绔瀷</span> 娑堣垂妗ｆ銆? +
+                         '璇ユ。娆℃彁渚涚浜哄畾鍒舵枃鍖栦箣鏃呫€佸浗闄呮枃鍖栦氦娴佸弬璁裤€佽豹鍗庢枃鍖栦富棰橀厭搴椼€佷笓灞炴憚褰卞笀璺熸媿銆佸ご绛夎埍+浜旀槦绾у叏绋嬬瓑灏婁韩鏈嶅姟銆? +
+                         '寤鸿鑱旂郴涓撲笟鏃呰椤鹃棶杩涜涓€у寲瀹氬埗锛岄€夋嫨鍙ｇ鏋佷匠鐨勯珮绔悍鍏绘満鏋勶紝纭繚鏈嶅姟鍝佽川涓庡畨鍏ㄦ€с€?
+            },
+            'E': {
+                title: '馃挕 濂㈠崕鍨嬫櫤鑳藉绛?,
+                content: '鏍规嵁鎮ㄧ殑鍏磋叮鐗瑰緛锛屾垜浠负鎮ㄦ帹鑽?<strong>' + modeName + '</strong>銆傝€冭檻鍒版偍鐨勬秷璐归娴嬪緱鍒嗭紙' + consumption + '鍒嗭級锛屽缓璁偍閫夋嫨 <span style="color:#e76f51;">E妗Ｂ峰ア鍗庡瀷</span> 娑堣垂妗ｆ銆? +
+                         '璇ユ。娆℃彁渚涢《绾уア鍗庝綋楠岋紝鍖呮嫭绉佷汉瀹氬埗鍏ㄧ▼鏈嶅姟銆佸浗闄呴《绾у悍鍏绘満鏋勩€佹捣澶栧尰鐤楁梾娓搞€佷笓灞炲仴搴风鐞嗗洟闃熺瓑銆? +
+                         '寤鸿閫夋嫨鍥介檯鐭ュ悕鐨勯珮绔悍鍏诲搧鐗岋紝鍏虫敞鍋ュ悍绠＄悊鐨勫墠娌块」鐩紙濡傛姉琛拌€併€佸共缁嗚優绛夛級锛屽悓鏃舵敞閲嶆梾閫斿畨鍏ㄤ笌鍖荤枟淇濋殰銆?
+            }
+        };
+        return recommendations[tier] || recommendations['C'];
+    }
+    function displayResult(result) {
+        var sims = result.sims;
+        var best = result.bestIdx;
+        var consumption = result.consumption || 5;
+        var detail = modeDetail[best];
+        var tier = getConsumptionTier(consumption);
+        var smartRec = getIntelligentRecommendation(best, consumption);
+        var html = '<strong>馃М 浣欏鸡鐩镐技搴﹁绠楃粨鏋滐細</strong><br>';
+        modeNames.forEach(function(name, i) {
+            var isBest = i === best ? ' <span style="color:#6bae5e; font-weight:bold;">銆愭帹鑽愩€?/span>' : '';
+            html += name + '锛? + sims[i].toFixed(4) + isBest + '<br>';
+        });
+        html += '<br><div style="background:linear-gradient(135deg, #e8f5e0, #d4ecc8); padding:18px; border-radius:12px; border:2px solid #6bae5e; margin:15px 0;">';
+        html += '<strong style="font-size:1.2em; color:#2d4a2d;">馃幆 涓烘偍鏅鸿兘鎺ㄨ崘锛? + modeNames[best] + '</strong>';
+        html += '<br><span style="color:#4a6b3a;">鍖归厤搴︼細' + sims[best].toFixed(4) + '</span>';
+        html += '<br><br><strong>閫傚悎浜虹兢锛?/strong>' + detail.who;
+        html += '<br><br><strong>鎺ㄨ崘鐞嗙敱锛?/strong>' + detail.reason;
+        html += '<br><strong>' + detail.activities + '</strong>';
+        html += '</div>';
+        html += '<div style="background:linear-gradient(135deg, #fff8e8, #fff3d0); padding:18px; border-radius:12px; border:2px solid #e9c46a; margin:15px 0; display:flex; flex-wrap:wrap; gap:15px; align-items:flex-start;">';
+        html += '<div style="flex:1; min-width:280px;">';
+        html += '<strong style="font-size:1.1em; color:#8a6520;">' + smartRec.title + '</strong>';
+        html += '<br><br><span style="color:#5a4a20; line-height:1.7;">' + smartRec.content + '</span>';
+        html += '</div>';
+        html += '<button class="btn-accent ai-quick-consult-btn" onclick="quickConsultConsumption(\'' + modeNames[best] + '\', ' + consumption + ', \'' + tier + '\')" style="flex-shrink:0; padding:12px 18px; font-size:0.9rem; border-radius:10px;">馃 璇㈤棶AI灏忓姪鎵?br>浜嗚В' + getConsumptionLabelFromTier(tier) + '璇︽儏</button>';
+        html += '</div>';
+        calcResultDisplay.innerHTML = html;
+        calcResultDisplay.style.display = 'block';
+        gotoVisualBtn.style.display = 'inline-block';
+        exportExcelFromCalcBtn.style.display = 'inline-block';
+        calcResultDisplay.setAttribute('data-recommend-text',
+            '涓烘偍鎺ㄨ崘' + modeNames[best] + '銆? + smartRec.title + '銆? + detail.reason + ' ' + detail.activities);
+    }
+    function exportSimsToExcel() {
+        if (!simScores || bestIdx === null) {
+            alert('鏆傛棤璁＄畻缁撴灉锛岃鍏堝畬鎴愭暟鎹寲閫夋嫨銆?);
+            return;
+        }
+        var rows = [
+            ['搴峰吇妯″紡', '浣欏鸡鐩镐技搴?]
+        ];
+        modeNames.forEach(function(name, i) { rows.push([name, simScores[i].toFixed(4)]); });
+        rows.push([]);
+        rows.push(['鎺ㄨ崘妯″紡', modeNames[bestIdx]]);
+        rows.push(['鐢ㄦ埛鏂囧寲鍏磋叮', usrVec[0]]);
+        rows.push(['鐢ㄦ埛鐢熸€佸叴瓒?, usrVec[1]]);
+        rows.push(['鐢ㄦ埛浼戦棽鍏磋叮', usrVec[2]]);
+        rows.push(['鐢ㄦ埛鍖荤枟鍏磋叮', usrVec[3]]);
+        var ws = XLSX.utils.aoa_to_sheet(rows);
+        ws['!cols'] = [{ wch: 20 }, { wch: 18 }];
+        var wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, '搴峰吇妯″紡鎺ㄨ崘');
+        XLSX.writeFile(wb, '搴峰吇妯″紡鍖归厤缁撴灉.xlsx');
+    }
+    function exportChartToWord() {
+        var canvases = document.querySelectorAll('#chartDisplayArea canvas');
+        if (canvases.length === 0) {
+            alert('鏈壘鍒板浘琛紝璇峰厛鐢熸垚鍙鍖栧浘琛ㄣ€?);
+            return;
+        }
+        if (typeof docx === 'undefined') {
+            alert('Word瀵煎嚭缁勪欢姝ｅ湪鍔犺浇锛岃绋嶅悗閲嶈瘯銆傚鎸佺画鏃犳硶瀵煎嚭锛岃妫€鏌ョ綉缁滆繛鎺ャ€?);
+            return;
+        }
+        var explanationEl = document.getElementById('chartExplanation');
+        var summaryEl = document.getElementById('recommendSummaryBox');
+        var explanationText = explanationEl ? explanationEl.innerText : '';
+        var summaryText = summaryEl ? summaryEl.innerText : '';
+        var Document = docx.Document;
+        var Packer = docx.Packer;
+        var Paragraph = docx.Paragraph;
+        var TextRun = docx.TextRun;
+        var ImageRun = docx.ImageRun;
+        var HeadingLevel = docx.HeadingLevel;
+        var AlignmentType = docx.AlignmentType;
+        var BorderStyle = docx.BorderStyle;
+        var children = [];
+        children.push(new Paragraph({
+            children: [new TextRun({ text: '搴峰吇妯″紡鍙鍖栧垎鏋愭姤鍛?, bold: true, size: 36, color: '2D4A2C', font: 'SimSun' })],
+            heading: HeadingLevel.HEADING_1,
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 300 },
+        }));
+        children.push(new Paragraph({
+            children: [new TextRun({ text: '鍥捐〃灞曠ず', bold: true, size: 30, font: 'SimSun' })],
+            heading: HeadingLevel.HEADING_2,
+            spacing: { before: 200, after: 150 },
+        }));
+        canvases.forEach(function(canvas) {
+            var tempCanvas = document.createElement('canvas');
+            var scale = 2;
+            tempCanvas.width = canvas.width * scale;
+            tempCanvas.height = canvas.height * scale;
+            var tempCtx = tempCanvas.getContext('2d');
+            tempCtx.scale(scale, scale);
+            tempCtx.fillStyle = '#ffffff';
+            tempCtx.fillRect(0, 0, canvas.width, canvas.height);
+            tempCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+            var dataUrl = tempCanvas.toDataURL('image/png');
+            var base64 = dataUrl.split(',')[1];
+            var binaryString = atob(base64);
+            var bytes = new Uint8Array(binaryString.length);
+            for (var i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            var imgWidth = 480;
+            var imgHeight = Math.round(480 * canvas.height / canvas.width);
+            children.push(new Paragraph({
+                children: [
+                    new ImageRun({
+                        data: bytes,
+                        transformation: { width: imgWidth, height: imgHeight },
+                        type: 'png',
+                    }),
+                ],
+                alignment: AlignmentType.CENTER,
+                spacing: { before: 100, after: 100 },
+            }));
+        });
+        if (explanationText) {
+            children.push(new Paragraph({
+                children: [new TextRun({ text: '鍥捐〃瑙ｈ', bold: true, size: 30, font: 'SimSun' })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { before: 200, after: 150 },
+            }));
+            explanationText.split('\n').forEach(function(line) {
+                if (line.trim()) {
+                    children.push(new Paragraph({
+                        children: [new TextRun({ text: line.trim(), size: 22, font: 'SimSun' })],
+                        spacing: { after: 80 },
+                    }));
+                }
+            });
+        }
+        if (summaryText) {
+            children.push(new Paragraph({
+                children: [new TextRun({ text: '鎺ㄨ崘鎬荤粨', bold: true, size: 30, font: 'SimSun' })],
+                heading: HeadingLevel.HEADING_2,
+                spacing: { before: 200, after: 150 },
+            }));
+            summaryText.split('\n').forEach(function(line) {
+                if (line.trim()) {
+                    children.push(new Paragraph({
+                        children: [new TextRun({ text: line.trim(), size: 22, font: 'SimSun' })],
+                        spacing: { after: 80 },
+                    }));
+                }
+            });
+        }
+        children.push(new Paragraph({
+            children: [new TextRun({ text: '鐢辩煶瀹跺簞閾侀亾澶у 路 鍋ュ悍鍏荤敓鏃呮父妯″紡绯荤粺鐢熸垚', size: 20, color: '888888', font: 'SimSun' })],
+            alignment: AlignmentType.CENTER,
+            border: { top: { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC', space: 10 } },
+            spacing: { before: 300 },
+        }));
+        var doc = new Document({
+            sections: [{
+                properties: {},
+                children: children,
+            }],
+        });
+        Packer.toBlob(doc).then(function(blob) {
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = '搴峰吇妯″紡鍒嗘瀽鎶ュ憡.docx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }).catch(function(err) {
+            alert('瀵煎嚭Word澶辫触: ' + err.message);
+        });
+    }
+    function resetToChartSelection() {
+        if (myChart) {
+            myChart.destroy();
+            myChart = null;
+        }
+        chartSelectionArea.style.display = 'block';
+        chartDisplayArea.style.display = 'none';
+        chartDisplayArea.innerHTML = '';
+    }
+    function ensureStandardChartLayout() {
+        if (!document.getElementById('myChart')) {
+            chartDisplayArea.innerHTML =
+                '<div class="chart-container"><canvas id="myChart"></canvas></div>' +
+                '<div id="chartExplanation" class="result-box" style="margin-top:10px;"></div>' +
+                '<div id="recommendSummaryBox" class="recommend-summary"></div>' +
+                '<div class="button-row">' +
+                  '<button class="btn-return-chart" id="backToChartSelection">馃攧 閲嶆柊閫夋嫨鍥捐〃</button>' +
+                  '<button class="btn-export-excel" id="exportExcelChart">馃摛 瀵煎嚭 Excel</button>' +
+                  '<button class="btn-export-word" id="exportWordChart">馃搫 瀵煎嚭 Word</button>' +
+                  '<button class="btn-return-home" id="backToHomeFromChart">鈫?杩斿洖涓婚〉</button>' +
+                '</div>';
+        }
+    }
+    function renderPieLayout() {
+        chartDisplayArea.innerHTML =
+            '<div style="display:flex; gap:25px; flex-wrap:wrap; justify-content:center;">' +
+              '<div style="flex:1; min-width:260px;"><canvas id="pieUser" height="260"></canvas></div>' +
+              '<div style="flex:1; min-width:260px;"><canvas id="pieMode" height="260"></canvas></div>' +
+            '</div>' +
+            '<div id="chartExplanation" class="result-box" style="margin-top:15px;"></div>' +
+            '<div id="recommendSummaryBox" class="recommend-summary"></div>' +
+            '<div class="button-row">' +
+              '<button class="btn-return-chart" id="backToChartSelection">馃攧 閲嶆柊閫夋嫨鍥捐〃</button>' +
+              '<button class="btn-export-excel" id="exportExcelChart">馃摛 瀵煎嚭 Excel</button>' +
+              '<button class="btn-export-word" id="exportWordChart">馃搫 瀵煎嚭 Word</button>' +
+              '<button class="btn-return-home" id="backToHomeFromChart">鈫?杩斿洖涓婚〉</button>' +
+            '</div>';
+    }
+    function renderChart(chartType) {
+        if (!usrVec || bestIdx === null) {
+            alert('璇峰厛瀹屾垚鏁版嵁璁＄畻');
+            return;
+        }
+        var userVec = usrVec;
+        var bestModeIdx = bestIdx;
+        var modeVec = modeFeatures[bestModeIdx];
+        var dimLabels = ['鏂囧寲鍏磋叮', '鐢熸€佸叴瓒?, '浼戦棽鍏磋叮', '鍖荤枟鍏磋叮'];
+        var detail = modeDetail[bestModeIdx];
+        if (myChart) {
+            myChart.destroy();
+            myChart = null;
+        }
+        chartSelectionArea.style.display = 'none';
+        chartDisplayArea.style.display = 'block';
+        if (chartType === 'pie') {
+            renderPieLayout();
+            var userColors = ['#6a994e', '#a7c957', '#f2e8cf', '#bc6c25'];
+            var modeColors = ['#386641', '#dda15e', '#fefae0', '#a98467'];
+            new Chart(document.getElementById('pieUser'), {
+                type: 'pie',
+                data: {
+                    labels: dimLabels,
+                    datasets: [{ data: userVec, backgroundColor: userColors, borderColor: '#ffffff', borderWidth: 2 }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: '鎮ㄧ殑鍏磋叮鍒嗗竷', color: '#2d4a2c', font: { size: window.innerWidth < 768 ? 12 : 15 } },
+                        legend: { position: 'bottom', labels: { font: { size: window.innerWidth < 768 ? 10 : 12 }, padding: 10 } }
+                    }
+                }
+            });
+            new Chart(document.getElementById('pieMode'), {
+                type: 'pie',
+                data: {
+                    labels: dimLabels,
+                    datasets: [{ data: modeVec, backgroundColor: modeColors, borderColor: '#ffffff', borderWidth: 2 }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: { display: true, text: '鎺ㄨ崘妯″紡锛? + modeNames[bestModeIdx], color: '#2d4a2c', font: { size: window.innerWidth < 768 ? 12 : 15 } },
+                        legend: { position: 'bottom', labels: { font: { size: window.innerWidth < 768 ? 10 : 12 }, padding: 10 } }
+                    }
+                }
+            });
+            document.getElementById('chartExplanation').innerHTML =
+                '<strong>馃ェ 楗煎浘瑙ｈ锛?/strong>宸︿晶涓虹敤鎴峰叴瓒ｅ崰姣旓紙澶氬僵鑷劧鑹诧級锛屽彸渚т负鎺ㄨ崘妯″紡鐗瑰緛鍗犳瘮锛堝ぇ鍦版殩鑹茬郴锛夛紝棰滆壊瀵规瘮椴滄槑涓旂粨鏋勭浉浼煎害鏋侀珮銆?;
+        } else {
+            ensureStandardChartLayout();
+            var canvas = document.getElementById('myChart');
+            var ctx = canvas.getContext('2d');
+            if (chartType === 'line') {
+                myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: dimLabels,
+                        datasets: [
+                            { label: '鎮ㄧ殑鍏磋叮鍊?, data: userVec, borderColor: '#4c8b4c',
+                                backgroundColor: 'rgba(76,139,76,0.1)', tension: 0.2, pointRadius: 6,
+                                pointBackgroundColor: '#2d5a2d', borderWidth: 3 },
+                            { label: '鎺ㄨ崘妯″紡锛? + modeNames[bestModeIdx], data: modeVec,
+                                borderColor: '#d98c5f', backgroundColor: 'rgba(217,140,95,0.1)',
+                                tension: 0.2, pointRadius: 6, pointBackgroundColor: '#b45f2a',
+                                borderWidth: 3, borderDash: [6, 3] }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { intersect: false, mode: 'index' },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: { font: { size: window.innerWidth < 768 ? 11 : 13 }, padding: 15, usePointStyle: true }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { size: window.innerWidth < 768 ? 10 : 12 } }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: 10,
+                                grid: { color: 'rgba(0,0,0,0.06)' },
+                                ticks: { font: { size: window.innerWidth < 768 ? 10 : 12 } }
+                            }
+                        }
+                    }
+                });
+                document.getElementById('chartExplanation').innerHTML =
+                    '<strong>馃搲 鎶樼嚎鍥捐В璇伙細</strong>缁胯壊瀹炵嚎浠ｈ〃鎮ㄧ殑鍏磋叮鍒嗗竷锛屾鑹茶櫄绾夸负鎺ㄨ崘妯″紡鐨勭壒寰併€備袱鑰呭湪鍏抽敭缁村害涓婇珮搴﹂噸鍚堛€?;
+            } else if (chartType === 'scatter') {
+                myChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            { label: '鎮ㄧ殑鍏磋叮鐐?, data: userVec.map(function(v, i) { return { x: i, y: v }; }),
+                                backgroundColor: '#2d6a4f', pointRadius: window.innerWidth < 768 ? 8 : 10, pointHoverRadius: 13 },
+                            { label: '鎺ㄨ崘妯″紡鐐?, data: modeVec.map(function(v, i) { return { x: i, y: v }; }),
+                                backgroundColor: '#d97c4a', pointRadius: window.innerWidth < 768 ? 8 : 10, pointHoverRadius: 13, pointStyle: 'triangle' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { intersect: false, mode: 'index' },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: { font: { size: window.innerWidth < 768 ? 11 : 13 }, padding: 15, usePointStyle: true }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        var dimLabels = ['鏂囧寲', '鐢熸€?, '浼戦棽', '鍖荤枟'];
+                                        return context.dataset.label + ' - ' + dimLabels[context.parsed.x] + ': ' + context.parsed.y;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                min: -0.5,
+                                max: 3.5,
+                                ticks: {
+                                    stepSize: 1,
+                                    callback: function(value) {
+                                        var labels = ['鏂囧寲', '鐢熸€?, '浼戦棽', '鍖荤枟'];
+                                        return labels[value] || '';
+                                    },
+                                    font: { size: window.innerWidth < 768 ? 9 : 12 }
+                                },
+                                title: { display: true, text: '鍏磋叮缁村害', color: '#2d4a2c', font: { size: window.innerWidth < 768 ? 10 : 13 } },
+                                grid: { color: 'rgba(0,0,0,0.06)' }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                max: 10,
+                                title: { display: true, text: '鍏磋叮鍊?, color: '#2d4a2c', font: { size: window.innerWidth < 768 ? 10 : 13 } },
+                                grid: { color: 'rgba(0,0,0,0.06)' },
+                                ticks: { font: { size: window.innerWidth < 768 ? 9 : 12 } }
+                            }
+                        }
+                    }
+                });
+                document.getElementById('chartExplanation').innerHTML =
+                    '<strong>鈿?鏁ｇ偣鍥捐В璇伙細</strong>缁胯壊鍦嗙偣涓烘偍锛屾鑹蹭笁瑙掍负鎺ㄨ崘妯″紡锛屼綅缃秺鎺ヨ繎鍖归厤瓒婁匠銆?;
+            }
+        }
+        var summaryEl = document.getElementById('recommendSummaryBox');
+        if (summaryEl) {
+            var consumptionScore = 5;
+            var consumptionInput = document.getElementById('consumptionInput');
+            if (consumptionInput) {
+                consumptionScore = parseFloat(consumptionInput.value) || 5;
+            }
+            var tier = getConsumptionTier(consumptionScore);
+            var tierName = getConsumptionLabelFromTier(tier);
+            var smartRec = getIntelligentRecommendation(bestModeIdx, consumptionScore);
+            summaryEl.innerHTML =
+                '<div style="background:linear-gradient(135deg, #e8f5e0, #d4ecc8); padding:15px; border-radius:10px; border:2px solid #6bae5e; margin-bottom:15px;">' +
+                '<strong style="font-size:1.1em; color:#2d4a2d;">馃幆 鏈€缁堟帹鑽愶細' + modeNames[bestModeIdx] + '</strong><br>' +
+                '<em>閫傚悎浜虹兢锛? + detail.who + '</em><br>' +
+                '<strong>鎺ㄨ崘鐞嗙敱锛?/strong>' + detail.reason + '<br>' +
+                '<strong>' + detail.activities + '</strong>' +
+                '</div>' +
+                '<div style="background:linear-gradient(135deg, #fff8e8, #fff3d0); padding:15px; border-radius:10px; border:2px solid #e9c46a; margin-bottom:15px; display:flex; flex-wrap:wrap; gap:15px; align-items:flex-start;">' +
+                '<div style="flex:1; min-width:250px;">' +
+                '<strong style="font-size:1em; color:#8a6520;">' + smartRec.title + '</strong><br>' +
+                '<span style="color:#5a4a20; line-height:1.6; font-size:0.9em;">' + smartRec.content + '</span>' +
+                '</div>' +
+                '<button class="btn-accent ai-quick-consult-btn" onclick="quickConsultConsumption(\'' + modeNames[bestModeIdx] + '\', ' + consumptionScore + ', \'' + tier + '\')" style="flex-shrink:0; padding:10px 15px; font-size:0.85rem; border-radius:8px;">馃 璇㈤棶AI灏忓姪鎵?br>浜嗚В' + tierName + '璇︽儏</button>' +
+                '</div>';
+            summaryEl.setAttribute('data-recommend-text',
+                '鏈€缁堟帹鑽? + modeNames[bestModeIdx] + '銆傞€傚悎浜虹兢锛? + detail.who + '銆? + smartRec.title + '銆? + detail.reason + ' ' + detail.activities);
+        }
+    }
+    function speakText(text) {
+        if (speaking) {
+            stopSpeaking();
+            return;
+        }
+        if ('speechSynthesis' in window && window.speechSynthesis) {
+            tryNativeSpeech(text);
+        } else {
+            tryAudioTTS(text);
+        }
+    }
+    function tryNativeSpeech(text) {
+        window.speechSynthesis.cancel();
+        loadVoices();
+        var utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'zh-CN';
+        utterance.rate = 0.9;
+        utterance.pitch = 1.05;
+        utterance.volume = 1;
+        var zhVoice = getZhVoice();
+        if (zhVoice) {
+            utterance.voice = zhVoice;
+        }
+        utterance.onstart = function() {
+            speaking = true;
+            speechMode = 'native';
+            updateSpeakBtnState();
+        };
+        utterance.onend = function() {
+            speaking = false;
+            speechMode = null;
+            updateSpeakBtnState();
+        };
+        utterance.onerror = function(e) {
+            if (e.error !== 'canceled') {
+                tryAudioTTS(text);
+            } else {
+                speaking = false;
+                speechMode = null;
+                updateSpeakBtnState();
+            }
+        };
+        if (isIOS) {
+            window.speechSynthesis.speak(utterance);
+        } else {
+            setTimeout(function() {
+                window.speechSynthesis.speak(utterance);
+            }, 50);
+        }
+    }
+    function tryAudioTTS(text) {
+        var maxLen = 200;
+        var chunks = [];
+        var remaining = text;
+        while (remaining.length > 0) {
+            chunks.push(remaining.substring(0, maxLen));
+            remaining = remaining.substring(maxLen);
+        }
+        speaking = true;
+        speechMode = 'audio';
+        updateSpeakBtnState();
+        playAudioChunks(chunks, 0, text);
+    }
+    function playAudioChunks(chunks, index, originalText) {
+        if (index >= chunks.length || !speaking) {
+            speaking = false;
+            speechMode = null;
+            updateSpeakBtnState();
+            return;
+        }
+        var audio = new Audio();
+        audio.src = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=' + encodeURIComponent(chunks[index]);
+        audioEl = audio;
+        audio.onended = function() {
+            playAudioChunks(chunks, index + 1, originalText);
+        };
+        audio.onerror = function() {
+            speaking = false;
+            speechMode = null;
+            audioEl = null;
+            updateSpeakBtnState();
+            copyTextFallback(originalText);
+        };
+        audio.play().catch(function() {
+            speaking = false;
+            speechMode = null;
+            audioEl = null;
+            updateSpeakBtnState();
+            copyTextFallback(originalText);
+        });
+    }
+    function copyTextFallback(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('褰撳墠娴忚鍣ㄤ笉鏀寔璇煶鏈楄锛屾帹鑽愬唴瀹瑰凡澶嶅埗鍒板壀璐存澘锛屾偍鍙互浣跨敤鎵嬫満鑷甫鐨勬湕璇诲姛鑳介槄璇汇€?);
+            }).catch(function() {
+                fallbackCopyText(text);
+            });
+        } else {
+            fallbackCopyText(text);
+        }
+    }
+    function fallbackCopyText(text) {
+        var textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            alert('褰撳墠娴忚鍣ㄤ笉鏀寔璇煶鏈楄锛屾帹鑽愬唴瀹瑰凡澶嶅埗鍒板壀璐存澘锛屾偍鍙互浣跨敤鎵嬫満鑷甫鐨勬湕璇诲姛鑳介槄璇汇€?);
+        } catch (e) {
+            alert('褰撳墠娴忚鍣ㄤ笉鏀寔璇煶鏈楄锛岃浣跨敤Chrome銆丼afari鎴朎dge娴忚鍣ㄨ闂€?);
+        }
+        document.body.removeChild(textarea);
+    }
+    function stopSpeaking() {
+        if (speechMode === 'native' && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+        if (audioEl) {
+            audioEl.pause();
+            audioEl.currentTime = 0;
+            audioEl = null;
+        }
+        speaking = false;
+        speechMode = null;
+        updateSpeakBtnState();
+    }
+    function updateSpeakBtnState() {
+        var btn = document.getElementById('aiSpeakLastBtn');
+        if (btn) {
+            if (speaking) {
+                btn.textContent = '鈴?;
+                btn.title = '鍋滄鏈楄';
+                btn.classList.add('speaking');
+            } else {
+                btn.textContent = '馃攰';
+                btn.title = '鏈楄鏈€鍚庝竴鏉″洖澶?;
+                btn.classList.remove('speaking');
+            }
+        }
+    }
+    function speakLastRecommendation() {
+        var textToSpeak = '';
+        var summaryEl = document.getElementById('recommendSummaryBox');
+        if (summaryEl && summaryEl.getAttribute('data-recommend-text')) {
+            textToSpeak = summaryEl.getAttribute('data-recommend-text');
+        } else if (calcResultDisplay && calcResultDisplay.getAttribute('data-recommend-text')) {
+            textToSpeak = calcResultDisplay.getAttribute('data-recommend-text');
+        } else if (bestIdx !== null) {
+            var detail = modeDetail[bestIdx];
+            textToSpeak = '涓烘偍鎺ㄨ崘' + modeNames[bestIdx] + '銆傞€傚悎浜虹兢锛? + detail.who + '銆? + detail.reason + ' ' + detail.activities;
+        } else {
+            textToSpeak = '鏆傛棤鎺ㄨ崘缁撴灉锛岃鍏堝畬鎴愭暟鎹寲閫夋嫨銆?;
+        }
+        speakText(textToSpeak);
+    }
+    function addChatMessage(type, text) {
+        var msgDiv = document.createElement('div');
+        msgDiv.className = 'ai-msg ' + type;
+        msgDiv.innerHTML = text;
+        aiChatBody.appendChild(msgDiv);
+        aiChatBody.scrollTop = aiChatBody.scrollHeight;
+        if (type === 'assistant') {
+            lastAiMsg = text.replace(/<[^>]*>/g, '');
+        }
+    }
+    function handleLocalCommand(query) {
+        var q = query.trim().toLowerCase();
+        if (q.includes('鏈楄') || q.includes('璇诲嚭') || q.includes('璇煶鎾姤')) {
+            if (speaking) {
+                stopSpeaking();
+                return '鈴?宸插仠姝㈣闊虫湕璇汇€傚啀娆＄偣鍑?鏈楄鎺ㄨ崘"鍙噸鏂版湕璇汇€?;
+            } else {
+                if (bestIdx === null) {
+                    return '鈿?鏆傛棤鎺ㄨ崘缁撴灉锛岃鍏堝畬鎴愭暟鎹寲閫夋嫨鍚庡啀浣跨敤鏈楄鍔熻兘銆?;
+                } else {
+                    speakLastRecommendation();
+                    return '馃攰 姝ｅ湪鏈楄鎺ㄨ崘鍐呭锛佺偣鍑昏亰澶╂涓嬫柟鐨?鈴?鎸夐挳鍙仠姝㈡湕璇汇€?;
+                }
+            }
+        }
+        return null;
+    }
+    function callDeepSeekAPI(userMessage) {
+        chatHistory.push({ role: 'user', content: userMessage });
+        var messages = [{ role: 'system', content: buildSystemPrompt() }];
+        var recentHistory = chatHistory.slice(-10);
+        messages = messages.concat(recentHistory);
+        return fetch(deepseekApiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + deepseekApiKey
+            },
+            body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: messages,
+                max_tokens: 500,
+                temperature: 0.7,
+                stream: false
+            })
+        }).then(function(res) {
+            if (!res.ok) {
+                throw new Error('API璇锋眰澶辫触: ' + res.status);
+            }
+            return res.json();
+        }).then(function(data) {
+            var reply = data.choices && data.choices[0] && data.choices[0].message
+                ? data.choices[0].message.content
+                : '鎶辨瓑锛屾垜鏆傛椂鏃犳硶鍥炵瓟锛岃绋嶅悗鍐嶈瘯銆?;
+            chatHistory.push({ role: 'assistant', content: reply });
+            if (chatHistory.length > 20) {
+                chatHistory = chatHistory.slice(-16);
+            }
+            return reply;
+        }).catch(function(err) {
+            chatHistory.pop();
+            return '鈿?缃戠粶杩炴帴寮傚父锛岃妫€鏌ョ綉缁滃悗閲嶈瘯銆?' + err.message + ')';
+        });
+    }
+    function handleAIQuery(query) {
+        if (!query.trim() || isAiLoading) return;
+        addChatMessage('user', query);
+        aiChatInput.value = '';
+        var localResponse = handleLocalCommand(query);
+        if (localResponse !== null) {
+            setTimeout(function() {
+                addChatMessage('assistant', localResponse);
+            }, 200);
+            return;
+        }
+        isAiLoading = true;
+        var loadingDiv = document.createElement('div');
+        loadingDiv.className = 'ai-msg assistant';
+        loadingDiv.id = 'aiLoadingMsg';
+        loadingDiv.innerHTML = '馃 鎬濊€冧腑<span class="loading-dots">...</span>';
+        aiChatBody.appendChild(loadingDiv);
+        aiChatBody.scrollTop = aiChatBody.scrollHeight;
+        callDeepSeekAPI(query).then(function(reply) {
+            var loadEl = document.getElementById('aiLoadingMsg');
+            if (loadEl) loadEl.remove();
+            isAiLoading = false;
+            var safeReply = reply
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\n/g, '<br>');
+            addChatMessage('assistant', safeReply);
+        });
+    }
+    function toggleAIChat() {
+        var isOpen = aiChatPanel.classList.contains('open');
+        if (isOpen) {
+            aiChatPanel.classList.remove('open');
+            aiBubble.style.display = 'block';
+        } else {
+            aiChatPanel.classList.add('open');
+            aiBubble.style.display = 'none';
+            aiChatBody.scrollTop = aiChatBody.scrollHeight;
+        }
+    }
+    function quickConsultConsumption(modeName, consumptionScore, tier) {
+        aiChatPanel.classList.add('open');
+        aiBubble.style.display = 'none';
+        var tierName = getConsumptionLabelFromTier(tier);
+        var tierLabel = tier;
+        var priceRange = '';
+        var tierDetail = '';
+        if (tier === 'A') {
+            tierLabel = 'A妗?路 缁忔祹鍨?;
+            priceRange = '1,500 - 6,000 鍏?;
+            tierDetail = '缁忔祹鍨嬫柟妗堟€т环姣旈珮锛岄€傚悎棰勭畻鏈夐檺浣嗘兂浣撻獙搴峰吇鏃呮父鐨勬湅鍙嬨€?;
+        } else if (tier === 'B') {
+            tierLabel = 'B妗?路 鑸掗€傚瀷';
+            priceRange = '3,500 - 12,000 鍏?;
+            tierDetail = '鑸掗€傚瀷鏂规鍦ㄥ搧璐ㄥ拰浠锋牸闂村彇寰楄壇濂藉钩琛★紝閫傚悎杩芥眰涓€瀹氬搧璐ㄥ張涓嶆兂鑺辫垂澶鐨勬湅鍙嬨€?;
+        } else if (tier === 'C') {
+            tierLabel = 'C妗?路 鍝佽川鍨?;
+            priceRange = '7,000 - 25,000 鍏?;
+            tierDetail = '鍝佽川鍨嬫柟妗堟彁渚涢珮绔綋楠岋紝閫傚悎娉ㄩ噸鏈嶅姟鍝佽川鍜屾繁搴︿綋楠岀殑鏈嬪弸銆?;
+        } else if (tier === 'D') {
+            tierLabel = 'D妗?路 楂樼鍨?;
+            priceRange = '12,000 鍏冧互涓?;
+            tierDetail = '楂樼鍨嬫柟妗堟彁渚涘皧浜畾鍒舵湇鍔★紝閫傚悎杩芥眰鏋佽嚧浣撻獙鐨勬湅鍙嬨€?;
+        } else if (tier === 'E') {
+            tierLabel = 'E妗?路 濂㈠崕鍨?;
+            priceRange = '25,000 鍏冧互涓?;
+            tierDetail = '濂㈠崕鍨嬫柟妗堜笉璁鹃绠椾笂闄愶紝杩芥眰椤剁骇濂㈠崕浣撻獙銆?;
+        }
+        var question = '鎴戠殑娑堣垂棰勬祴寰楀垎鏄? + consumptionScore + '鍒嗭紙' + tierName + '锛夛紝鎯充簡瑙? + modeName + '鐨? + tierLabel + '锛堜环鏍煎尯闂达細' + priceRange + '锛夛紝璇风粰鍑鸿缁嗗缓璁紝鍖呮嫭鍏蜂綋鐨勮绋嬪畨鎺掋€佷綇瀹挎帹鑽愩€佹敞鎰忎簨椤圭瓑銆? + tierDetail;
+        addChatMessage('user', question);
+        aiChatInput.value = '';
+        handleAIQuery(question);
+    }
+    function zoomPage(factor) {
+        var body = document.body;
+        var currentZoom = parseFloat(body.style.fontSize || '1') || 1;
+        var newZoom = Math.max(0.7, Math.min(1.6, currentZoom + factor));
+        body.style.fontSize = newZoom + 'rem';
+    }
+    function resetZoom() {
+        document.body.style.fontSize = '1rem';
+    }
+    navItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            var pageId = this.getAttribute('data-page');
+            if (pageId === 'researchPage') {
+                renderResearchBackground();
+                renderModeIntroduction();
+            }
+            if (pageId === 'interestScorePage') renderInterestScorePage();
+            if (pageId === 'groupPage') {
+                showPage('groupPage');
+                return;
+            }
+            if (pageId === 'healthStylePage') renderHealthStylePage();
+            if (pageId === 'visualPage') {
+                if (!usrVec || bestIdx === null) {
+                    alert('璇峰厛閫氳繃"鏁版嵁鍖栭€夋嫨"瀹屾垚璁＄畻銆?);
+                    return;
+                }
+                resetToChartSelection();
+            }
+            showPage(pageId);
+        });
+    });
+    homeCards.forEach(function(card) {
+        card.addEventListener('click', function() {
+            var cardId = this.id;
+            if (cardId === 'homeCardResearch') {
+                renderResearchBackground();
+                renderModeIntroduction();
+                showPage('researchPage');
+            } else if (cardId === 'homeCardHealth') {
+                renderHealthStylePage();
+                showPage('healthStylePage');
+            } else if (cardId === 'homeCardInterest') {
+                renderInterestScorePage();
+                showPage('interestScorePage');
+            } else if (cardId === 'homeCardGroup') {
+                showPage('groupPage');
+            } else if (cardId === 'homeCardData') {
+                showPage('dataSelectPage');
+            } else if (cardId === 'homeCardVisual') {
+                if (!usrVec || bestIdx === null) {
+                    alert('璇峰厛閫氳繃"鏁版嵁鍖栭€夋嫨"瀹屾垚璁＄畻銆?);
+                    return;
+                }
+                resetToChartSelection();
+                showPage('visualPage');
+            }
+        });
+    });
+    sidebarToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+    });
+    backFromDetail.addEventListener('click', function() {
+        if (navStack.length > 0) {
+            var prevPage = navStack.pop();
+            if (prevPage === 'healthStyle') {
+                renderHealthStylePage();
+                showPage('healthStylePage');
+            } else {
+                showPage('homePage');
+            }
+        } else {
+            showPage('homePage');
+        }
+    });
+    document.getElementById('quickCalcBtn').addEventListener('click', function() {
+        var r = performCalculation();
+        if (r) {
+            usrVec = r.userVec;
+            bestIdx = r.bestIdx;
+            simScores = r.sims;
+            displayResult(r);
+        }
+    });
+    function toggleFeedbackSection() {
+        var btn = document.getElementById('feedbackToggleBtn');
+        var content = btn.nextElementSibling;
+        var icon = btn.querySelector('.toggle-icon');
+        var text = btn.querySelector('.toggle-text');
+        if (content.style.display === 'none') {
+            content.style.display = 'block';
+            icon.textContent = '鈻?;
+            text.textContent = '鏀惰捣寤鸿';
+        } else {
+            content.style.display = 'none';
+            icon.textContent = '鈻?;
+            text.textContent = '灞曞紑寤鸿';
+        }
+    }
+    document.getElementById('feedbackToggleBtn').addEventListener('click', toggleFeedbackSection);
+    function submitFeedback() {
+        var form = document.getElementById('feedbackForm');
+        if (!form) return;
+        var inputs = form.querySelectorAll('textarea');
+        var hasAnswer = false;
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].value.trim()) {
+                hasAnswer = true;
+                break;
+            }
+        }
+        if (!hasAnswer) {
+            alert('璇峰～鍐欏弽棣堝唴瀹瑰悗鍐嶆彁浜わ紒');
+            return;
+        }
+        alert('鎰熻阿鎮ㄧ殑鍙嶉锛佹偍鐨勬剰瑙佸鎴戜滑闈炲父閲嶈锛屾垜浠細璁ょ湡鑰冭檻骞跺姞浠ユ敼杩涖€?);
+        form.reset();
+        toggleFeedbackSection();
+    }
+    document.getElementById('feedbackSubmitBtn').addEventListener('click', submitFeedback);
+    exportExcelFromCalcBtn.addEventListener('click', exportSimsToExcel);
+    gotoVisualBtn.addEventListener('click', function() {
+        resetToChartSelection();
+        showPage('visualPage');
+    });
+    chartSelectionArea.addEventListener('click', function(e) {
+        if (e.target.classList.contains('chart-type-btn')) {
+            renderChart(e.target.getAttribute('data-chart'));
+        }
+    });
+    chartDisplayArea.addEventListener('click', function(e) {
+        if (e.target.id === 'backToChartSelection') resetToChartSelection();
+        if (e.target.id === 'backToHomeFromChart') {
+            resetToChartSelection();
+            showPage('homePage');
+        }
+        if (e.target.id === 'exportExcelChart') exportSimsToExcel();
+        if (e.target.id === 'exportWordChart') exportChartToWord();
+    });
+    aiAvatarBtn.addEventListener('click', toggleAIChat);
+    aiChatClose.addEventListener('click', function() {
+        aiChatPanel.classList.remove('open');
+        aiBubble.style.display = 'block';
+    });
+    aiSendBtn.addEventListener('click', function() { handleAIQuery(aiChatInput.value); });
+    aiChatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleAIQuery(aiChatInput.value);
+    });
+    aiSpeakLastBtn.addEventListener('click', function() {
+        if (speaking) {
+            stopSpeaking();
+        } else if (lastAiMsg) {
+            speakText(lastAiMsg);
+        } else {
+            speakLastRecommendation();
+        }
+    });
+    aiQuickBtns.addEventListener('click', function(e) {
+        if (e.target.classList.contains('ai-quick-btn')) {
+            var q = e.target.getAttribute('data-q');
+            handleAIQuery(q);
+        }
+    });
+    document.getElementById('aiZoomIn').addEventListener('click', function() { zoomPage(0.1); });
+    document.getElementById('aiZoomOut').addEventListener('click', function() { zoomPage(-0.1); });
+    document.getElementById('aiZoomReset').addEventListener('click', resetZoom);
+    if ('speechSynthesis' in window) {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = function() {
+            loadVoices();
+        };
+        setInterval(function() {
+            if (speaking && speechMode === 'native' && !window.speechSynthesis.speaking) {
+                speaking = false;
+                speechMode = null;
+                updateSpeakBtnState();
+            }
+        }, 1000);
+    }
+    var typewriterTexts = [
+        '瀹炴椂鍖栨梾娓告ā寮忕郴缁?,
+        '鍋ュ悍鍏荤敓 路 鏅鸿兘鎺ㄨ崘',
+        '搴峰吇鏃呮父 路 鏁版嵁椹卞姩',
+        '浣欏鸡鐩镐技搴?路 绮惧噯鍖归厤',
+        '閾跺彂缁忔祹 路 鍝佽川鐢熸椿'
+    ];
+    var typewriterIndex = 0;
+    var charIndex = 0;
+    var isDeleting = false;
+    var typewriterEl = document.getElementById('homeTypewriterText');
+    var cursorEl = document.getElementById('typewriterCursor');
+    function typewriterTick() {
+        var currentText = typewriterTexts[typewriterIndex];
+        if (!isDeleting) {
+            charIndex++;
+            typewriterEl.textContent = currentText.substring(0, charIndex);
+            if (charIndex === currentText.length) {
+                setTimeout(function() {
+                    isDeleting = true;
+                    typewriterTick();
+                }, 2000);
+                return;
+            }
+            setTimeout(typewriterTick, 120);
+        } else {
+            charIndex--;
+            typewriterEl.textContent = currentText.substring(0, charIndex);
+            if (charIndex === 0) {
+                isDeleting = false;
+                typewriterIndex = (typewriterIndex + 1) % typewriterTexts.length;
+                setTimeout(typewriterTick, 500);
+                return;
+            }
+            setTimeout(typewriterTick, 60);
+        }
+    }
+    typewriterTick();
+    var carouselImages = [
+        { src: 'photos/1.jpg', caption: '馃尶 搴峰吇鏃呮父 路 鑷劧鐤楁剤涔嬫梾' },
+        { src: 'photos/5.jpg', caption: '馃尡 鐢熸€佸吇鐢?路 妫灄姘у惂婕' },
+        { src: 'photos/8.jpg', caption: '馃泲 浼戦棽搴﹀亣 路 娓╂硥SPA浜箰' },
+        { src: 'photos/11.jpg', caption: '馃彞 鍋ュ悍绠＄悊 路 涓尰鐞嗙枟鍏荤敓' }
+    ];
+    var currentSlide = 0;
+    var carouselTrack = document.getElementById('carouselTrack');
+    var carouselDots = document.getElementById('carouselDots');
+    var autoSlideTimer = null;
+    function initCarousel() {
+        var trackHtml = '';
+        var dotsHtml = '';
+        carouselImages.forEach(function(img, i) {
+            trackHtml +=
+                '<div class="carousel-slide">' +
+                    '<img src="' + img.src + '" alt="' + img.caption + '" loading="' + (i < 2 ? 'eager' : 'lazy') + '" decoding="async">' +
+                    '<div class="carousel-slide-overlay">' + img.caption + '</div>' +
+                '</div>';
+            dotsHtml += '<button class="carousel-dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '"></button>';
+        });
+        carouselTrack.innerHTML = trackHtml;
+        carouselDots.innerHTML = dotsHtml;
+        startAutoSlide();
+    }
+    function goToSlide(index) {
+        currentSlide = index;
+        if (currentSlide >= carouselImages.length) currentSlide = 0;
+        if (currentSlide < 0) currentSlide = carouselImages.length - 1;
+        carouselTrack.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+        var dots = carouselDots.querySelectorAll('.carousel-dot');
+        dots.forEach(function(d, i) {
+            d.classList.toggle('active', i === currentSlide);
+        });
+    }
+    function startAutoSlide() {
+        clearInterval(autoSlideTimer);
+        autoSlideTimer = setInterval(function() {
+            goToSlide(currentSlide + 1);
+        }, 4000);
+    }
+    document.getElementById('carouselPrev').addEventListener('click', function() {
+        goToSlide(currentSlide - 1);
+        startAutoSlide();
+    });
+    document.getElementById('carouselNext').addEventListener('click', function() {
+        goToSlide(currentSlide + 1);
+        startAutoSlide();
+    });
+    carouselDots.addEventListener('click', function(e) {
+        if (e.target.classList.contains('carousel-dot')) {
+            goToSlide(parseInt(e.target.getAttribute('data-index')));
+            startAutoSlide();
+        }
+    });
+    initCarousel();
+    var newsData = [
+        {
+            tag: '鏀跨瓥',
+            tagClass: 'news-tag-policy',
+            title: '鍥藉姟闄㈠姙鍏巺鍗板彂銆婂叧浜庡彂灞曢摱鍙戠粡娴庡杩涜€佸勾浜虹绁夌殑鎰忚銆?,
+            date: '2025-01',
+            url: 'https://www.gov.cn/zhengce/jiedu/tujie/202401/content_6926184.htm'
+        },
+        {
+            tag: '琛屼笟',
+            tagClass: 'news-tag-industry',
+            title: '鏂囨梾閮細鎺ㄥ姩搴峰吇鏃呮父楂樿川閲忓彂灞曪紝鎵撻€犱竴鎵瑰浗瀹剁骇搴峰吇鍩哄湴',
+            date: '2025-03',
+            url: 'https://zwgk.mct.gov.cn/zfxxgkml/zhgl/jytadf/202111/t20211104_928754.html'
+        },
+        {
+            tag: '鍋ュ悍',
+            tagClass: 'news-tag-health',
+            title: '鍥藉鍗仴濮旓細鑰侀緞鍋ュ悍淇冭繘琛屽姩鎸佺画鎺ㄨ繘锛屼腑鍖诲吇鐢熻瀺鍏ョぞ鍖?,
+            date: '2025-02',
+            url: 'https://www.nhc.gov.cn/lljks/c100158/202412/a4ddde4785364e789845032258591b7a.shtml'
+        },
+        {
+            tag: '鍏昏€?,
+            tagClass: 'news-tag-aging',
+            title: '姘戞斂閮細鍏ㄥ浗鍏昏€佹湇鍔′綋绯诲缓璁惧彇寰楁柊杩涘睍锛岀ぞ鍖哄吇鑰佽鐩栫巼杈?0%',
+            date: '2025-04',
+            url: 'https://www.mca.gov.cn/n2623/n2684/n2694/c1662004999980010553/content.html'
+        },
+        {
+            tag: '琛屼笟',
+            tagClass: 'news-tag-industry',
+            title: '2025涓浗搴峰吇鏃呮父甯傚満瑙勬ā棰勮绐佺牬鍗冧嚎锛岀敓鎬佺枟鎰堟垚鏂扮儹鐐?,
+            date: '2025-05',
+            url: 'http://www.qingdao.gov.cn/zwgk/xxgk/fgw/ywfl/shfz/202507/t20250725_9912138.shtml'
+        },
+        {
+            tag: '鏀跨瓥',
+            tagClass: 'news-tag-policy',
+            title: '鍗佸洓浜旇€侀緞浜嬩笟瑙勫垝锛氭瀯寤哄眳瀹剁ぞ鍖烘満鏋勭浉鍗忚皟鐨勫吇鑰佹湇鍔′綋绯?,
+            date: '2024-12',
+            url: 'https://www.mca.gov.cn/n152/n166/c45259/content.html'
+        }
+    ];
+    function initNews() {
+        var grid = document.getElementById('homeNewsGrid');
+        var html = '';
+        newsData.forEach(function(news) {
+            html +=
+                '<a class="home-news-card" href="' + news.url + '" target="_blank" rel="noopener noreferrer">' +
+                    '<span class="home-news-card-tag ' + news.tagClass + '">' + news.tag + '</span>' +
+                    '<div class="home-news-card-title">' + news.title + '</div>' +
+                    '<div class="home-news-card-date">' + news.date + '</div>' +
+                '</a>';
+        });
+        grid.innerHTML = html;
+    }
+    initNews();
+    var cSlider = document.getElementById('cSlider');
+    var eSlider = document.getElementById('eSlider');
+    var lSlider = document.getElementById('lSlider');
+    var mSlider = document.getElementById('mSlider');
+    var cVal = document.getElementById('cVal');
+    var eVal = document.getElementById('eVal');
+    var lVal = document.getElementById('lVal');
+    var mVal = document.getElementById('mVal');
+    var sideResult = document.getElementById('sideResult');
+    var currentChartType = null;
+    function syncSlidersFromUserVec() {
+        if (usrVec) {
+            cSlider.value = usrVec[0];
+            eSlider.value = usrVec[1];
+            lSlider.value = usrVec[2];
+            mSlider.value = usrVec[3];
+            cVal.textContent = usrVec[0];
+            eVal.textContent = usrVec[1];
+            lVal.textContent = usrVec[2];
+            mVal.textContent = usrVec[3];
+        }
+        updateVisualSidebarResult();
+    }
+    function updateVisualSidebarResult() {
+        var vec = [
+            parseFloat(cSlider.value),
+            parseFloat(eSlider.value),
+            parseFloat(lSlider.value),
+            parseFloat(mSlider.value)
+        ];
+        var sims = modeFeatures.map(function(mf) { return cosineSim(vec, mf); });
+        var maxSim = -1;
+        var maxIdx = 0;
+        sims.forEach(function(s, i) {
+            if (s > maxSim) { maxSim = s; maxIdx = i; }
+        });
+        sideResult.innerHTML =
+            '<strong>馃専 鎺ㄨ崘妯″紡锛?/strong>' + modeNames[maxIdx] + '<br>' +
+            '<strong>鍖归厤搴︼細</strong>' + maxSim.toFixed(4) + '<br>' +
+            sims.map(function(s, i) {
+                return modeNames[i] + '锛? + s.toFixed(4);
+            }).join('<br>');
+    }
+    function onSliderChange() {
+        cVal.textContent = parseFloat(cSlider.value).toFixed(1);
+        eVal.textContent = parseFloat(eSlider.value).toFixed(1);
+        lVal.textContent = parseFloat(lSlider.value).toFixed(1);
+        mVal.textContent = parseFloat(mSlider.value).toFixed(1);
+        updateVisualSidebarResult();
+        var vec = [
+            parseFloat(cSlider.value),
+            parseFloat(eSlider.value),
+            parseFloat(lSlider.value),
+            parseFloat(mSlider.value)
+        ];
+        usrVec = vec;
+        var sims = modeFeatures.map(function(mf) { return cosineSim(vec, mf); });
+        var maxSim = -1;
+        var maxIdx = 0;
+        sims.forEach(function(s, i) {
+            if (s > maxSim) { maxSim = s; maxIdx = i; }
+        });
+        bestIdx = maxIdx;
+        simScores = sims;
+        if (currentChartType && chartDisplayArea.style.display !== 'none') {
+            renderChart(currentChartType);
+        }
+    }
+    if (cSlider) cSlider.addEventListener('input', onSliderChange);
+    if (eSlider) eSlider.addEventListener('input', onSliderChange);
+    if (lSlider) lSlider.addEventListener('input', onSliderChange);
+    if (mSlider) mSlider.addEventListener('input', onSliderChange);
+    var sidePanel = document.getElementById('sidePanel');
+    var sideHead = document.getElementById('sideHead');
+    var sideExpanded = false;
+    function toggleSidePanel() {
+        sideExpanded = !sideExpanded;
+        if (sideExpanded) {
+            sidePanel.classList.add('expanded');
+        } else {
+            sidePanel.classList.remove('expanded');
+        }
+    }
+    if (sideHead) {
+        sideHead.addEventListener('click', toggleSidePanel);
+    }
+    var origRenderChart = renderChart;
+    renderChart = function(chartType) {
+        currentChartType = chartType;
+        origRenderChart(chartType);
+    };
+    var origResetToChartSelection = resetToChartSelection;
+    resetToChartSelection = function() {
+        currentChartType = null;
+        origResetToChartSelection();
+    };
+    var origShowPage = showPage;
+    showPage = function(pageId) {
+        origShowPage(pageId);
+        if (pageId === 'visualPage' && usrVec) {
+            syncSlidersFromUserVec();
+        }
+    };
+    var origRenderPriceTiers = renderPriceTiers;
+    renderPriceTiers = function(tiers, modeName) {
+        var mName = modeName || '搴峰吇鏃呮父';
+        console.log('renderPriceTiers called, modeName:', mName);
+        var html = '<div class="price-tiers">';
+        tiers.forEach(function(t, idx) {
+            html +=
+                '<div class="tier-card tier-card-clickable" data-tier-label="' + t.label + '" data-tier-price="' + t.price + '" data-tier-detail="' + t.detail.replace(/"/g, '&quot;') + '" data-tier-mode="' + mName + '">' +
+                  '<div class="tier-tooltip">&#x1F4AC; 鐐瑰嚮闂垜浜嗚В璇︽儏锛?/div>' +
+                  '<span class="tier-label ' + t.tierClass + '">' + t.label + '</span>' +
+                  '<div class="tier-price">&#x1F4B0; ' + t.price + '</div>' +
+                  '<div class="tier-detail">' + t.detail + '</div>' +
+                '</div>';
+        });
+        html += '</div>';
+        setTimeout(function() {
+            console.log('Setting up click handlers for', document.querySelectorAll('.tier-card-clickable').length, 'cards');
+            document.querySelectorAll('.tier-card-clickable').forEach(function(card) {
+                card.onclick = function() {
+                    console.log('Tier card clicked!');
+                    var label = this.getAttribute('data-tier-label');
+                    var price = this.getAttribute('data-tier-price');
+                    var detail = this.getAttribute('data-tier-detail');
+                    var mode = this.getAttribute('data-tier-mode');
+                    var question = '鎴戞兂浜嗚В' + mode + '鐨? + label + '锛堜环鏍硷細' + price + '锛夛紝璇风粰鍑鸿缁嗗缓璁?;
+                    if (!aiChatPanel.classList.contains('open')) {
+                        aiChatPanel.classList.add('open');
+                        aiBubble.style.display = 'none';
+                    }
+                    addChatMessage('user', question);
+                    aiChatInput.value = '';
+                    var localReply = buildTierLocalReply(mode, label, price, detail);
+                    setTimeout(function() {
+                        addChatMessage('assistant', localReply);
+                        var loadingDiv = document.createElement('div');
+                        loadingDiv.className = 'ai-msg assistant';
+                        loadingDiv.id = 'tierLoadingMsg';
+                        loadingDiv.innerHTML = '&#x1F916; 灏忔梾姝ｅ湪鎬濊€冭ˉ鍏呭缓璁?span class="loading-dots">...</span>';
+                        aiChatBody.appendChild(loadingDiv);
+                        aiChatBody.scrollTop = aiChatBody.scrollHeight;
+                    }, 300);
+                    isAiLoading = true;
+                    callDeepSeekAPI(question).then(function(reply) {
+                        isAiLoading = false;
+                        var loadEl = document.getElementById('tierLoadingMsg');
+                        if (loadEl) loadEl.remove();
+                        var safeReply = reply
+                            .replace(/&/g, '&amp;')
+                            .replace(/</g, '&lt;')
+                            .replace(/>/g, '&gt;')
+                            .replace(/\n/g, '<br>');
+                        addChatMessage('assistant', '&#x1F916; 灏忔梾琛ュ厖寤鸿锛?br>' + safeReply);
+                    }).catch(function() {
+                        isAiLoading = false;
+                        var loadEl = document.getElementById('tierLoadingMsg');
+                        if (loadEl) loadEl.remove();
+                    });
+                };
+            });
+        }, 200);
+        return html;
+    };
+    function buildTierLocalReply(mode, label, price, detail) {
+        var tierType = '';
+        if (label.indexOf('A') !== -1) tierType = '缁忔祹鍨?;
+        else if (label.indexOf('B') !== -1) tierType = '鑸掗€傚瀷';
+        else if (label.indexOf('C') !== -1) tierType = '鍝佽川鍨?;
+        else if (label.indexOf('D') !== -1) tierType = '楂樼鍨?;
+        var tips = '';
+        if (tierType === '缁忔祹鍨?) {
+            tips = '&#x1F4A1; 灏忔梾鎻愮ず锛氱粡娴庡瀷鏂规鎬т环姣旈珮锛岄€傚悎棰勭畻鏈夐檺浣嗘兂浣撻獙搴峰吇鏃呮父鐨勬湅鍙嬨€傚缓璁彁鍓嶅叧娉ㄦ櫙鍖轰紭鎯犳椿鍔紝閫夋嫨娣″鍑鸿鏇村垝绠楀摝锛?;
+        } else if (tierType === '鑸掗€傚瀷') {
+            tips = '&#x1F4A1; 灏忔梾鎻愮ず锛氳垝閫傚瀷鏂规鍦ㄥ搧璐ㄥ拰浠锋牸闂村彇寰楄壇濂藉钩琛★紝閫傚悎杩芥眰涓€瀹氬搧璐ㄥ張涓嶆兂鑺辫垂澶鐨勬湅鍙嬨€傚缓璁€夋嫨鍙ｇ濂界殑涓珮绔皯瀹挎垨搴﹀亣鏉戯紒';
+        } else if (tierType === '鍝佽川鍨?) {
+            tips = '&#x1F4A1; 灏忔梾鎻愮ず锛氬搧璐ㄥ瀷鏂规鎻愪緵楂樼浣撻獙锛岄€傚悎娉ㄩ噸鏈嶅姟鍝佽川鍜屾繁搴︿綋楠岀殑鏈嬪弸銆傚缓璁彁鍓嶉绾︾儹闂ㄩ」鐩紝纭繚琛岀▼椤哄埄锛?;
+        } else if (tierType === '楂樼鍨?) {
+            tips = '&#x1F4A1; 灏忔梾鎻愮ず锛氶珮绔瀷鏂规鎻愪緵灏婁韩瀹氬埗鏈嶅姟锛岄€傚悎杩芥眰鏋佽嚧浣撻獙鐨勬湅鍙嬨€傚缓璁仈绯讳笓涓氭梾琛岄【闂繘琛屼釜鎬у寲瀹氬埗锛岃姣忎竴鍒婚兘鐗╄秴鎵€鍊硷紒';
+        }
+        return '&#x1F33F; <strong>' + mode + ' 路 ' + label + '</strong><br><br>' +
+            '&#x1F4B0; 浠锋牸鍖洪棿锛? + price + '<br><br>' +
+            '&#x1F4CB; 鍏蜂綋鍐呭锛? + detail + '<br><br>' +
+            tips;
+    }
+})();
