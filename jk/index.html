@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
-    <title>健康养生旅游模式可视化选择 · 石家庄铁道大学</title>
+    <title>健康养生旅游模式可视化选择</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.min.js"></script>
@@ -78,7 +78,7 @@
             <div class="sidebar-header">
                 <div class="sidebar-logo">&#x1F33F;</div>
                 <div class="sidebar-brand">康养旅游系统</div>
-                <div class="sidebar-sub">石家庄铁道大学</div>
+                <div class="sidebar-sub">康养旅游智能平台</div>
             </div>
             <!-- 导航菜单 -->
             <nav class="sidebar-nav">
@@ -98,6 +98,10 @@
                 <a class="nav-item" id="navInterestScore" data-page="interestScorePage">
                     <span class="nav-icon">&#x1F4F0;</span>
                     <span class="nav-text">兴趣打分表</span>
+                </a>
+                <a class="nav-item" id="navSafetyAnalysis" data-page="safetyAnalysisPage">
+                    <span class="nav-icon">&#x1F6E1;</span>
+                    <span class="nav-text">安全旅游分析</span>
                 </a>
                 <a class="nav-item" id="navGroupPage" data-page="groupPage">
                     <span class="nav-icon">&#x1F465;</span>
@@ -179,6 +183,14 @@
                         </div>
                         <div class="home-card-arrow">›</div>
                     </div>
+                    <div class="home-card card-safety" id="homeCardSafety">
+                        <div class="home-card-icon">&#x1F6E1;</div>
+                        <div class="home-card-body">
+                            <div class="home-card-title">安全旅游分析</div>
+                            <div class="home-card-desc">结合用户画像分析安全问题与防护措施</div>
+                        </div>
+                        <div class="home-card-arrow">›</div>
+                    </div>
                     <div class="home-card card-feedback" id="homeCardFeedback">
                         <div class="home-card-icon">&#x1F4E7;</div>
                         <div class="home-card-body">
@@ -219,6 +231,11 @@
                 </div>
                 <div class="content-card" id="researchContent"></div>
                 <div class="content-card" id="modeIntroContent"></div>
+                <div class="button-row" style="margin-top:20px;">
+                    <button class="btn-return-home" id="btnHomeFromResearch">↩ 返回主页</button>
+                    <button class="btn-secondary" id="btnHealthFromResearch">🌿 养生方式</button>
+                    <button class="btn-accent" id="btnSafetyFromResearch">🛡️ 安全旅游分析</button>
+                </div>
             </div>
 
             <!-- 养生方式页面 -->
@@ -227,15 +244,44 @@
                     <h1 class="page-title">&#x1F33F; 养生方式</h1>
                 </div>
                 <div class="content-card" id="healthStyleContent"></div>
+                <div class="button-row" style="margin-top:20px;">
+                    <button class="btn-return-home" id="btnHomeFromHealth">↩ 返回主页</button>
+                    <button class="btn-secondary" id="btnDataFromHealth">📊 数据化选择</button>
+                    <button class="btn-accent" id="btnSafetyFromHealth">🛡️ 安全旅游分析</button>
+                </div>
             </div>
 
-            <!-- 兴趣打分表页面 -->
+            <!-- 安全旅游分析页面 -->
+            <div id="safetyAnalysisPage" class="page">
+                <div class="page-header">
+                    <h1 class="page-title">&#x1F6E1; 安全旅游分析</h1>
+                    <p class="page-subtitle">结合用户画像，分析各类康养旅游模式中可能发生的安全问题及防护措施</p>
+                </div>
+                <div class="safety-tabs" id="safetyTabs">
+                    <button class="safety-tab active" data-tab="safety-overview">📋 安全总览</button>
+                    <button class="safety-tab" data-tab="safety-culture">📚 文化+安全</button>
+                    <button class="safety-tab" data-tab="safety-eco">🌱 生态+安全</button>
+                    <button class="safety-tab" data-tab="safety-leisure">🛋 休闲+安全</button>
+                    <button class="safety-tab" data-tab="safety-medical">🏥 医疗+安全</button>
+                </div>
+                <div class="content-card" id="safetyAnalysisContent"></div>
+                <div class="button-row" style="margin-top:20px;">
+                    <button class="btn-return-home" id="btnHomeFromSafety">↩ 返回主页</button>
+                    <button class="btn-secondary" id="btnInterestFromSafety">📋 前往打分表</button>
+                    <button class="btn-accent" id="btnVisualFromSafety">📈 可视化分析</button>
+                </div>
+            </div>
             <div id="interestScorePage" class="page">
                 <div class="page-header">
                     <h1 class="page-title">&#x1F4F0; 兴趣打分参考表</h1>
                     <p class="page-subtitle">根据您的实际情况，对以下五种兴趣类型进行10分制打分，作为数据化选择的参考依据</p>
                 </div>
                 <div class="content-card" id="interestScoreContent"></div>
+                <div class="button-row" style="margin-top:20px;">
+                    <button class="btn-return-home" id="btnHomeFromInterest">↩ 返回主页</button>
+                    <button class="btn-secondary" id="btnDataFromInterest">📊 数据化选择</button>
+                    <button class="btn-accent" id="btnSafetyFromInterest">🛡️ 安全旅游分析</button>
+                </div>
             </div>
 
             <!-- 旅游组群页面 -->
@@ -380,6 +426,90 @@
                         <button id="gotoVisualBtn" class="btn-accent" style="display:none;">&#x1F4C8; 进入可视化分析</button>
                     </div>
                 </div>
+
+                <!-- 安全评价分支 -->
+                <div class="content-card" style="margin-top:25px; border:2px solid #e76f51;" id="safetyEvalCard">
+                    <h3 style="color:#c0392b; margin-bottom:10px;">🛡️ 安全评价 · 综合推荐</h3>
+                    <p style="color:#5a6a4a; font-size:13px; margin-bottom:15px; line-height:1.7;">
+                        安全评价将您的<strong>兴趣匹配度</strong>与<strong>安全认知度</strong>相结合，通过加权算法综合评估各模式的适配性。<strong>请在下方面板中自行设置您对每种旅游模式的安全害怕程度</strong>（0=完全不怕，10=极度害怕），系统将根据您的安全认知度给出最优推荐。
+                    </p>
+
+                    <!-- 用户自行输入四种模式的安全害怕度 -->
+                    <div class="safety-eval-input-grid" id="safetyEvalInputGrid">
+                        <div class="safety-eval-input-item" data-mode="0">
+                            <div class="safety-eval-mode-label">📚 文化+健康养生</div>
+                            <div class="safety-eval-slider-row">
+                                <span class="safety-eval-min">0<br><small>不怕</small></span>
+                                <input type="range" class="safety-eval-slider" id="safetyEvalCultureSlider" min="0" max="10" step="0.5" value="0" oninput="window.updateSafetyEvalSlider('safetyEvalCultureSlider')">
+                                <span class="safety-eval-max">10<br><small>极怕</small></span>
+                            </div>
+                            <div class="safety-eval-val-row">
+                                <span>害怕度：</span>
+                                <input type="number" class="safety-eval-num" id="safetyEvalCultureNum" value="0" min="0" max="10" step="0.5" onchange="window.syncSafetyEvalSlider('safetyEvalCultureSlider', this.value)">
+                                <span class="safety-eval-level" id="safetyEvalCultureLevel">完全不害怕</span>
+                            </div>
+                        </div>
+                        <div class="safety-eval-input-item" data-mode="1">
+                            <div class="safety-eval-mode-label">🌱 生态+健康养生</div>
+                            <div class="safety-eval-slider-row">
+                                <span class="safety-eval-min">0<br><small>不怕</small></span>
+                                <input type="range" class="safety-eval-slider" id="safetyEvalEcoSlider" min="0" max="10" step="0.5" value="0" oninput="window.updateSafetyEvalSlider('safetyEvalEcoSlider')">
+                                <span class="safety-eval-max">10<br><small>极怕</small></span>
+                            </div>
+                            <div class="safety-eval-val-row">
+                                <span>害怕度：</span>
+                                <input type="number" class="safety-eval-num" id="safetyEvalEcoNum" value="0" min="0" max="10" step="0.5" onchange="window.syncSafetyEvalSlider('safetyEvalEcoSlider', this.value)">
+                                <span class="safety-eval-level" id="safetyEvalEcoLevel">完全不害怕</span>
+                            </div>
+                        </div>
+                        <div class="safety-eval-input-item" data-mode="2">
+                            <div class="safety-eval-mode-label">🛋 休闲+健康养生</div>
+                            <div class="safety-eval-slider-row">
+                                <span class="safety-eval-min">0<br><small>不怕</small></span>
+                                <input type="range" class="safety-eval-slider" id="safetyEvalLeisureSlider" min="0" max="10" step="0.5" value="0" oninput="window.updateSafetyEvalSlider('safetyEvalLeisureSlider')">
+                                <span class="safety-eval-max">10<br><small>极怕</small></span>
+                            </div>
+                            <div class="safety-eval-val-row">
+                                <span>害怕度：</span>
+                                <input type="number" class="safety-eval-num" id="safetyEvalLeisureNum" value="0" min="0" max="10" step="0.5" onchange="window.syncSafetyEvalSlider('safetyEvalLeisureSlider', this.value)">
+                                <span class="safety-eval-level" id="safetyEvalLeisureLevel">完全不害怕</span>
+                            </div>
+                        </div>
+                        <div class="safety-eval-input-item" data-mode="3">
+                            <div class="safety-eval-mode-label">🏥 医疗+健康养生</div>
+                            <div class="safety-eval-slider-row">
+                                <span class="safety-eval-min">0<br><small>不怕</small></span>
+                                <input type="range" class="safety-eval-slider" id="safetyEvalMedicalSlider" min="0" max="10" step="0.5" value="0" oninput="window.updateSafetyEvalSlider('safetyEvalMedicalSlider')">
+                                <span class="safety-eval-max">10<br><small>极怕</small></span>
+                            </div>
+                            <div class="safety-eval-val-row">
+                                <span>害怕度：</span>
+                                <input type="number" class="safety-eval-num" id="safetyEvalMedicalNum" value="0" min="0" max="10" step="0.5" onchange="window.syncSafetyEvalSlider('safetyEvalMedicalSlider', this.value)">
+                                <span class="safety-eval-level" id="safetyEvalMedicalLevel">完全不害怕</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 实时安全认知度面板（跟随滑块实时更新） -->
+                    <div id="dataSafetyLivePanel" style="background:linear-gradient(135deg, #f5f5f5, #e8e8e8); border:2px dashed #bbb; border-radius:12px; padding:14px 18px; margin-top:15px; min-height:50px;">
+                        <span style="color:#999;">📊 拖动上方滑块，安全认知度将在此实时更新...</span>
+                    </div>
+
+                    <!-- 快捷操作行 -->
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:15px 0;">
+                        <button class="btn-primary" id="safetyEvalBtn" style="background:linear-gradient(135deg, #e76f51, #c0392b);">🛡️ 执行安全评价</button>
+                        <button class="btn-secondary" id="syncSafetyFromVisualBtn" style="font-size:0.85rem;">📥 同步可视化打分</button>
+                        <button class="btn-return-chart" id="resetSafetyEvalInputBtn" style="font-size:0.85rem;">🔄 重置为默认</button>
+                    </div>
+
+                    <div id="safetyEvalResult" class="result-box" style="display:none; background:#fff5f5; border:1px solid #f0c0b0;"></div>
+                </div>
+
+                <div class="button-row" style="margin-top:20px;">
+                    <button class="btn-return-home" id="btnHomeFromData">↩ 返回主页</button>
+                    <button class="btn-secondary" id="btnInterestFromData">📋 兴趣打分表</button>
+                    <button class="btn-accent" id="btnSafetyFromData">🛡️ 安全旅游分析</button>
+                </div>
             </div>
 
             <!-- 可视化分析页面 -->
@@ -388,7 +518,7 @@
                     <h1 class="page-title">&#x1F4C8; 可视化呈现图分析</h1>
                     <p class="page-subtitle">多图表对比，精准推荐可视化呈现</p>
                 </div>
-                
+
                 <!-- 图表展示区域 -->
                 <div class="content-card" style="margin-left: 10px;">
                     <!-- 图表类型选择 -->
@@ -401,6 +531,10 @@
                     </div>
                     <!-- 图表渲染区域 -->
                     <div id="chartDisplayArea" style="display:none;"></div>
+                </div>
+                <div class="button-row" style="margin-top:15px;">
+                    <button class="btn-return-home" id="btnHomeFromVisual">↩ 返回主页</button>
+                    <button class="btn-secondary" id="btnSafetyFromVisual">🛡️ 安全旅游分析</button>
                 </div>
             </div>
 

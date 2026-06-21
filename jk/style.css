@@ -296,6 +296,10 @@ body {
 .card-health .home-card-icon { background: #f0f8e0; }
 .card-data .home-card-icon { background: #e0f0f4; }
 .card-visual .home-card-icon { background: #f8f0e0; }
+.card-safety .home-card-icon { background: #ffe8e8; }
+.card-interest .home-card-icon { background: #fff8e0; }
+.card-group .home-card-icon { background: #f0e8f8; }
+.card-feedback .home-card-icon { background: #e8f0f8; }
 
 .home-card-body {
     flex: 1;
@@ -514,6 +518,7 @@ body {
 .news-tag-industry { background: #e0ecf8; color: #2d5a8a; }
 .news-tag-health { background: #f8f0e0; color: #8a6a2d; }
 .news-tag-aging { background: #f0e0f0; color: #6a2d6a; }
+.news-tag-safety { background: #ffe0e0; color: #c0392b; }
 
 .home-news-card-title {
     font-size: 0.95rem;
@@ -2093,4 +2098,401 @@ body {
 
 #feedbackForm {
     width: 100%;
+}
+
+/* ==================== 安全旅游分析页面样式 ==================== */
+
+/* 安全分析Tab导航 */
+.safety-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.safety-tab {
+    background: #fff;
+    border: 2px solid #d8e8c8;
+    padding: 10px 22px;
+    border-radius: 25px;
+    font-weight: 600;
+    color: #4a6b3a;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.safety-tab:hover {
+    background: #f0f8e8;
+    border-color: #8cc97a;
+    transform: translateY(-2px);
+}
+
+.safety-tab.active {
+    background: linear-gradient(135deg, #2d4a2d, #4a8b4a);
+    color: #fff;
+    border-color: #2d4a2d;
+    box-shadow: 0 4px 12px rgba(45, 74, 45, 0.3);
+}
+
+/* 风险等级标签 */
+.risk-level-high {
+    display: inline-block;
+    background: #d62828;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.risk-level-medium {
+    display: inline-block;
+    background: #f4a261;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.risk-level-low {
+    display: inline-block;
+    background: #6a994e;
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+/* 安全总览表格 */
+.safety-overview-table {
+    overflow-x: auto;
+    margin: 15px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.safety-overview-table table {
+    min-width: 600px;
+}
+
+.safety-overview-table td {
+    font-size: 0.83rem;
+    line-height: 1.6;
+    vertical-align: top;
+    padding: 14px 12px;
+}
+
+/* 安全认知度打分区域 */
+.safety-awareness-card {
+    border: 2px solid #e8d8d0 !important;
+}
+
+.safety-fear-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.safety-fear-group {
+    background: #f8faf4;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #e8f0dd;
+}
+
+.safety-fear-group-title {
+    font-weight: 700;
+    color: #2d4a2d;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e0e8d5;
+}
+
+.safety-fear-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e8e8d8;
+    flex-wrap: wrap;
+}
+
+.safety-fear-item:last-child {
+    border-bottom: none;
+}
+
+.safety-fear-label {
+    flex: 0 0 200px;
+    font-size: 0.85rem;
+    color: #3a5535;
+    line-height: 1.4;
+    font-weight: 500;
+    min-width: 150px;
+}
+
+.safety-fear-label small {
+    color: #8a9a80;
+    font-size: 0.75rem;
+    display: block;
+    margin-top: 2px;
+}
+
+.safety-fear-input-row {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+}
+
+.safety-fear-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #6a994e, #f4a261, #d62828);
+    outline: none;
+    transition: background 0.2s;
+}
+
+.safety-fear-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #e76f51;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(231, 111, 81, 0.4);
+    transition: all 0.2s;
+}
+
+.safety-fear-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #c0392b;
+}
+
+.safety-fear-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #e76f51;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px rgba(231, 111, 81, 0.4);
+}
+
+.safety-fear-val {
+    font-weight: 700;
+    font-size: 1rem;
+    width: 36px;
+    text-align: center;
+    color: #e76f51;
+    background: #fff0f0;
+    border-radius: 8px;
+    padding: 4px 0;
+    border: 1px solid #f0d0d0;
+}
+
+/* ==================== 安全评价输入面板样式 ==================== */
+
+.safety-eval-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.safety-eval-input-item {
+    background: #fff;
+    border: 2px solid #e8d8d0;
+    border-radius: 14px;
+    padding: 16px;
+    transition: all 0.25s;
+}
+
+.safety-eval-input-item:hover {
+    border-color: #e76f51;
+    box-shadow: 0 4px 16px rgba(231, 111, 81, 0.1);
+}
+
+.safety-eval-mode-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #2d4a2d;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f0e8e0;
+    text-align: center;
+}
+
+.safety-eval-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.safety-eval-min,
+.safety-eval-max {
+    font-size: 0.7rem;
+    color: #999;
+    text-align: center;
+    line-height: 1.2;
+    flex-shrink: 0;
+    width: 32px;
+}
+
+.safety-eval-min small,
+.safety-eval-max small {
+    display: block;
+    font-size: 0.65rem;
+}
+
+.safety-eval-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #6a994e 0%, #f4a261 50%, #d62828 100%);
+    outline: none;
+    cursor: pointer;
+}
+
+.safety-eval-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e76f51;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(231, 111, 81, 0.4);
+    transition: all 0.2s;
+    border: 3px solid #fff;
+}
+
+.safety-eval-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    background: #c0392b;
+}
+
+.safety-eval-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e76f51;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(231, 111, 81, 0.4);
+}
+
+.safety-eval-val-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.safety-eval-val-row span:first-child {
+    font-size: 0.82rem;
+    color: #5a6a4a;
+    font-weight: 600;
+}
+
+.safety-eval-num {
+    width: 55px;
+    padding: 6px 8px;
+    border: 2px solid #e0d0c8;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #e76f51;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.safety-eval-num:focus {
+    border-color: #e76f51;
+    box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.15);
+}
+
+.safety-eval-level {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #c0392b;
+    background: #fff0f0;
+    padding: 4px 10px;
+    border-radius: 12px;
+    border: 1px solid #f0d0d0;
+    white-space: nowrap;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .safety-tabs {
+        gap: 6px;
+    }
+
+    .safety-tab {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .safety-fear-label {
+        flex: 0 0 100%;
+        min-width: 100%;
+    }
+
+    .safety-fear-input-row {
+        min-width: 100%;
+    }
+
+    .safety-overview-table {
+        font-size: 0.75rem;
+    }
+
+    .safety-overview-table td {
+        padding: 8px 6px;
+        font-size: 0.72rem;
+    }
+
+    .safety-eval-input-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .safety-eval-input-item {
+        padding: 10px;
+    }
+
+    .safety-eval-mode-label {
+        font-size: 0.8rem;
+    }
+
+    .safety-eval-slider {
+        height: 6px;
+    }
+
+    .safety-eval-slider::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+
+    .safety-eval-num {
+        width: 45px;
+        font-size: 0.8rem;
+    }
+
+    .safety-eval-level {
+        font-size: 0.72rem;
+    }
 }
